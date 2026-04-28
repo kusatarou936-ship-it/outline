@@ -1,26 +1,77 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ----------------------------------------
+   Reset（静かで均一なベース）
+---------------------------------------- */
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ----------------------------------------
+   リンク（静かで控えめ）
+---------------------------------------- */
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+a:hover {
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ----------------------------------------
+   画像（均一性）
+---------------------------------------- */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ----------------------------------------
+   見出し（余白と静けさ）
+---------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ----------------------------------------
+   テキスト（読みやすさ）
+---------------------------------------- */
+p {
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ----------------------------------------
+   カードの均一性（影のにじみ防止）
+---------------------------------------- */
+.card-shadow {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ----------------------------------------
+   スクロール（静か）
+---------------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
