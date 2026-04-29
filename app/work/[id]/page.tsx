@@ -1,5 +1,4 @@
 import { getDBFromContext } from "@/lib/db";
-import { eq } from "drizzle-orm";
 
 export default async function WorkDetailPage({
   params,

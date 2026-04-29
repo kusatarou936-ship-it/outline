@@ -1,6 +1,4 @@
 import { getDBFromContext } from "@/lib/db";
-import { works, autoMetrics } from "@/drizzle/schema";
-import { eq } from "drizzle-orm";
 import Card from "@/components/Card/Card";
 import CardSkeleton from "@/components/Card/CardSkeleton";
 
