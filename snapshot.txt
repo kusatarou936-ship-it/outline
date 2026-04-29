@@ -12,7 +12,6 @@ MODULES:
 
 
 TECH_STACK:
-  - TypeScript
   - CSS
 
 FILES:
@@ -22,9 +21,7 @@ FILES:
   - C:\Users\user\outline-app\app\page.tsx
   - C:\Users\user\outline-app\app\submit\page.tsx
   - C:\Users\user\outline-app\app\user\[id]\page.tsx
-  - C:\Users\user\outline-app\app\work\route.ts
   - C:\Users\user\outline-app\app\work\[id]\page.tsx
-  - C:\Users\user\outline-app\app\work\[id]\route.ts
 
 FUNCTIONS:
   - dXt
@@ -34,14 +31,8 @@ FUNCTIONS:
   - HomePage
   - SubmitPage
   - UserPage
-  - GET
-  - select
-  - from
-  - orderBy
   - WorkDetailPage
   - 0_4px_16px_rgba
-  - where
-  - Number
 
 IMPORT_MAP:
   C:\Users\user\outline-app\app\layout.tsx:
@@ -49,13 +40,6 @@ IMPORT_MAP:
     - @/components/Layout/Header
     - @/components/Layout/Footer
     - @/lib/i18n
-  C:\Users\user\outline-app\app\work\route.ts:
-    - @/drizzle/schema
-    - @/drizzle/db
-  C:\Users\user\outline-app\app\work\[id]\route.ts:
-    - @/drizzle/schema
-    - @/drizzle/db
-    - drizzle-orm
 
 INVARIANTS:
   - const は再代入不可
