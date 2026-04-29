@@ -1,19 +1,11 @@
-import { getDBFromContext } from "@/lib/db";
 import Card from "@/components/Card/Card";
 import CardSkeleton from "@/components/Card/CardSkeleton";
 
 export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
-  const db = getDBFromContext();
-
-  // works を新着順で取得
-  const allWorks = await db.select().from(works).orderBy(works.createdAt);
-
-  // auto_metrics をまとめて取得
-  const metrics = await db.select().from(autoMetrics);
-
-  // work_id → metrics のマップ
-  const metricsMap = new Map(metrics.map((m) => [m.workId, m]));
+  // いったん DB / API は一切呼ばない
+  const allWorks: any[] = [];
 
   return (
     <main className="p-8">
@@ -25,21 +17,6 @@ export default async function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <CardSkeleton key={i} />
-          ))}
-        </div>
-      )}
-
-      {allWorks.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allWorks.map((w) => (
-            <Card
-              key={w.id}
-              id={w.id}
-              title={w.title}
-              catchcopy={w.catch}
-              thumbnail={w.thumbnail}
-              stack={w.stack ?? []}
-            />
           ))}
         </div>
       )}

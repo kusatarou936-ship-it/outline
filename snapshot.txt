@@ -12,16 +12,10 @@ MODULES:
 
 
 TECH_STACK:
-  - TypeScript
   - CSS
 
 FILES:
-  - C:\Users\user\outline-app\app\api\filter\route.ts
-  - C:\Users\user\outline-app\app\api\search\route.ts
-  - C:\Users\user\outline-app\app\api\work\[id]\route.ts
   - C:\Users\user\outline-app\app\favicon.ico
-  - C:\Users\user\outline-app\app\feed\route.ts
-  - C:\Users\user\outline-app\app\feed\xml.ts
   - C:\Users\user\outline-app\app\globals.css
   - C:\Users\user\outline-app\app\layout.tsx
   - C:\Users\user\outline-app\app\page.tsx
@@ -30,58 +24,26 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\page.tsx
 
 FUNCTIONS:
-  - GET
-  - getDBFromContext
-  - get
-  - select
-  - from
-  - where
-  - like
   - dXt
-  - orderBy
-  - Date
-  - toUTCString
-  - Response
   - rgba
   - RootLayout
   - return
   - HomePage
-  - Map
+  - from
   - SubmitPage
   - UserPage
   - WorkDetailPage
   - 0_4px_16px_rgba
 
 IMPORT_MAP:
-  C:\Users\user\outline-app\app\api\filter\route.ts:
-    - next/server
-    - @/lib/db
-    - @/drizzle/schema
-    - drizzle-orm
-  C:\Users\user\outline-app\app\api\work\[id]\route.ts:
-    - next/server
-  C:\Users\user\outline-app\app\feed\route.ts:
-    - next/server
-    - @/lib/db
-    - @/drizzle/schema
-  C:\Users\user\outline-app\app\feed\xml.ts:
-    - @/lib/db
-    - @/drizzle/schema
   C:\Users\user\outline-app\app\layout.tsx:
     - next
     - @/components/Layout/Header
     - @/components/Layout/Footer
     - @/lib/i18n
   C:\Users\user\outline-app\app\page.tsx:
-    - @/lib/db
-    - @/drizzle/schema
-    - drizzle-orm
     - @/components/Card/Card
     - @/components/Card/CardSkeleton
-  C:\Users\user\outline-app\app\work\[id]\page.tsx:
-    - @/lib/db
-    - @/drizzle/schema
-    - drizzle-orm
 
 INVARIANTS:
   - const は再代入不可
