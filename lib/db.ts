@@ -1,5 +1,4 @@
 import { drizzle } from "drizzle-orm/d1";
-import * as schema from "@/drizzle/schema";
 
 // Cloudflare Pages / Workers から D1 を扱うためのラッパー
 export function getDB(env: { DB: D1Database }) {

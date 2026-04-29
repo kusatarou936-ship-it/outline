@@ -1,5 +1,4 @@
 import { getDBFromContext } from "@/lib/db";
-import { works, autoMetrics } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
 export default async function WorkDetailPage({

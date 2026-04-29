@@ -1,5 +1,4 @@
 import { getDBFromContext } from "@/lib/db";
-import { works } from "@/drizzle/schema";
 
 export async function GET() {
   const db = getDBFromContext();
