@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/d1";
-import { works, autoMetrics } from "@/drizzle/schema";
+import { works } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 
 export const onRequest: PagesFunction = async ({ env, params }) => {

@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/d1";
-import { works } from "@/drizzle/schema";
+import { works } from "../../drizzle/schema";
 
 export const onRequest: PagesFunction = async ({ env }) => {
   const db = drizzle(env.DB);
