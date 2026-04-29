@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+export const runtime = 'edge';
 
 export default async function WorkDetailPage({ params }: { params: { id: string } }) {
   const res = await fetch(

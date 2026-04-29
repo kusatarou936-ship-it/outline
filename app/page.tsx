@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+export const runtime = 'edge';
 
 export default async function HomePage() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/works`, {
