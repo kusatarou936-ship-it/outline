@@ -16,7 +16,12 @@ export default async function UserPage({ params }: { params: { id: string } }) {
     );
   }
 
-  const { user, works, stacks, relatedUsers } = await res.json();
+  const { user, works, stacks, relatedUsers } = (await res.json()) as {
+    user: any;
+    works: any[];
+    stacks: Record<string, number>;
+    relatedUsers: any[];
+  };
 
   const sortedStacks = Object.entries(stacks).sort((a, b) => b[1] - a[1]);
 
