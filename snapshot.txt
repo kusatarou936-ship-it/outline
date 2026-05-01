@@ -16,6 +16,7 @@ TECH_STACK:
   - CSS
 
 FILES:
+  - C:\Users\user\outline-app\app\components\ScrollReset.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
   - C:\Users\user\outline-app\app\error.tsx
   - C:\Users\user\outline-app\app\favicon.ico
@@ -51,10 +52,13 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
 
 FUNCTIONS:
+  - ScrollReset
+  - usePathname
+  - useEffect
+  - scrollTo
   - DashboardPage
   - fetchUser
   - useState
-  - useEffect
   - setUser
   - setWorks
   - setLoading
@@ -69,10 +73,7 @@ FUNCTIONS:
   - Section
   - UsersSection
   - rgba
-  - ScrollReset
   - RootLayout
-  - usePathname
-  - scrollTo
   - LoginPage
   - submit
   - stringify
@@ -88,8 +89,10 @@ FUNCTIONS:
   - OGImage
   - ImageResponse
   - HomePage
+  - data
   - GET
   - Date
+  - getTime
   - toUTCString
   - NextResponse
   - SearchPage
@@ -109,6 +112,7 @@ FUNCTIONS:
   - preventDefault
   - FormData
   - append
+  - String
   - Stack
   - TagPage
   - UserPage
@@ -122,6 +126,9 @@ FUNCTIONS:
   - Related
 
 IMPORT_MAP:
+  C:\Users\user\outline-app\app\components\ScrollReset.tsx:
+    - react
+    - next/navigation
   C:\Users\user\outline-app\app\dashboard\page.tsx:
     - react
   C:\Users\user\outline-app\app\layout.tsx:
@@ -129,8 +136,7 @@ IMPORT_MAP:
     - @/components/Layout/Header
     - @/components/Layout/Footer
     - @/lib/i18n
-    - react
-    - next/navigation
+    - ./components/ScrollReset
   C:\Users\user\outline-app\app\login\page.tsx:
     - react
   C:\Users\user\outline-app\app\notifications\page.tsx:
