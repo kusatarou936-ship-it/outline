@@ -3,7 +3,7 @@ import "./globals.css";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
 import { I18nProvider } from "@/lib/i18n";
-import ScrollReset from "@/components/ScrollReset"; // ← 別ファイルに切り出す
+import ScrollReset from "./components/ScrollReset";
 
 export const metadata: Metadata = {
   title: "Outline",
