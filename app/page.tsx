@@ -5,7 +5,15 @@ export default async function HomePage() {
   const API = process.env.NEXT_PUBLIC_API_BASE;
 
   const res = await fetch(`${API}/api/home`, { cache: "no-store" });
-  const data = await res.json();
+
+  const data = (await res.json()) as {
+    stacks: Record<string, number>;
+    purposes: Record<string, number>;
+    focuses: Record<string, number>;
+    newWorks: any[];
+    updatedWorks: any[];
+    newUsers: any[];
+  };
 
   const sortedStacks = Object.entries(data.stacks).sort((a, b) => b[1] - a[1]);
   const sortedPurposes = Object.entries(data.purposes).sort((a, b) => b[1] - a[1]);
@@ -19,7 +27,7 @@ export default async function HomePage() {
         <section className="space-y-6">
           <h1 className="text-4xl font-semibold">Outline</h1>
           <p className="opacity-80 max-w-xl">
-            A quiet showcase for personal creations.  
+            A quiet showcase for personal creations.
             No rankings. No noise. Just your work.
           </p>
 
