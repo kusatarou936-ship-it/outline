@@ -1,129 +1,132 @@
 export const dynamic = "force-dynamic";
-export const runtime = 'edge';
+export const runtime = "edge";
 
-export default async function WorkDetailPage({ params }: { params: { id: string } }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE}/api/works/${params.id}`,
-    { cache: "no-store" }
-  );
+import Related from "./related";
+import DeleteButton from "./delete-button";
+
+export default async function WorkPage({ params }: { params: { id: string } }) {
+  const API = process.env.NEXT_PUBLIC_API_BASE;
+
+  const res = await fetch(`${API}/api/work/${params.id}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     return (
-      <main className="p-8">
-        <p className="text-gray-600">作品が見つかりませんでした。</p>
+      <main className="min-h-screen bg-black text-white p-10">
+        <h1 className="text-2xl">Work Not Found</h1>
       </main>
     );
   }
 
-  const { work, auto } = await res.json();
+  const work = await res.json();
 
   return (
-    <main className="p-8 max-w-3xl mx-auto space-y-12">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-semibold text-gray-900">{work.title}</h1>
-        {work.catch && <p className="text-lg text-gray-600">{work.catch}</p>}
-      </header>
+    <main className="min-h-screen bg-black text-white px-6 py-16">
+      <div className="mx-auto max-w-4xl space-y-12">
 
-      {work.thumbnail && (
-        <img
-          src={work.thumbnail}
-          alt=""
-          className="w-full rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
-        />
-      )}
-
-      <section className="space-y-6">
-        <h2 className="text-xl font-semibold text-gray-900">文脈</h2>
-
-        <div className="space-y-4 text-gray-700">
-          {work.purpose && (
-            <div>
-              <h3 className="font-medium text-gray-900">目的</h3>
-              <p>{work.purpose}</p>
-            </div>
-          )}
-
-          {work.target && (
-            <div>
-              <h3 className="font-medium text-gray-900">対象</h3>
-              <p>{work.target}</p>
-            </div>
-          )}
-
-          {work.focus && (
-            <div>
-              <h3 className="font-medium text-gray-900">注力点</h3>
-              <p>{work.focus}</p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {work.stack?.length > 0 && (
+        {/* Title */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">技術</h2>
-          <div className="flex flex-wrap gap-2">
-            {work.stack.map((s: string) => (
-              <span
-                key={s}
-                className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        </section>
-      )}
+          <h1 className="text-3xl font-semibold">{work.title}</h1>
+          <p className="opacity-80">{work.catch}</p>
 
-      {auto && (
-        <section className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">自動解析</h2>
-
-          <div className="space-y-4 text-gray-700">
-            <p>Performance: {auto.performance}</p>
-            <p>A11y: {auto.a11y}</p>
-            <p>Mobile: {auto.mobile}</p>
-            <p>SSL: {auto.ssl ? "OK" : "NG"}</p>
-            <p>i18n: {auto.i18n ? "OK" : "NG"}</p>
-
-            {auto.detectedStack?.length > 0 && (
-              <div>
-                <h3 className="font-medium text-gray-900">検出された技術</h3>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {auto.detectedStack.map((s: string) => (
-                    <span
-                      key={s}
-                      className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-900">リンク</h2>
-
-        <div className="space-y-2">
-          <a href={work.url} target="_blank" className="text-blue-600 underline">
-            作品を見る
+          <a
+            href={work.url}
+            target="_blank"
+            className="underline opacity-80 hover:opacity-100"
+          >
+            Visit Website →
           </a>
 
-          {work.github && (
-            <a
-              href={work.github}
-              target="_blank"
-              className="text-blue-600 underline block"
-            >
-              GitHub
+          <div className="flex gap-4 text-sm opacity-70">
+            <a href={`/user/${work.user_id}`} className="underline">
+              View Author
             </a>
-          )}
-        </div>
-      </section>
+
+            <a
+              href={`/work/${work.id}/edit`}
+              className="underline"
+            >
+              Edit
+            </a>
+
+            <DeleteButton id={work.id} />
+          </div>
+        </section>
+
+        {/* Thumbnail */}
+        <section>
+          <img
+            src={
+              work.thumbnail ??
+              "https://placehold.co/1280x720/000/FFF?text=No+Thumbnail"
+            }
+            alt=""
+            className="rounded-xl border border-white/10"
+          />
+        </section>
+
+        {/* Details */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-medium mb-2">Purpose</h2>
+            <p className="opacity-80">{work.purpose}</p>
+          </div>
+
+          <div>
+            <h2 className="text-xl font-medium mb-2">Target</h2>
+            <p className="opacity-80">{work.target}</p>
+          </div>
+
+          <div>
+            <h2 className="text-xl font-medium mb-2">Focus</h2>
+            <p className="opacity-80">{work.focus}</p>
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {work.stack.split(",").map((s: string) => (
+              <a
+                key={s}
+                href={`/tag/${encodeURIComponent(s)}?type=stack`}
+                className="text-xs px-2 py-1 rounded bg-white/10 border border-white/20"
+              >
+                {s}
+              </a>
+            ))}
+
+            <a
+              href={`/tag/${encodeURIComponent(work.purpose)}?type=purpose`}
+              className="text-xs px-2 py-1 rounded bg-white/10 border border-white/20"
+            >
+              {work.purpose}
+            </a>
+
+            <a
+              href={`/tag/${encodeURIComponent(work.focus)}?type=focus`}
+              className="text-xs px-2 py-1 rounded bg-white/10 border border-white/20"
+            >
+              {work.focus}
+            </a>
+          </div>
+        </section>
+
+        {/* Auto Metrics */}
+        {work.auto && (
+          <section className="space-y-4">
+            <h2 className="text-xl font-medium">Auto Analysis</h2>
+
+            <div className="flex gap-4 text-sm opacity-80">
+              <span>Performance: {work.auto.performance}</span>
+              <span>A11y: {work.auto.a11y}</span>
+              <span>Mobile: {work.auto.mobile}</span>
+            </div>
+          </section>
+        )}
+
+        {/* Related Works */}
+        <Related id={work.id} />
+      </div>
     </main>
   );
 }

@@ -3,6 +3,19 @@ import "./globals.css";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
 import { I18nProvider } from "@/lib/i18n";
+"use client";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+
+export default function ScrollReset() {
+  const path = usePathname();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [path]);
+
+  return null;
+}
 
 export const metadata: Metadata = {
   title: "Outline",

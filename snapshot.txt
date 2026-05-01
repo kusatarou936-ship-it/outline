@@ -12,34 +12,164 @@ MODULES:
 
 
 TECH_STACK:
+  - TypeScript
   - CSS
 
 FILES:
+  - C:\Users\user\outline-app\app\dashboard\page.tsx
+  - C:\Users\user\outline-app\app\error.tsx
   - C:\Users\user\outline-app\app\favicon.ico
+  - C:\Users\user\outline-app\app\feed\page.tsx
   - C:\Users\user\outline-app\app\globals.css
   - C:\Users\user\outline-app\app\layout.tsx
+  - C:\Users\user\outline-app\app\login\page.tsx
+  - C:\Users\user\outline-app\app\not-found.tsx
+  - C:\Users\user\outline-app\app\notifications\page.tsx
+  - C:\Users\user\outline-app\app\opengraph-image.tsx
   - C:\Users\user\outline-app\app\page.tsx
+  - C:\Users\user\outline-app\app\rss\new.xml\route.ts
+  - C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts
+  - C:\Users\user\outline-app\app\rss\new.xml\updated.xml\route.ts
+  - C:\Users\user\outline-app\app\rss\new.xml\user\[id].xml\route.ts
+  - C:\Users\user\outline-app\app\search\page.tsx
+  - C:\Users\user\outline-app\app\settings\page.tsx
+  - C:\Users\user\outline-app\app\signup\page.tsx
+  - C:\Users\user\outline-app\app\sitemap-users.xml\route.ts
+  - C:\Users\user\outline-app\app\sitemap-works.xml\route.ts
+  - C:\Users\user\outline-app\app\sitemap.xml\route.ts
   - C:\Users\user\outline-app\app\submit\page.tsx
+  - C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx
+  - C:\Users\user\outline-app\app\tag\[name]\page.tsx
+  - C:\Users\user\outline-app\app\user\[id]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\user\[id]\page.tsx
+  - C:\Users\user\outline-app\app\work\[id]\delete-button.tsx
+  - C:\Users\user\outline-app\app\work\[id]\edit\page.tsx
+  - C:\Users\user\outline-app\app\work\[id]\error.tsx
+  - C:\Users\user\outline-app\app\work\[id]\loading.tsx
+  - C:\Users\user\outline-app\app\work\[id]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\work\[id]\page.tsx
+  - C:\Users\user\outline-app\app\work\[id]\related.tsx
 
 FUNCTIONS:
-  - dXt
-  - rgba
-  - RootLayout
+  - DashboardPage
+  - fetchUser
+  - useState
+  - useEffect
+  - setUser
+  - setWorks
+  - setLoading
   - return
+  - round
+  - forEach
+  - entries
+  - sort
+  - Error
+  - dXt
+  - FeedPage
+  - Section
+  - UsersSection
+  - rgba
+  - ScrollReset
+  - RootLayout
+  - usePathname
+  - scrollTo
+  - LoginPage
+  - submit
+  - stringify
+  - setMsg
+  - setEmail
+  - setPassword
+  - NotFound
+  - NotificationsPage
+  - ClientNotifications
+  - load
+  - NotificationItem
+  - setItems
+  - OGImage
+  - ImageResponse
   - HomePage
+  - GET
+  - Date
+  - toUTCString
+  - NextResponse
+  - SearchPage
+  - search
+  - setResults
+  - setKeyword
+  - SettingsPage
+  - save
+  - setName
+  - setBio
+  - setLinks
+  - Links
+  - SignupPage
   - SubmitPage
+  - handleSubmit
+  - Input
+  - preventDefault
+  - FormData
+  - append
+  - Stack
+  - TagPage
   - UserPage
-  - WorkDetailPage
-  - 0_4px_16px_rgba
+  - DeleteButton
+  - del
+  - EditWorkPage
+  - fetchWork
+  - setWork
+  - Loading
+  - WorkPage
+  - Related
 
 IMPORT_MAP:
+  C:\Users\user\outline-app\app\dashboard\page.tsx:
+    - react
   C:\Users\user\outline-app\app\layout.tsx:
     - next
     - @/components/Layout/Header
     - @/components/Layout/Footer
     - @/lib/i18n
+    - react
+    - next/navigation
+  C:\Users\user\outline-app\app\login\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\notifications\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\opengraph-image.tsx:
+    - next/og
+  C:\Users\user\outline-app\app\rss\new.xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\rss\new.xml\updated.xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\rss\new.xml\user\[id].xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\search\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\settings\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\signup\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\sitemap-users.xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\sitemap-works.xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\sitemap.xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\submit\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx:
+    - next/og
+  C:\Users\user\outline-app\app\user\[id]\opengraph-image.tsx:
+    - next/og
+  C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\work\[id]\opengraph-image.tsx:
+    - next/og
+  C:\Users\user\outline-app\app\work\[id]\page.tsx:
+    - ./related
+    - ./delete-button
 
 INVARIANTS:
   - const は再代入不可
