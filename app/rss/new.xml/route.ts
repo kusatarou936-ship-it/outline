@@ -4,8 +4,8 @@ export const dynamic = "force-dynamic";
 export const runtime = "edge";
 
 export async function GET() {
-    const API = process.env.NEXT_PUBLIC_API_BASE;
-    const BASE = process.env.NEXT_PUBLIC_BASE_URL;
+    const API = process.env.NEXT_PUBLIC_API_URL!;
+    const BASE = process.env.SITE_URL!;
 
     const res = await fetch(`${API}/api/works`, { cache: "no-store" });
     const works = await res.json();

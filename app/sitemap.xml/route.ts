@@ -4,31 +4,31 @@ export const dynamic = "force-dynamic";
 export const runtime = "edge";
 
 export async function GET() {
-  const base = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
+    const BASE = process.env.SITE_URL!;
 
-  const urls = [
-    "",
-    "/works",
-    "/feed",
-    "/search",
-    "/dashboard",
-    "/submit",
-  ];
+    const urls = [
+        "",
+        "/works",
+        "/feed",
+        "/search",
+        "/dashboard",
+        "/submit",
+    ];
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${urls
-      .map(
-        (u) => `
+            .map(
+                (u) => `
       <url>
         <loc>${base}${u}</loc>
       </url>
     `
-      )
-      .join("")}
+            )
+            .join("")}
   </urlset>`;
 
-  return new NextResponse(xml, {
-    headers: { "Content-Type": "application/xml" },
-  });
+    return new NextResponse(xml, {
+        headers: { "Content-Type": "application/xml" },
+    });
 }
