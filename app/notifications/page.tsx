@@ -1,3 +1,5 @@
+"use client";
+
 export const dynamic = "force-dynamic";
 export const runtime = "edge";
 
@@ -12,8 +14,6 @@ export default async function NotificationsPage() {
     </main>
   );
 }
-
-"use client";
 
 import { useEffect, useState } from "react";
 
