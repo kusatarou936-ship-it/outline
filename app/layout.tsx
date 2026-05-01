@@ -5,9 +5,10 @@ import Footer from "@/components/Layout/Footer";
 import { I18nProvider } from "@/lib/i18n";
 import ScrollReset from "./components/ScrollReset";
 
-export const metadata: Metadata = {
+export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   title: "Outline",
-  description: "A quiet, uniform showcase for personal works.",
+  description: "Quiet Showcase",
 };
 
 export default function RootLayout({
