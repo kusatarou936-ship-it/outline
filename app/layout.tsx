@@ -1,30 +1,15 @@
-"use client"; // ← 必ず一番上
-
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
 import { I18nProvider } from "@/lib/i18n";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-
-// default export にしない ScrollReset
-function ScrollReset() {
-  const path = usePathname();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [path]);
-
-  return null;
-}
+import ScrollReset from "@/components/ScrollReset"; // ← 別ファイルに切り出す
 
 export const metadata: Metadata = {
   title: "Outline",
   description: "A quiet, uniform showcase for personal works.",
 };
 
-// default export は RootLayout だけ
 export default function RootLayout({
   children,
 }: {
