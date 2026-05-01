@@ -21,7 +21,7 @@ export async function GET() {
             .map(
                 (u) => `
       <url>
-        <loc>${base}${u}</loc>
+        <loc>${BASE}${u}</loc>
       </url>
     `
             )
