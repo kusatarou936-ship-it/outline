@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "edge";
 
 export default async function HomePage() {
-  const API = process.env.NEXT_PUBLIC_API_BASE;
+  const API = process.env.NEXT_PUBLIC_API_URL!;
 
   const res = await fetch(`${API}/api/home`, { cache: "no-store" });
 
