@@ -62,15 +62,17 @@ FILES:
 
 FUNCTIONS:
   - GET
+  - createClient
   - from
   - select
-  - users
+  - works_user_id_fkey
   - work_tags
   - tags
   - order
   - limit
   - Number
   - get
+  - users
   - range
   - error
   - POST
@@ -159,7 +161,7 @@ FUNCTIONS:
 IMPORT_MAP:
   C:\Users\user\outline-app\app\api\home\route.ts:
     - next/server
-    - @/lib/supabase
+    - @supabase/supabase-js
   C:\Users\user\outline-app\app\api\home\works\route.ts:
     - next/server
     - @/lib/supabase

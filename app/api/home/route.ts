@@ -11,14 +11,14 @@ export async function GET() {
   const { data: newWorks } = await supabase
     .from("works")
     .select(`
-      id,
-      title,
-      description,
-      image_url,
-      created_at,
-      user:users!works_user_id_fkey(id, name),
-      work_tags(tag:tags(name))
-    `)
+    id,
+    title,
+    description,
+    image_url,
+    created_at,
+    user:users(id, name),
+    work_tags(tag:tags(name))
+  `)
     .order("created_at", { ascending: false })
     .limit(6);
 
@@ -26,14 +26,14 @@ export async function GET() {
   const { data: updatedWorks } = await supabase
     .from("works")
     .select(`
-      id,
-      title,
-      description,
-      image_url,
-      updated_at,
-      user:users!works_user_id_fkey(id, name),
-      work_tags(tag:tags(name))
-    `)
+    id,
+    title,
+    description,
+    image_url,
+    updated_at,
+    user:users(id, name),
+    work_tags(tag:tags(name))
+  `)
     .order("updated_at", { ascending: false })
     .limit(6);
 
