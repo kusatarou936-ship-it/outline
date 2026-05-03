@@ -16,6 +16,7 @@ TECH_STACK:
   - CSS
 
 FILES:
+  - C:\Users\user\outline-app\app\api\home\route.ts
   - C:\Users\user\outline-app\app\components\ScrollReset.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
   - C:\Users\user\outline-app\app\error.tsx
@@ -52,6 +53,7 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
 
 FUNCTIONS:
+  - GET
   - ScrollReset
   - usePathname
   - useEffect
@@ -90,7 +92,6 @@ FUNCTIONS:
   - ImageResponse
   - HomePage
   - data
-  - GET
   - Date
   - getTime
   - toUTCString

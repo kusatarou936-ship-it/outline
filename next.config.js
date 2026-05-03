@@ -1,11 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
   experimental: {
-    runtime: "edge",
-    serverActions: {
-      allowedOrigins: ["*"],
-    },
+    // runtime: 'edge' ← これを削除
   },
 };
 
