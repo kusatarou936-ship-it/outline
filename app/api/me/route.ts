@@ -38,9 +38,10 @@ export async function GET() {
 
   return NextResponse.json({
     user: {
+      ...profile,
       id: user.id,
-      email: user.email,
-      ...profile
+      email: user.email
     }
+
   })
 }
