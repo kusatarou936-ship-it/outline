@@ -64,6 +64,8 @@ export async function POST(req: Request) {
     }
 
     // work_tags に紐付け
+    if (!tag) continue;
+
     await supabase.from("work_tags").insert({
       work_id: work.id,
       tag_id: tag.id
