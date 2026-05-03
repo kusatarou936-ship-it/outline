@@ -60,11 +60,11 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    stacks,
-    purposes,
-    focuses,
-    newWorks,
-    updatedWorks,
-    newUsers,
+    stacks: stacks ?? [],
+    purposes: purposes ?? [],
+    focuses: focuses ?? [],
+    newWorks: newWorks ?? [],
+    updatedWorks: updatedWorks ?? [],
+    newUsers: newUsers ?? []
   });
 }
