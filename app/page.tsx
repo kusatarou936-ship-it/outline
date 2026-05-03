@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "edge";
 
 export default async function HomePage() {
-const API = process.env.NEXT_PUBLIC_API_BASE!;
+  const API = process.env.NEXT_PUBLIC_API_BASE!;
 
   const res = await fetch(`${API}/api/home`, { cache: "no-store" });
 
@@ -119,7 +119,7 @@ function Section({ title, items }: any) {
             <div className="aspect-video bg-white/10 overflow-hidden">
               <img
                 src={
-                  w.thumbnail ??
+                  w.image_url ??
                   "https://placehold.co/1280x720/000/FFF?text=No+Thumbnail"
                 }
                 alt=""
@@ -129,7 +129,7 @@ function Section({ title, items }: any) {
 
             <div className="p-4 space-y-2">
               <h3 className="text-lg font-medium">{w.title}</h3>
-              <p className="text-sm opacity-60">{w.catch}</p>
+              <p className="text-sm opacity-60">{w.description}</p>
             </div>
           </a>
         ))}
