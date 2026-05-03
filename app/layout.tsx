@@ -5,8 +5,13 @@ import Footer from "@/components/Layout/Footer";
 import { I18nProvider } from "@/lib/i18n";
 import ScrollReset from "./components/ScrollReset";
 
+const siteUrl = process.env.SITE_URL;
+if (!siteUrl) {
+  throw new Error("SITE_URL is not set. Set process.env.SITE_URL.");
+}
+
 export const metadata = {
-  metadataBase: new URL(process.env.SITE_URL!),
+  metadataBase: new URL(siteUrl),
   title: "Outline",
   description: "Quiet Showcase",
 };
