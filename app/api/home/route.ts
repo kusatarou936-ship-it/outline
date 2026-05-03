@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 
 export async function GET() {
-  // 最新の作品（新着）
+  // サーバー側専用 Supabase クライアント（RLS バイパス）
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  // 新着作品
   const { data: newWorks } = await supabase
     .from("works")
     .select(`
@@ -17,7 +23,7 @@ export async function GET() {
     .order("created_at", { ascending: false })
     .limit(6);
 
-  // 最近更新された作品
+  // 更新された作品
   const { data: updatedWorks } = await supabase
     .from("works")
     .select(`
@@ -39,15 +45,10 @@ export async function GET() {
     .order("created_at", { ascending: false })
     .limit(6);
 
-  // 全作品を取得してタグ集計
+  // タグ集計用に全作品取得
   const { data: allWorks } = await supabase
     .from("works")
-    .select(`
-      id,
-      stacks,
-      purposes,
-      focuses
-    `);
+    .select("id, stacks, purposes, focuses");
 
   const stacks: Record<string, number> = {};
   const purposes: Record<string, number> = {};
@@ -60,9 +61,9 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    stacks: stacks ?? [],
-    purposes: purposes ?? [],
-    focuses: focuses ?? [],
+    stacks,
+    purposes,
+    focuses,
     newWorks: newWorks ?? [],
     updatedWorks: updatedWorks ?? [],
     newUsers: newUsers ?? []

@@ -121,7 +121,8 @@ FUNCTIONS:
   - OGImage
   - ImageResponse
   - HomePage
-  - data
+  - text
+  - isArray
   - Date
   - getTime
   - toUTCString
