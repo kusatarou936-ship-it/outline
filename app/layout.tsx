@@ -4,6 +4,7 @@ import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
 import { I18nProvider } from "@/lib/i18n";
 import ScrollReset from "./components/ScrollReset";
+import { usePathname } from "next/navigation";
 
 const siteUrl = process.env.SITE_URL;
 if (!siteUrl) {
@@ -21,14 +22,22 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
     <html lang="ja">
       <body className="bg-[#f9f5ef] text-gray-800 min-h-screen antialiased flex flex-col">
         <I18nProvider>
           <ScrollReset />
-          <Header />
+
+          {/* トップページだけ Header を非表示 */}
+          {!isHome && <Header />}
+
           <main className="flex-1">{children}</main>
-          <Footer />
+
+          {/* トップページだけ Footer を非表示 */}
+          {!isHome && <Footer />}
         </I18nProvider>
       </body>
     </html>

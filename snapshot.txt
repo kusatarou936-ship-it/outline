@@ -52,6 +52,7 @@ FILES:
   - C:\Users\user\outline-app\app\submit\page.tsx
   - C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\tag\[name]\page.tsx
+  - C:\Users\user\outline-app\app\user\[id]\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\delete-button.tsx
   - C:\Users\user\outline-app\app\work\[id]\edit\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\error.tsx
@@ -122,6 +123,9 @@ FUNCTIONS:
   - OGImage
   - ImageResponse
   - HomePage
+  - handleWatchAd
+  - async
+  - setUnlocked
   - Date
   - getTime
   - toUTCString
@@ -146,6 +150,8 @@ FUNCTIONS:
   - String
   - Stack
   - TagPage
+  - UserPage
+  - toLocaleDateString
   - DeleteButton
   - del
   - EditWorkPage
@@ -154,6 +160,7 @@ FUNCTIONS:
   - Loading
   - WorkPage
   - Related
+  - neq
 
 IMPORT_MAP:
   C:\Users\user\outline-app\app\api\home\route.ts:
@@ -207,7 +214,7 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\opengraph-image.tsx:
     - next/og
   C:\Users\user\outline-app\app\page.tsx:
-    - @/utils/supabase/server
+    - react
   C:\Users\user\outline-app\app\rss\new.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
@@ -232,6 +239,8 @@ IMPORT_MAP:
     - react
   C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx:
     - next/og
+  C:\Users\user\outline-app\app\user\[id]\page.tsx:
+    - @/lib/supabase
   C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
     - react
   C:\Users\user\outline-app\app\work\[id]\opengraph-image.tsx:
@@ -239,6 +248,9 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\work\[id]\page.tsx:
     - ./related
     - ./delete-button
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\work\[id]\related.tsx:
+    - @/lib/supabase
 
 INVARIANTS:
   - const は再代入不可
