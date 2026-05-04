@@ -16,6 +16,8 @@ TECH_STACK:
   - CSS
 
 FILES:
+  - C:\Users\user\outline-app\app\(home)\layout.tsx
+  - C:\Users\user\outline-app\app\(home)\page.tsx
   - C:\Users\user\outline-app\app\api\home\route.ts
   - C:\Users\user\outline-app\app\api\home\works\route.ts
   - C:\Users\user\outline-app\app\api\login\route.ts
@@ -38,7 +40,6 @@ FILES:
   - C:\Users\user\outline-app\app\not-found.tsx
   - C:\Users\user\outline-app\app\notifications\page.tsx
   - C:\Users\user\outline-app\app\opengraph-image.tsx
-  - C:\Users\user\outline-app\app\page.tsx
   - C:\Users\user\outline-app\app\rss\new.xml\route.ts
   - C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts
   - C:\Users\user\outline-app\app\rss\new.xml\updated.xml\route.ts
@@ -62,6 +63,13 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
 
 FUNCTIONS:
+  - HomeLayout
+  - return
+  - HomePage
+  - handleWatchAd
+  - useState
+  - async
+  - setUnlocked
   - GET
   - createClient
   - from
@@ -92,11 +100,9 @@ FUNCTIONS:
   - scrollTo
   - DashboardPage
   - fetchUser
-  - useState
   - setUser
   - setWorks
   - setLoading
-  - return
   - round
   - forEach
   - entries
@@ -122,10 +128,6 @@ FUNCTIONS:
   - setItems
   - OGImage
   - ImageResponse
-  - HomePage
-  - handleWatchAd
-  - async
-  - setUnlocked
   - Date
   - getTime
   - toUTCString
@@ -163,6 +165,8 @@ FUNCTIONS:
   - neq
 
 IMPORT_MAP:
+  C:\Users\user\outline-app\app\(home)\page.tsx:
+    - react
   C:\Users\user\outline-app\app\api\home\route.ts:
     - next/server
     - @supabase/supabase-js
@@ -213,8 +217,6 @@ IMPORT_MAP:
     - react
   C:\Users\user\outline-app\app\opengraph-image.tsx:
     - next/og
-  C:\Users\user\outline-app\app\page.tsx:
-    - react
   C:\Users\user\outline-app\app\rss\new.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
