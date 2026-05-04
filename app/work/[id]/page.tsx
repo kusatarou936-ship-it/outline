@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 
 import Related from "./related";
 import DeleteButton from "./delete-button";
-import { createClient } from "@/utils/supabase/server";
+import { supabase } from "@/lib/supabase";
 
 export default async function WorkPage({ params }: { params: { id: string } }) {
   const supabase = createClient();

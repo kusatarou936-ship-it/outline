@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { supabase } from "@/lib/supabase";
 
 export default async function Related({ id }: { id: string }) {
   const supabase = createClient();
