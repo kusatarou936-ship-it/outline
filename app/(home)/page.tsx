@@ -14,7 +14,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-16 flex justify-center">
+    <div className="min-h-screen bg-black text-white px-6 py-16 flex justify-center">
       <section className="max-w-2xl text-center space-y-8">
 
         <div className="space-y-2">
@@ -60,6 +60,6 @@ export default function HomePage() {
         <p className="text-xs opacity-40 mt-12">© 2026 Outline</p>
 
       </section>
-    </main>
+    </div>
   );
 }
