@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
-      <body className="bg-[#f9f5ef] text-gray-800 min-h-screen antialiased flex flex-col">
+      <body className="bg-[#f9f5ef] text-gray-800 min-h-screen antialiased">
         <I18nProvider>
           <ScrollReset />
           <Header />
