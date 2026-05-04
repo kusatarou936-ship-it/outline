@@ -55,7 +55,7 @@ export default async function WorkPage({ params }: { params: { id: string } }) {
 
           <div className="flex gap-4 text-sm opacity-70">
             <a href={`/user/${work.user_id}`} className="underline">
-              {work.user?.name ?? "View Author"}
+              {(work.user as any)?.name ?? "View Author"}
             </a>
 
             <a href={`/work/${work.id}/edit`} className="underline">
