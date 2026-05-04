@@ -6,9 +6,6 @@ export default function HomePage() {
   const [unlocked, setUnlocked] = useState(false);
 
   const handleWatchAd = async () => {
-    // ★ ここにリワード広告 SDK を入れる（AdMob / AppLovin / Unity Ads など）
-    // 例: await showRewardedAd();
-    // 成功したら:
     setUnlocked(true);
   };
 
@@ -17,9 +14,8 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-16">
-
-      <section className="max-w-2xl mx-auto text-center space-y-8">
+    <main className="min-h-screen bg-black text-white px-6 py-16 flex justify-center">
+      <section className="max-w-2xl text-center space-y-8">
 
         <div className="space-y-2">
           <h1 className="text-2xl font-medium">Outline JA</h1>
@@ -64,7 +60,6 @@ export default function HomePage() {
         <p className="text-xs opacity-40 mt-12">© 2026 Outline</p>
 
       </section>
-
     </main>
   );
 }
