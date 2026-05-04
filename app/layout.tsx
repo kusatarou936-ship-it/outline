@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <I18nProvider>
           <ScrollReset />
           <Header />
-          <div className="flex-1">{children}</div>
+          <main>{children}</main>
           <Footer />
         </I18nProvider>
       </body>
