@@ -1,9 +1,7 @@
 export default function HomeLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
-      <body className="bg-black text-white">
-        {children}
-      </body>
-    </html>
+    <div className="bg-black text-white min-h-screen">
+      {children}
+    </div>
   );
 }
