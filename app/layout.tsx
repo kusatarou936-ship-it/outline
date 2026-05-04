@@ -1,3 +1,5 @@
+"use client";
+
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Layout/Header";
@@ -17,11 +19,7 @@ export const metadata = {
   description: "Quiet Showcase",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -31,12 +29,10 @@ export default function RootLayout({
         <I18nProvider>
           <ScrollReset />
 
-          {/* トップページだけ Header を非表示 */}
           {!isHome && <Header />}
 
           <main className="flex-1">{children}</main>
 
-          {/* トップページだけ Footer を非表示 */}
           {!isHome && <Footer />}
         </I18nProvider>
       </body>
