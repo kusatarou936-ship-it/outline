@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <I18nProvider>
           <ScrollReset />
           <Header />
-          <main>{children}</main>
+          <main className="max-w-3xl mx-auto px-4">{children}</main>
           <Footer />
         </I18nProvider>
       </body>
