@@ -1,114 +1,65 @@
-export const dynamic = "force-dynamic";
-export const runtime = "edge";
+"use client";
 
-export default async function HomePage() {
-  const API = process.env.NEXT_PUBLIC_API_BASE;
+import { useState } from "react";
 
-  // 安全な初期値を let で宣言（後で上書き可能）
-  let data: {
-    stacks: Record<string, number>;
-    purposes: Record<string, number>;
-    focuses: Record<string, number>;
-    newWorks: any[];
-    updatedWorks: any[];
-    newUsers: any[];
-  } = {
-    stacks: {},
-    purposes: {},
-    focuses: {},
-    newWorks: [],
-    updatedWorks: [],
-    newUsers: []
+export default function HomePage() {
+  const [unlocked, setUnlocked] = useState(false);
+
+  const handleWatchAd = async () => {
+    // ★ ここにリワード広告 SDK を入れる（AdMob / AppLovin / Unity Ads など）
+    // 例: await showRewardedAd();
+    // 成功したら:
+    setUnlocked(true);
   };
 
-  try {
-    if (!API) throw new Error("NEXT_PUBLIC_API_BASE is not set");
-    const res = await fetch(`${API}/api/home`, { cache: "no-store" });
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      console.error("fetch /api/home failed status", res.status, text);
-    } else {
-      const parsed = await res.json().catch((e) => {
-        console.error("res.json() failed", e);
-        return null;
-      });
-      if (parsed) {
-        data = {
-          stacks: parsed.stacks ?? {},
-          purposes: parsed.purposes ?? {},
-          focuses: parsed.focuses ?? {},
-          newWorks: Array.isArray(parsed.newWorks) ? parsed.newWorks : [],
-          updatedWorks: Array.isArray(parsed.updatedWorks) ? parsed.updatedWorks : [],
-          newUsers: Array.isArray(parsed.newUsers) ? parsed.newUsers : []
-        };
-      }
-    }
-  } catch (e) {
-    console.error("Error fetching /api/home in SSR", e);
-    // data は既に安全なデフォルト
+  if (unlocked) {
+    // 広告を見たら feed に遷移
+    window.location.href = "/feed";
   }
 
-  // 以下は既存のレンダリング処理（data をそのまま使う）
-  const sortedStacks = Object.entries(data.stacks).sort((a, b) => b[1] - a[1]);
-  const sortedPurposes = Object.entries(data.purposes).sort((a, b) => b[1] - a[1]);
-  const sortedFocuses = Object.entries(data.focuses).sort((a, b) => b[1] - a[1]);
-
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-16">
-      {/* 以降は既存の JSX をそのまま使ってください */}
+    <main className="min-h-screen bg-black text-white px-6 py-16 space-y-10 max-w-3xl mx-auto">
+      <h1 className="text-3xl font-bold">Outline JA</h1>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">このサイトについて</h2>
+        <p className="opacity-80 leading-relaxed">
+          Outline JA は、作品を投稿・閲覧できるミニマルなギャラリーサイトです。
+          サイトの運営費（サーバー代・データベース代）をまかなうため、
+          一部の機能を利用する前に「広告を1本見る」必要があります。
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">なぜ広告を見る必要があるの？</h2>
+        <p className="opacity-80 leading-relaxed">
+          このサイトは無料で提供していますが、維持にはコストがかかります。
+          ユーザーに負担をかけないため、寄付や有料プランではなく、
+          「広告を見ることで利用できる」方式を採用しています。
+        </p>
+        <p className="opacity-80 leading-relaxed">
+          広告を見るかどうかは完全にあなたの自由です。
+          見たくない場合は、作品の閲覧以外の機能は利用できません。
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">利用を開始する</h2>
+        <p className="opacity-80 leading-relaxed">
+          広告を1本見ると、一定時間すべての機能が利用可能になります。
+        </p>
+
+        <button
+          onClick={handleWatchAd}
+          className="px-6 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition"
+        >
+          広告を見て利用する
+        </button>
+      </section>
+
+      <footer className="opacity-50 text-sm mt-20">
+        © 2026 Outline
+      </footer>
     </main>
-  );
-}
-
-function Section({ title, items }: any) {
-  const safeItems = Array.isArray(items) ? items : [];
-  if (safeItems.length === 0) return null;
-
-  return (
-    <section className="space-y-4">
-      <h2 className="text-xl font-medium">{title}</h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {safeItems.map((w: any) => (
-          <a key={w.id} href={`/work/${w.id}`} className="group block ...">
-            <div className="aspect-video bg-white/10 overflow-hidden">
-              <img
-                src={w.image_url ?? "https://placehold.co/1280x720/000/FFF?text=No+Thumbnail"}
-                alt={w.title ?? ""}
-                className="w-full h-full object-cover group-hover:scale-105 transition"
-              />
-            </div>
-
-            <div className="p-4 space-y-2">
-              <h3 className="text-lg font-medium">{w.title}</h3>
-              <p className="text-sm opacity-60">{w.description ?? ""}</p>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function UsersSection({ title, items }: any) {
-  if (!items || items.length === 0) return null;
-
-  return (
-    <section className="space-y-4">
-      <h2 className="text-xl font-medium">{title}</h2>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-        {items.map((u: any) => (
-          <a
-            key={u.id}
-            href={`/user/${u.id}`}
-            className="block p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition"
-          >
-            <p className="font-medium">{u.name}</p>
-            <p className="text-xs opacity-60">Joined</p>
-          </a>
-        ))}
-      </div>
-    </section>
   );
 }

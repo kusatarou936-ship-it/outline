@@ -1,25 +1,42 @@
 export const dynamic = "force-dynamic";
-export const runtime = "edge";
+// export const runtime = "edge";  ← 削除
 
 import Related from "./related";
 import DeleteButton from "./delete-button";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function WorkPage({ params }: { params: { id: string } }) {
-  const API = process.env.NEXT_PUBLIC_API_BASE;
+  const supabase = createClient();
 
-  const res = await fetch(`${API}/api/work/${params.id}`, {
-    cache: "no-store",
-  });
+  const { data: work } = await supabase
+    .from("works")
+    .select(`
+      id,
+      title,
+      catch,
+      url,
+      thumbnail,
+      purpose,
+      target,
+      focus,
+      stack,
+      user_id,
+      auto,
+      created_at,
+      updated_at,
+      user:users(id, name),
+      work_tags(tag:tags(name))
+    `)
+    .eq("id", params.id)
+    .single();
 
-  if (!res.ok) {
+  if (!work) {
     return (
       <main className="min-h-screen bg-black text-white p-10">
         <h1 className="text-2xl">Work Not Found</h1>
       </main>
     );
   }
-
-  const work = await res.json();
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-16">
@@ -40,13 +57,10 @@ export default async function WorkPage({ params }: { params: { id: string } }) {
 
           <div className="flex gap-4 text-sm opacity-70">
             <a href={`/user/${work.user_id}`} className="underline">
-              View Author
+              {work.user?.name ?? "View Author"}
             </a>
 
-            <a
-              href={`/work/${work.id}/edit`}
-              className="underline"
-            >
+            <a href={`/work/${work.id}/edit`} className="underline">
               Edit
             </a>
 
@@ -85,29 +99,16 @@ export default async function WorkPage({ params }: { params: { id: string } }) {
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-4">
-            {work.stack.split(",").map((s: string) => (
+            {/* 正規化されたタグ */}
+            {work.work_tags?.map((t: any) => (
               <a
-                key={s}
-                href={`/tag/${encodeURIComponent(s)}?type=stack`}
+                key={t.tag.name}
+                href={`/tag/${encodeURIComponent(t.tag.name)}`}
                 className="text-xs px-2 py-1 rounded bg-white/10 border border-white/20"
               >
-                {s}
+                {t.tag.name}
               </a>
             ))}
-
-            <a
-              href={`/tag/${encodeURIComponent(work.purpose)}?type=purpose`}
-              className="text-xs px-2 py-1 rounded bg-white/10 border border-white/20"
-            >
-              {work.purpose}
-            </a>
-
-            <a
-              href={`/tag/${encodeURIComponent(work.focus)}?type=focus`}
-              className="text-xs px-2 py-1 rounded bg-white/10 border border-white/20"
-            >
-              {work.focus}
-            </a>
           </div>
         </section>
 

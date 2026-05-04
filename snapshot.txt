@@ -65,14 +65,13 @@ FUNCTIONS:
   - createClient
   - from
   - select
-  - works_user_id_fkey
+  - users
   - work_tags
   - tags
   - order
   - limit
   - Number
   - get
-  - users
   - range
   - error
   - POST
@@ -123,8 +122,6 @@ FUNCTIONS:
   - OGImage
   - ImageResponse
   - HomePage
-  - text
-  - isArray
   - Date
   - getTime
   - toUTCString
@@ -209,6 +206,8 @@ IMPORT_MAP:
     - react
   C:\Users\user\outline-app\app\opengraph-image.tsx:
     - next/og
+  C:\Users\user\outline-app\app\page.tsx:
+    - @/utils/supabase/server
   C:\Users\user\outline-app\app\rss\new.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
