@@ -13,13 +13,11 @@ export default function HomePage() {
   };
 
   if (unlocked) {
-    // 広告を見たら feed に遷移
     window.location.href = "/feed";
   }
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-16 space-y-10 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold">Outline JA</h1>
+    <main className="min-h-screen bg-black text-white px-6 py-16">
 
       <section className="max-w-2xl mx-auto text-center space-y-8">
 
@@ -55,7 +53,10 @@ export default function HomePage() {
             広告を1本見ると、一定時間すべての機能が使えるようになります。
           </p>
 
-          <button className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
+          <button
+            onClick={handleWatchAd}
+            className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition"
+          >
             広告を見て利用する
           </button>
         </div>
@@ -64,11 +65,6 @@ export default function HomePage() {
 
       </section>
 
-
-
-      <footer className="opacity-50 text-sm mt-20">
-        © 2026 Outline
-      </footer>
     </main>
   );
 }
