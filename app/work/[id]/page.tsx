@@ -6,8 +6,6 @@ import DeleteButton from "./delete-button";
 import { supabase } from "@/lib/supabase";
 
 export default async function WorkPage({ params }: { params: { id: string } }) {
-  const supabase = createClient();
-
   const { data: work } = await supabase
     .from("works")
     .select(`

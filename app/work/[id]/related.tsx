@@ -1,8 +1,6 @@
 import { supabase } from "@/lib/supabase";
 
 export default async function Related({ id }: { id: string }) {
-  const supabase = createClient();
-
   // 現在の作品を取得（目的：purpose / focus / stack を使う）
   const { data: current } = await supabase
     .from("works")
