@@ -7,6 +7,9 @@ export default function EditWorkPage({ params }: { params: { id: string } }) {
     const [work, setWork] = useState<Work | null>(null);
     const [saving, setSaving] = useState(false);
 
+    // ★ これが必要
+    const [history, setHistory] = useState<any[]>([]);
+
     useEffect(() => {
         load();
     }, []);
@@ -84,12 +87,18 @@ export default function EditWorkPage({ params }: { params: { id: string } }) {
                         <select
                             className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                             value={work.visibility}
-                            onChange={(e) => setWork({ ...work, visibility: e.target.value })}
+                            onChange={(e) =>
+                                setWork({
+                                    ...work,
+                                    visibility: e.target.value as "public" | "private" | "unlisted",
+                                })
+                            }
                         >
                             <option value="public">公開</option>
                             <option value="unlisted">限定公開</option>
                             <option value="private">非公開（下書き）</option>
                         </select>
+
                     </div>
 
                     {/* 本文（内部生成作品のみ） */}
