@@ -1,139 +1,55 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function SubmitPage() {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
 
-  // -----------------------------
-  // 1. ログイン状態を取得
-  // -----------------------------
-  useEffect(() => {
-    async function fetchUser() {
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="))
-        ?.split("=")[1];
-
-      if (!token) {
-        window.location.href = "/login";
-        return;
-      }
-
-      const API_BASE =
-        process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8787";
-
-      const res = await fetch(`${API_BASE}/api/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        window.location.href = "/login";
-        return;
-      }
-
-      const data = await res.json();
-      setUser(data);
-    }
-
-    fetchUser();
-  }, []);
-
-  // -----------------------------
-  // 2. 投稿処理
-  // -----------------------------
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const handleInternalCreate = async () => {
     setLoading(true);
 
-    if (!user?.id) {
-      alert("User not loaded");
-      setLoading(false);
-      return;
-    }
+    // 動画広告視聴 → URL 発行（仮処理）
+    await new Promise((r) => setTimeout(r, 2000));
 
-    const form = new FormData(e.currentTarget);
-
-    // user_id を自動付与
-    form.append("user_id", String(user.id));
-
-    const API_BASE =
-      process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8787";
-
-    const res = await fetch(`${API_BASE}/api/work`, {
-      method: "POST",
-      body: form,
-    });
-
-    if (res.ok) {
-      const { id } = await res.json();
-      window.location.href = `/work/${id}`;
-    } else {
-      alert("Error");
-    }
-
-    setLoading(false);
-  }
-
-  if (!user) {
-    return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center">
-        <p>Loading...</p>
-      </main>
-    );
-  }
+    // 作品ページ生成後の URL に遷移
+    window.location.href = "/submit/internal";
+  };
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto max-w-3xl px-6 py-16">
-        <h1 className="text-2xl font-semibold mb-10">Submit Work</h1>
+    <div className="min-h-screen bg-black text-white px-6 py-16">
+      <div className="max-w-xl mx-auto space-y-10">
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <Input name="title" label="Title" required />
-          <Input name="catch" label="Catch" required />
-          <Input name="url" label="URL" required />
-          <Input name="purpose" label="Purpose" required />
-          <Input name="target" label="Target" required />
-          <Input name="focus" label="Focus" required />
-          <Input name="stack" label="Stack (comma separated)" required />
+        <h1 className="text-2xl font-semibold">作品を投稿する</h1>
 
+        <p className="text-gray-300 leading-relaxed">
+          Outline では、Web作品を 2 つの方法で投稿できます。
+        </p>
+
+        <div className="space-y-6">
+
+          {/* 外部URL */}
           <button
-            type="submit"
-            disabled={loading}
-            className="
-              w-full py-3 rounded-xl bg-white/10 border border-white/20
-              hover:bg-white/20 transition
-            "
+            onClick={() => (window.location.href = "/submit/external")}
+            className="w-full bg-white text-black py-3 rounded-md font-medium hover:opacity-90 transition"
           >
-            {loading ? "Submitting..." : "Submit"}
+            外部URLを使って投稿する
           </button>
-        </form>
-      </div>
-    </main>
-  );
-}
 
-function Input({
-  name,
-  label,
-  required,
-}: {
-  name: string;
-  label: string;
-  required?: boolean;
-}) {
-  return (
-    <div className="space-y-2">
-      <label className="text-sm opacity-80">{label}</label>
-      <input
-        name={name}
-        required={required}
-        className="
-          w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10
-          outline-none focus:border-white/20 transition
-        "
-      />
+          {/* 内部生成 */}
+          <button
+            onClick={handleInternalCreate}
+            className="w-full bg-gray-800 text-white py-3 rounded-md font-medium hover:bg-gray-700 transition"
+          >
+            Outline 内で作品ページを作る（URL不要）
+          </button>
+
+          {loading && (
+            <p className="text-center text-gray-400 text-sm pt-2">
+              動画を視聴しています…
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

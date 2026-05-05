@@ -1,162 +1,225 @@
 "use client";
-export const runtime = "edge";
 
 import { useEffect, useState } from "react";
+import type { Work } from "@/app/types";
 
 export default function EditWorkPage({ params }: { params: { id: string } }) {
-    const [loading, setLoading] = useState(false);
-    const [work, setWork] = useState<any>(null);
-    const [user, setUser] = useState<any>(null);
+    const [work, setWork] = useState<Work | null>(null);
+    const [saving, setSaving] = useState(false);
 
-    const API =
-        process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8787";
-
-    // -----------------------------
-    // 1. ログイン状態を取得
-    // -----------------------------
     useEffect(() => {
-        async function fetchUser() {
-            const token = document.cookie
-                .split("; ")
-                .find((row) => row.startsWith("token="))
-                ?.split("=")[1];
-
-            if (!token) {
-                window.location.href = "/login";
-                return;
-            }
-
-            const res = await fetch(`${API}/api/auth/me`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (!res.ok) {
-                window.location.href = "/login";
-                return;
-            }
-
-            const data = await res.json();
-            setUser(data);
-        }
-
-        fetchUser();
+        load();
     }, []);
 
-    // -----------------------------
-    // 2. 作品データ取得
-    // -----------------------------
-    useEffect(() => {
-        async function fetchWork() {
-            const res = await fetch(`${API}/api/work/${params.id}`);
-            const data = await res.json();
-            setWork(data);
-        }
+    const load = async () => {
+        const res = await fetch(`/api/works/${params.id}`);
+        const data: Work = await res.json();
+        setWork(data);
+    };
 
-        fetchWork();
-    }, [params.id]);
+    const save = async () => {
+        if (!work) return;
 
-    // -----------------------------
-    // 3. 保存処理
-    // -----------------------------
-    async function save(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setLoading(true);
+        setSaving(true);
 
-        const form = new FormData(e.currentTarget);
-
-        const token = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("token="))
-            ?.split("=")[1];
-
-        const res = await fetch(`${API}/api/work/update`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            body: form,
+        await fetch(`/api/works/${params.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(work),
         });
 
-        if (res.ok) {
-            window.location.href = `/work/${params.id}`;
-        } else {
-            alert("Error");
-        }
+        setSaving(false);
+        alert("保存しました");
+    };
 
-        setLoading(false);
-    }
-
-    if (!work || !user) {
+    if (!work) {
         return (
-            <main className="min-h-screen bg-black text-white flex items-center justify-center">
-                <p>Loading...</p>
-            </main>
-        );
-    }
-
-    // 自分の作品でなければ拒否
-    if (work.user_id !== user.id) {
-        return (
-            <main className="min-h-screen bg-black text-white flex items-center justify-center">
-                <p>You cannot edit this work</p>
-            </main>
+            <div className="min-h-screen bg-black text-white p-10">
+                読み込み中…
+            </div>
         );
     }
 
     return (
-        <main className="min-h-screen bg-black text-white px-6 py-16">
-            <div className="mx-auto max-w-3xl space-y-8">
-                <h1 className="text-2xl font-semibold">Edit Work</h1>
+        <div className="min-h-screen bg-black text-white px-6 py-16">
+            <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-                <form onSubmit={save} className="space-y-6">
-                    <Input name="id" defaultValue={work.id} hidden />
-                    <Input name="title" label="Title" defaultValue={work.title} required />
-                    <Input name="catch" label="Catch" defaultValue={work.catch} required />
-                    <Input name="url" label="URL" defaultValue={work.url} required />
-                    <Input name="purpose" label="Purpose" defaultValue={work.purpose} required />
-                    <Input name="target" label="Target" defaultValue={work.target} required />
-                    <Input name="focus" label="Focus" defaultValue={work.focus} required />
-                    <Input name="stack" label="Stack" defaultValue={work.stack} required />
+                {/* 編集フォーム */}
+                <div className="space-y-8">
+
+                    {/* タイトル */}
+                    <div>
+                        <label className="block text-sm text-gray-400 mb-1">タイトル</label>
+                        <input
+                            className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                            value={work.title}
+                            onChange={(e) => setWork({ ...work, title: e.target.value })}
+                        />
+                    </div>
+
+                    {/* 説明文 */}
+                    <div>
+                        <label className="block text-sm text-gray-400 mb-1">説明文</label>
+                        <textarea
+                            className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 h-32"
+                            value={work.description ?? ""}
+                            onChange={(e) => setWork({ ...work, description: e.target.value })}
+                        />
+                    </div>
+
+                    {/* タグ */}
+                    <div>
+                        <label className="block text-sm text-gray-400 mb-1">タグ（カンマ区切り）</label>
+                        <input
+                            className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                            value={work.tags?.join(",") ?? ""}
+                            onChange={(e) =>
+                                setWork({ ...work, tags: e.target.value.split(",").map((t) => t.trim()) })
+                            }
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm text-gray-400 mb-1">公開設定</label>
+                        <select
+                            className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                            value={work.visibility}
+                            onChange={(e) => setWork({ ...work, visibility: e.target.value })}
+                        >
+                            <option value="public">公開</option>
+                            <option value="unlisted">限定公開</option>
+                            <option value="private">非公開（下書き）</option>
+                        </select>
+                    </div>
+
+                    {/* 本文（内部生成作品のみ） */}
+                    {work.type === "internal" && (
+                        <div>
+                            <label className="block text-sm text-gray-400 mb-1">本文（Markdown）</label>
+                            <textarea
+                                className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 h-64"
+                                value={work.body_markdown ?? ""}
+                                onChange={(e) =>
+                                    setWork({ ...work, body_markdown: e.target.value })
+                                }
+                            />
+                        </div>
+                    )}
 
                     <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full py-3 rounded-xl bg-white text-black font-medium"
+                        onClick={async () => {
+                            const res = await fetch(`/api/works/${params.id}/thumbnail`, {
+                                method: "POST",
+                            });
+                            const data = await res.json();
+                            setWork({ ...work, thumbnail_url: data.thumbnail_url });
+                        }}
+                        className="w-full bg-gray-800 text-white py-3 rounded-md hover:bg-gray-700 transition"
                     >
-                        {loading ? "Saving..." : "Save"}
+                        サムネイルを再生成する
                     </button>
-                </form>
+                    {/* 保存ボタン */}
+                    <button
+                        onClick={save}
+                        className="w-full bg-white text-black py-3 rounded font-medium hover:opacity-90 transition"
+                    >
+                        {saving ? "保存中…" : "保存する"}
+                    </button>
+                    <button
+                        onClick={async () => {
+                            if (!confirm("本当に削除しますか？")) return;
+
+                            await fetch(`/api/works/${params.id}`, {
+                                method: "DELETE",
+                            });
+
+                            alert("削除しました");
+                            window.location.href = "/me";
+                        }}
+                        className="w-full bg-red-600 text-white py-3 rounded font-medium hover:bg-red-500 transition"
+                    >
+                        作品を削除する
+                    </button>
+                </div>
+
+                {/* AI アドバイス（右側） */}
+                <div className="space-y-6 border-l border-gray-800 pl-6">
+                    <h2 className="text-xl font-semibold">AI アドバイス</h2>
+
+                    {!work.advice && (
+                        <p className="text-gray-500">まだアドバイスが生成されていません。</p>
+                    )}
+
+                    {work.advice && (
+                        <div className="space-y-4 text-gray-300 leading-relaxed">
+                            <div>
+                                <h3 className="font-medium text-white">説明文の改善ポイント</h3>
+                                <p>{work.advice.description}</p>
+                            </div>
+
+                            <div>
+                                <h3 className="font-medium text-white">タグの最適化</h3>
+                                <p>{work.advice.tags}</p>
+                            </div>
+
+                            <div>
+                                <h3 className="font-medium text-white">サムネイル改善案</h3>
+                                <p>{work.advice.thumbnail}</p>
+                            </div>
+
+                            <div>
+                                <h3 className="font-medium text-white">作品の強み</h3>
+                                <p>{work.advice.strengths}</p>
+                            </div>
+
+                            <div>
+                                <h3 className="font-medium text-white">初見ユーザーが迷いそうな点</h3>
+                                <p>{work.advice.confusion}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <div className="pt-10 border-t border-gray-800">
+                    <h2 className="text-xl font-semibold mb-4">バージョン履歴</h2>
+
+                    <button
+                        onClick={async () => {
+                            const res = await fetch(`/api/works/${params.id}/history`);
+                            const data = await res.json();
+                            setHistory(data);
+                        }}
+                        className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700"
+                    >
+                        履歴を読み込む
+                    </button>
+
+                    <div className="mt-4 space-y-4">
+                        {history.map((h) => (
+                            <div key={h.id} className="border border-gray-700 p-4 rounded">
+                                <p className="text-gray-400 text-sm">
+                                    {new Date(h.created_at).toLocaleString("ja-JP")}
+                                </p>
+
+                                <button
+                                    onClick={async () => {
+                                        await fetch(`/api/works/${params.id}/restore`, {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({ history_id: h.id }),
+                                        });
+                                        alert("復元しました");
+                                        load(); // 最新状態を再取得
+                                    }}
+                                    className="mt-2 bg-white text-black px-3 py-1 rounded hover:opacity-90"
+                                >
+                                    このバージョンに戻す
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
             </div>
-        </main>
-    );
-}
-
-function Input({
-    name,
-    label,
-    defaultValue,
-    required,
-    hidden,
-}: {
-    name: string;
-    label?: string;
-    defaultValue?: string;
-    required?: boolean;
-    hidden?: boolean;
-}) {
-    if (hidden) {
-        return <input type="hidden" name={name} value={defaultValue} />;
-    }
-
-    return (
-        <div className="space-y-2">
-            <label className="text-sm opacity-80">{label}</label>
-            <input
-                name={name}
-                defaultValue={defaultValue}
-                required={required}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10"
-            />
         </div>
     );
 }

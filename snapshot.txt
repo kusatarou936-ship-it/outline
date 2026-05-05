@@ -16,30 +16,48 @@ TECH_STACK:
   - CSS
 
 FILES:
-  - C:\Users\user\outline-app\app\(home)\layout.tsx
-  - C:\Users\user\outline-app\app\(home)\page.tsx
   - C:\Users\user\outline-app\app\api\home\route.ts
   - C:\Users\user\outline-app\app\api\home\works\route.ts
+  - C:\Users\user\outline-app\app\api\internal-works\route.ts
   - C:\Users\user\outline-app\app\api\login\route.ts
   - C:\Users\user\outline-app\app\api\me\route.ts
+  - C:\Users\user\outline-app\app\api\me\works\route.ts
   - C:\Users\user\outline-app\app\api\search\route.ts
   - C:\Users\user\outline-app\app\api\signup\route.ts
   - C:\Users\user\outline-app\app\api\submit\route.ts
   - C:\Users\user\outline-app\app\api\tag\[name]\route.ts
+  - C:\Users\user\outline-app\app\api\tag\[tag]\page.tsx
+  - C:\Users\user\outline-app\app\api\tag\[tag]\route.ts
   - C:\Users\user\outline-app\app\api\upload\route.ts
   - C:\Users\user\outline-app\app\api\user\[id]\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\history\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\like\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\restore\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\thumbnail\route.ts
   - C:\Users\user\outline-app\app\components\ScrollReset.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
   - C:\Users\user\outline-app\app\error.tsx
   - C:\Users\user\outline-app\app\favicon.ico
   - C:\Users\user\outline-app\app\feed\page.tsx
   - C:\Users\user\outline-app\app\globals.css
+  - C:\Users\user\outline-app\app\home\layout.tsx
+  - C:\Users\user\outline-app\app\home\page.tsx
+  - C:\Users\user\outline-app\app\i\page.tsx
+  - C:\Users\user\outline-app\app\i\[shortId]\opengraph-image.tsx
+  - C:\Users\user\outline-app\app\i\[shortId]\page.tsx
   - C:\Users\user\outline-app\app\layout.tsx
   - C:\Users\user\outline-app\app\login\page.tsx
+  - C:\Users\user\outline-app\app\me\page.tsx
   - C:\Users\user\outline-app\app\not-found.tsx
   - C:\Users\user\outline-app\app\notifications\page.tsx
   - C:\Users\user\outline-app\app\opengraph-image.tsx
+  - C:\Users\user\outline-app\app\page.tsx
   - C:\Users\user\outline-app\app\rss\new.xml\route.ts
   - C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts
   - C:\Users\user\outline-app\app\rss\new.xml\updated.xml\route.ts
@@ -50,9 +68,12 @@ FILES:
   - C:\Users\user\outline-app\app\sitemap-users.xml\route.ts
   - C:\Users\user\outline-app\app\sitemap-works.xml\route.ts
   - C:\Users\user\outline-app\app\sitemap.xml\route.ts
+  - C:\Users\user\outline-app\app\submit\external\page.tsx
+  - C:\Users\user\outline-app\app\submit\internal\page.tsx
   - C:\Users\user\outline-app\app\submit\page.tsx
   - C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\tag\[name]\page.tsx
+  - C:\Users\user\outline-app\app\types.ts
   - C:\Users\user\outline-app\app\user\[id]\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\delete-button.tsx
   - C:\Users\user\outline-app\app\work\[id]\edit\page.tsx
@@ -63,13 +84,6 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
 
 FUNCTIONS:
-  - HomeLayout
-  - return
-  - HomePage
-  - handleWatchAd
-  - useState
-  - async
-  - setUnlocked
   - GET
   - createClient
   - from
@@ -83,26 +97,43 @@ FUNCTIONS:
   - get
   - range
   - error
+  - getUser
   - POST
   - signInWithPassword
-  - getUser
   - single
   - signUp
   - insert
-  - works
   - formData
   - now
   - upload
   - getPublicUrl
+  - generateShortId
+  - update
+  - works
+  - TagPage
+  - load
+  - useState
+  - useEffect
+  - async
+  - setWorks
+  - setLoading
+  - return
+  - contains
+  - generateAdvice
+  - OpenAI
+  - create
+  - parse
+  - maybeSingle
+  - delete
+  - DELETE
+  - remove
+  - generate
   - ScrollReset
   - usePathname
-  - useEffect
   - scrollTo
   - DashboardPage
   - fetchUser
   - setUser
-  - setWorks
-  - setLoading
   - round
   - forEach
   - entries
@@ -110,9 +141,16 @@ FUNCTIONS:
   - Error
   - dXt
   - FeedPage
-  - Section
-  - UsersSection
   - rgba
+  - HomeLayout
+  - HomePage
+  - handleWatchAd
+  - setUnlocked
+  - InternalWorksPage
+  - Date
+  - toLocaleDateString
+  - ImageResponse
+  - InternalWorkPage
   - RootLayout
   - LoginPage
   - submit
@@ -120,15 +158,15 @@ FUNCTIONS:
   - setMsg
   - setEmail
   - setPassword
+  - MePage
+  - setInternal
+  - setExternal
   - NotFound
   - NotificationsPage
   - ClientNotifications
-  - load
   - NotificationItem
   - setItems
   - OGImage
-  - ImageResponse
-  - Date
   - getTime
   - toUTCString
   - NextResponse
@@ -143,40 +181,62 @@ FUNCTIONS:
   - setLinks
   - Links
   - SignupPage
+  - ExternalSubmit
+  - InternalSubmit
   - SubmitPage
-  - handleSubmit
-  - Input
-  - preventDefault
-  - FormData
-  - append
-  - String
-  - Stack
-  - TagPage
+  - handleInternalCreate
+  - Promise
+  - setTimeout
   - UserPage
-  - toLocaleDateString
   - DeleteButton
   - del
   - EditWorkPage
-  - fetchWork
   - setWork
+  - setSaving
+  - setHistory
+  - toLocaleString
   - Loading
   - WorkPage
+  - loadComments
+  - submitComment
+  - loadLikes
+  - toggleLike
+  - loadFavorites
+  - toggleFavorite
+  - submitReply
+  - fetchWork
+  - fetchAdvice
+  - handleGenerateAdvice
+  - setComments
+  - setComment
+  - setLikeCount
+  - setLiked
+  - setFavoriteCount
+  - setFavorited
+  - setReply
+  - setReplyTarget
+  - setAdvice
+  - setLoadingAdvice
   - Related
   - neq
 
 IMPORT_MAP:
-  C:\Users\user\outline-app\app\(home)\page.tsx:
-    - react
   C:\Users\user\outline-app\app\api\home\route.ts:
     - next/server
     - @supabase/supabase-js
   C:\Users\user\outline-app\app\api\home\works\route.ts:
     - next/server
     - @/lib/supabase
+  C:\Users\user\outline-app\app\api\internal-works\route.ts:
+    - next/server
+    - @/lib/supabase
   C:\Users\user\outline-app\app\api\login\route.ts:
     - next/server
     - @/lib/supabase
   C:\Users\user\outline-app\app\api\me\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\me\works\route.ts:
     - next/server
     - @/lib/supabase
   C:\Users\user\outline-app\app\api\search\route.ts:
@@ -188,7 +248,14 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\api\submit\route.ts:
     - next/server
     - @/lib/supabase
+    - @/lib/generateShortId
   C:\Users\user\outline-app\app\api\tag\[name]\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\tag\[tag]\page.tsx:
+    - react
+    - @/app/types
+  C:\Users\user\outline-app\app\api\tag\[tag]\route.ts:
     - next/server
     - @/lib/supabase
   C:\Users\user\outline-app\app\api\upload\route.ts:
@@ -197,14 +264,56 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\api\user\[id]\route.ts:
     - next/server
     - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts:
+    - next/server
+    - @/lib/supabase
+    - openai
+  C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\history\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\like\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts:
+    - next/server
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\restore\route.ts:
+    - next/server
+    - @/lib/supabase
   C:\Users\user\outline-app\app\api\works\[id]\route.ts:
     - next/server
     - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\[id]\thumbnail\route.ts:
+    - next/server
+    - @/lib/supabase
+    - openai
   C:\Users\user\outline-app\app\components\ScrollReset.tsx:
     - react
     - next/navigation
   C:\Users\user\outline-app\app\dashboard\page.tsx:
     - react
+  C:\Users\user\outline-app\app\feed\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\home\page.tsx:
+    - react
+  C:\Users\user\outline-app\app\i\page.tsx:
+    - react
+    - @/app/types
+  C:\Users\user\outline-app\app\i\[shortId]\opengraph-image.tsx:
+    - next/og
+    - @/lib/supabase
+  C:\Users\user\outline-app\app\i\[shortId]\page.tsx:
+    - @/lib/supabase
+    - @/app/work/[id]/page
   C:\Users\user\outline-app\app\layout.tsx:
     - next
     - @/components/Layout/Header
@@ -213,6 +322,9 @@ IMPORT_MAP:
     - ./components/ScrollReset
   C:\Users\user\outline-app\app\login\page.tsx:
     - react
+  C:\Users\user\outline-app\app\me\page.tsx:
+    - react
+    - @/app/types
   C:\Users\user\outline-app\app\notifications\page.tsx:
     - react
   C:\Users\user\outline-app\app\opengraph-image.tsx:
@@ -245,12 +357,14 @@ IMPORT_MAP:
     - @/lib/supabase
   C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
     - react
+    - @/app/types
   C:\Users\user\outline-app\app\work\[id]\opengraph-image.tsx:
     - next/og
-  C:\Users\user\outline-app\app\work\[id]\page.tsx:
-    - ./related
-    - ./delete-button
     - @/lib/supabase
+  C:\Users\user\outline-app\app\work\[id]\page.tsx:
+    - react
+    - react-markdown
+    - @/app/types
   C:\Users\user\outline-app\app\work\[id]\related.tsx:
     - @/lib/supabase
 

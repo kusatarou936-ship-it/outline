@@ -75,3 +75,47 @@ p {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Markdown スタイル（Outline 専用） */
+.prose {
+  @apply max-w-none leading-relaxed;
+}
+
+.prose-invert {
+  @apply text-gray-300;
+}
+
+.prose-invert h1,
+.prose-invert h2,
+.prose-invert h3 {
+  @apply text-white font-semibold mt-10 mb-4;
+}
+
+.prose-invert p {
+  @apply my-4;
+}
+
+.prose-invert ul,
+.prose-invert ol {
+  @apply my-4 pl-6;
+}
+
+.prose-invert li {
+  @apply my-1;
+}
+
+.prose-invert blockquote {
+  @apply border-l-4 border-gray-700 pl-4 italic text-gray-400 my-6;
+}
+
+.prose-invert pre {
+  @apply bg-gray-900 p-4 rounded-lg overflow-x-auto my-6;
+}
+
+.prose-invert code {
+  @apply text-gray-200;
+}
+
+.prose-invert img {
+  @apply rounded-lg my-6;
+}

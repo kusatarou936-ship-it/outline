@@ -1,79 +1,103 @@
-import { NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase";
+import { generateShortId } from "@/lib/generateShortId";
 
 export async function POST(req: Request) {
-  const body = await req.json()
+  const supabase = createClient();
+  const formData = await req.formData();
 
-  const {
-    title,
-    description,
-    image_url,
-    tags = [],
-    stacks = [],
-    purposes = [],
-    focuses = []
-  } = body
-
-  // 認証ユーザーを取得
-  const {
-    data: { user },
-    error: authError
-  } = await supabase.auth.getUser()
-
-  if (authError || !user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const user = await supabase.auth.getUser();
+  if (!user.data.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // 作品を作成
-  const { data: work, error: workError } = await supabase
-    .from("works")
-    .insert({
-      user_id: user.id,
-      title,
-      description,
-      image_url,
-      stacks,
-      purposes,
-      focuses
-    })
-    .select()
-    .single()
+  const userId = user.data.user.id;
 
-  if (workError) {
-    console.error(workError)
-    return NextResponse.json({ error: "Failed to create work" }, { status: 500 })
+  // 共通フィールド
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const tags = (formData.get("tags") as string)?.split(",") ?? [];
+
+  // 投稿タイプ
+  const type = formData.get("type") as "external" | "internal";
+
+  let url: string | null = null;
+  let body_markdown: string | null = null;
+  let generated_url: string | null = null;
+
+  // 外部URL作品
+  if (type === "external") {
+    url = formData.get("url") as string;
   }
 
-  // タグ処理
-  for (const tagName of tags) {
-    // タグが存在するか確認
-    let { data: tag } = await supabase
-      .from("tags")
-      .select("id")
-      .eq("name", tagName)
-      .single()
+  // 内部生成作品
+  if (type === "internal") {
+    body_markdown = formData.get("body_markdown") as string;
+  }
 
-    // なければ作成
-    if (!tag) {
-      const { data: newTag } = await supabase
-        .from("tags")
-        .insert({ name: tagName })
-        .select()
-        .single()
-      tag = newTag
+  // サムネイルアップロード
+  const thumbnail = formData.get("thumbnail") as File | null;
+  let thumbnail_url = null;
+
+  if (thumbnail) {
+    const fileName = `${Date.now()}-${thumbnail.name}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("thumbnails")
+      .upload(fileName, thumbnail);
+
+    if (uploadError) {
+      return NextResponse.json({ error: uploadError.message }, { status: 500 });
     }
 
-    // work_tags に紐付け
-    if (!tag) continue;
+    const { data: publicUrl } = supabase.storage
+      .from("thumbnails")
+      .getPublicUrl(fileName);
 
-    await supabase.from("work_tags").insert({
-      work_id: work.id,
-      tag_id: tag.id
-    })
+    thumbnail_url = publicUrl.publicUrl;
   }
 
-  return NextResponse.json({
-    success: true,
-    work
-  })
+  // 作品を保存
+  const { data, error } = await supabase
+    .from("works")
+    .insert({
+      user_id: userId,
+      title,
+      description,
+      tags,
+      type,
+      url,
+      body_markdown,
+      thumbnail_url,
+    })
+    .select()
+    .single();
+
+  // 作品を保存した直後の部分に追加
+  if (type === "internal") {
+    const shortId = generateShortId();
+
+    await supabase
+      .from("works")
+      .update({
+        generated_url: `/i/${shortId}`,
+        short_id: shortId,
+      })
+      .eq("id", data.id);
+  }
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  // 内部生成作品は URL を後から生成
+  if (type === "internal") {
+    generated_url = `/work/${data.id}`;
+
+    await supabase
+      .from("works")
+      .update({ generated_url })
+      .eq("id", data.id);
+  }
+
+  return NextResponse.json({ id: data.id });
 }

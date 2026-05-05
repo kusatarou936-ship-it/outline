@@ -1,89 +1,67 @@
-export const dynamic = "force-dynamic";
-export const runtime = "edge";
+"use client";
 
-export default async function FeedPage() {
-  const API = process.env.NEXT_PUBLIC_API_BASE;
+import { useEffect, useState } from "react";
 
-  const res = await fetch(`${API}/api/feed`, { cache: "no-store" });
-  const feed = await res.json();
+export default function FeedPage() {
+  const [works, setWorks] = useState([]);
 
-  return (
-    <main className="min-h-screen bg-black text-white px-6 py-16">
-      <div className="mx-auto max-w-5xl space-y-16">
+  useEffect(() => {
+    load();
+  }, []);
 
-        <h1 className="text-3xl font-semibold">Feed</h1>
-
-        {/* New Works */}
-        <Section title="New Works" items={feed.newWorks} />
-
-        {/* Updated Works */}
-        <Section title="Recently Updated" items={feed.updatedWorks} />
-
-        {/* Active Works */}
-        <Section title="Active Works" items={feed.activeWorks} />
-
-        {/* New Users */}
-        <UsersSection title="New Users" items={feed.newUsers} />
-      </div>
-    </main>
-  );
-}
-
-function Section({ title, items }: any) {
-  if (!items || items.length === 0) return null;
+  const load = async () => {
+    const res = await fetch("/api/home/works");
+    const data = await res.json();
+    setWorks(data);
+  };
 
   return (
-    <section className="space-y-4">
-      <h2 className="text-xl font-medium">{title}</h2>
+    <div className="min-h-screen bg-black text-white px-6 py-16">
+      <div className="max-w-5xl mx-auto">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {items.map((w: any) => (
-          <a
-            key={w.id}
-            href={`/work/${w.id}`}
-            className="group block rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:bg-white/10 transition"
-          >
-            <div className="aspect-video bg-white/10 overflow-hidden">
-              <img
-                src={
-                  w.thumbnail ??
-                  "https://placehold.co/1280x720/000/FFF?text=No+Thumbnail"
-                }
-                alt=""
-                className="w-full h-full object-cover group-hover:scale-105 transition"
-              />
-            </div>
+        <h1 className="text-2xl font-semibold mb-10">作品一覧</h1>
 
-            <div className="p-4 space-y-2">
-              <h3 className="text-lg font-medium">{w.title}</h3>
-              <p className="text-sm opacity-60">{w.catch}</p>
-            </div>
-          </a>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {works.map((work) => (
+            <a
+              key={work.id}
+              href={`/work/${work.id}`}
+              className="group space-y-3 block"
+            >
+              {/* サムネイル */}
+              <div className="w-full aspect-video bg-gray-900 rounded-lg overflow-hidden border border-gray-800">
+                <img
+                  src={work.thumbnail_url}
+                  className="w-full h-full object-cover group-hover:opacity-90 transition"
+                  alt="thumbnail"
+                />
+              </div>
+
+              {/* タイトル */}
+              <h2 className="text-lg font-medium truncate">
+                {work.title}
+              </h2>
+
+              {/* 作者 */}
+              <p className="text-gray-500 text-sm">
+                {work.author_name ?? "匿名"}
+              </p>
+
+              {/* タグ */}
+              <div className="flex gap-2 flex-wrap">
+                {work.tags?.slice(0, 3).map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2 py-1 bg-gray-800 rounded-full text-xs text-gray-300"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
-    </section>
-  );
-}
-
-function UsersSection({ title, items }: any) {
-  if (!items || items.length === 0) return null;
-
-  return (
-    <section className="space-y-4">
-      <h2 className="text-xl font-medium">{title}</h2>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-        {items.map((u: any) => (
-          <a
-            key={u.id}
-            href={`/user/${u.id}`}
-            className="block p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition"
-          >
-            <p className="font-medium">{u.name}</p>
-            <p className="text-xs opacity-60">Joined</p>
-          </a>
-        ))}
-      </div>
-    </section>
+    </div>
   );
 }

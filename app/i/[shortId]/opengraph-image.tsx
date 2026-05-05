@@ -3,13 +3,13 @@ import { createClient } from "@/lib/supabase";
 
 export const runtime = "edge";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: { shortId: string } }) {
   const supabase = createClient();
 
   const { data: work } = await supabase
     .from("works")
     .select("*")
-    .eq("id", params.id)
+    .eq("short_id", params.shortId)
     .single();
 
   if (!work) {
@@ -54,7 +54,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
           padding: "40px",
         }}
       >
-        {/* サムネイルがある場合は背景に薄く敷く */}
         {thumbnail && (
           <img
             src={thumbnail}
@@ -69,7 +68,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
           />
         )}
 
-        {/* タイトル */}
         <div
           style={{
             position: "relative",
@@ -83,9 +81,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         </div>
       </div>
     ),
-    {
-      width: 1200,
-      height: 630,
-    }
+    { width: 1200, height: 630 }
   );
 }
