@@ -1,12 +1,14 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase";
 import OpenAI from "openai";
 
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
 async function generateAdvice(work: any) {
+    const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+
     const prompt = `
 あなたは作品レビューではなく、作者のためのアドバイザーです。
 作品を評価したり、順位をつけたりしてはいけません。
