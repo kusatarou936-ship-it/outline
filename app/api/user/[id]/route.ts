@@ -1,31 +1,21 @@
-import { NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const userId = params.id
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const supabase = createClient();
 
-  // ユーザー情報を取得
+  const userId = params.id;
+
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select(`
-      id,
-      name,
-      bio,
-      links,
-      created_at
-    `)
+    .select("id, name, bio, links, created_at")
     .eq("id", userId)
-    .single()
+    .single();
 
   if (userError || !user) {
-    console.error(userError)
-    return NextResponse.json({ error: "User not found" }, { status: 404 })
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  // ユーザーの作品一覧を取得
   const { data: works, error: worksError } = await supabase
     .from("works")
     .select(`
@@ -34,20 +24,14 @@ export async function GET(
       description,
       image_url,
       created_at,
-      work_tags(
-        tag:tags(name)
-      )
+      work_tags(tag:tags(name))
     `)
     .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+    .order("created_at", { ascending: false });
 
   if (worksError) {
-    console.error(worksError)
-    return NextResponse.json({ error: "Failed to fetch works" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to fetch works" }, { status: 500 });
   }
 
-  return NextResponse.json({
-    user,
-    works,
-  })
+  return NextResponse.json({ user, works });
 }

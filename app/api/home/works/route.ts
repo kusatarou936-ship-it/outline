@@ -1,15 +1,16 @@
-import { NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase";
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const page = Number(searchParams.get("page") ?? 1)
-  const limit = Number(searchParams.get("limit") ?? 20)
+  const supabase = createClient();
 
-  const from = (page - 1) * limit
-  const to = from + limit - 1
+  const { searchParams } = new URL(req.url);
+  const page = Number(searchParams.get("page") ?? 1);
+  const limit = Number(searchParams.get("limit") ?? 20);
 
-  // 作品一覧を取得
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
   const { data: works, error } = await supabase
     .from("works")
     .select(`
@@ -19,21 +20,15 @@ export async function GET(req: Request) {
       image_url,
       created_at,
       user:users(id, name),
-      work_tags(
-        tag:tags(name)
-      )
+      work_tags(tag:tags(name))
     `)
     .order("created_at", { ascending: false })
-    .range(from, to)
+    .range(from, to);
 
   if (error) {
-    console.error(error)
-    return NextResponse.json({ error: "Failed to fetch works" }, { status: 500 })
+    console.error(error);
+    return NextResponse.json({ error: "Failed to fetch works" }, { status: 500 });
   }
 
-  return NextResponse.json({
-    page,
-    limit,
-    works,
-  })
+  return NextResponse.json({ page, limit, works });
 }
