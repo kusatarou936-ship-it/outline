@@ -84,44 +84,64 @@ p {
 
 /* Markdown スタイル（Outline 専用） */
 .prose {
-  @apply max-w-none;
+  max-width: none;
 }
 
 .prose-invert {
-  @apply text-gray-300;
+  color: var(--color-gray-300);
 }
 
 .prose-invert h1,
 .prose-invert h2,
 .prose-invert h3 {
-  @apply text-white font-semibold mt-10 mb-4;
+  color: white;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .prose-invert p {
-  @apply my-4;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .prose-invert ul,
 .prose-invert ol {
-  @apply my-4 pl-6;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
 }
 
 .prose-invert li {
-  @apply my-1;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 
 .prose-invert blockquote {
-  @apply border-l-4 border-gray-700 pl-4 italic text-gray-400 my-6;
+  border-left-width: 4px;
+  border-left-color: var(--color-gray-700);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--color-gray-400);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .prose-invert pre {
-  @apply bg-gray-900 p-4 rounded-lg overflow-x-auto my-6;
+  background-color: var(--color-gray-900);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .prose-invert code {
-  @apply text-gray-200;
+  color: var(--color-gray-200);
 }
 
 .prose-invert img {
-  @apply rounded-lg my-6;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
