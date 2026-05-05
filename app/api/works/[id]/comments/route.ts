@@ -35,8 +35,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         .order("created_at", { ascending: true });
 
     // 親コメントと返信を分ける
-    const parents = data.filter((c) => !c.reply_to);
-    const replies = data.filter((c) => c.reply_to);
+    const list = data ?? [];
+
+    const parents = list.filter((c) => !c.reply_to);
+    const replies = list.filter((c) => c.reply_to);
 
     // 親コメントに replies を紐づける
     const tree = parents.map((p) => ({
