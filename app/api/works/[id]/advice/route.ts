@@ -3,11 +3,11 @@ import { createClient } from "@/lib/supabase";
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 async function generateAdvice(work: any) {
-  const prompt = `
+    const prompt = `
 あなたは作品レビューではなく、作者のためのアドバイザーです。
 作品を評価したり、順位をつけたりしてはいけません。
 批判ではなく、改善のための建設的な提案だけを行ってください。
@@ -38,49 +38,49 @@ async function generateAdvice(work: any) {
 サムネイル: ${work.thumbnail_url}
 `;
 
-  const response = await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: prompt }],
-    response_format: { type: "json_object" },
-  });
+    const response = await client.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+    });
 
-  return JSON.parse(response.choices[0].message.content);
+    return JSON.parse(response.choices[0].message.content!);
 }
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createClient();
+    const supabase = createClient();
 
-  const user = await supabase.auth.getUser();
-  if (!user.data.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+    const user = await supabase.auth.getUser();
+    if (!user.data.user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const workId = params.id;
+    const workId = params.id;
 
-  const { data: work } = await supabase
-    .from("works")
-    .select("*")
-    .eq("id", workId)
-    .single();
+    const { data: work } = await supabase
+        .from("works")
+        .select("*")
+        .eq("id", workId)
+        .single();
 
-  if (!work) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
+    if (!work) {
+        return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
 
-  if (work.user_id !== user.data.user.id) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+    if (work.user_id !== user.data.user.id) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
 
-  if (work.advice) {
-    return NextResponse.json({ advice: work.advice });
-  }
+    if (work.advice) {
+        return NextResponse.json({ advice: work.advice });
+    }
 
-  const advice = await generateAdvice(work);
+    const advice = await generateAdvice(work);
 
-  await supabase
-    .from("works")
-    .update({ advice })
-    .eq("id", workId);
+    await supabase
+        .from("works")
+        .update({ advice })
+        .eq("id", workId);
 
-  return NextResponse.json({ advice });
+    return NextResponse.json({ advice });
 }
