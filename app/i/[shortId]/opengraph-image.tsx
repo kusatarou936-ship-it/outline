@@ -34,9 +34,6 @@ export async function GET(req: Request, { params }: { params: { shortId: string 
     );
   }
 
-  const title = work.title ?? "作品";
-  const thumbnail = work.thumbnail_url;
-
   return new ImageResponse(
     (
       <div
@@ -54,9 +51,9 @@ export async function GET(req: Request, { params }: { params: { shortId: string 
           padding: "40px",
         }}
       >
-        {thumbnail && (
+        {work.thumbnail_url && (
           <img
-            src={thumbnail}
+            src={work.thumbnail_url}
             style={{
               position: "absolute",
               inset: 0,
@@ -77,10 +74,15 @@ export async function GET(req: Request, { params }: { params: { shortId: string 
             maxWidth: "80%",
           }}
         >
-          {title}
+          {work.title ?? "作品"}
         </div>
       </div>
     ),
     { width: 1200, height: 630 }
   );
+}
+
+// ★★★ これが無いとビルド落ちる（必須） ★★★
+export default function OpengraphImage() {
+  return null;
 }
