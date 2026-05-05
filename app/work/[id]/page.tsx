@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import type { Work, Comment } from "@/app/types";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export default function WorkPage({ params }: { params: { id: string } }) {
   const [work, setWork] = useState<Work | null>(null);
@@ -63,9 +69,16 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   const submitComment = async () => {
     if (!comment.trim()) return;
 
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
     await fetch(`/api/works/${params.id}/comments`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.access_token}`,
+      },
       body: JSON.stringify({ content: comment }),
     });
 
@@ -73,12 +86,20 @@ export default function WorkPage({ params }: { params: { id: string } }) {
     loadComments();
   };
 
+
   const submitReply = async (parentId: string) => {
     if (!reply.trim()) return;
 
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
     await fetch(`/api/works/${params.id}/comments`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.access_token}`,
+      },
       body: JSON.stringify({
         content: reply,
         reply_to: parentId,
@@ -90,6 +111,7 @@ export default function WorkPage({ params }: { params: { id: string } }) {
     loadComments();
   };
 
+
   const loadLikes = async () => {
     const res = await fetch(`/api/works/${params.id}/likes`);
     const data = await res.json();
@@ -98,9 +120,17 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   };
 
   const toggleLike = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
     const res = await fetch(`/api/works/${params.id}/like`, {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
     });
+
     const data = await res.json();
     setLiked(data.liked);
     loadLikes();
@@ -114,9 +144,17 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   };
 
   const toggleFavorite = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
     const res = await fetch(`/api/works/${params.id}/favorite`, {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
     });
+
     const data = await res.json();
     setFavorited(data.favorited);
     loadFavorites();
@@ -157,18 +195,16 @@ export default function WorkPage({ params }: { params: { id: string } }) {
         <div className="flex items-center gap-3 mt-4">
           <button
             onClick={toggleLike}
-            className={`px-4 py-2 rounded ${
-              liked ? "bg-white text-black" : "bg-gray-800 text-white"
-            }`}
+            className={`px-4 py-2 rounded ${liked ? "bg-white text-black" : "bg-gray-800 text-white"
+              }`}
           >
             {liked ? "♥ いいね済み" : "♡ いいね"}
           </button>
 
           <button
             onClick={toggleFavorite}
-            className={`px-4 py-2 rounded ${
-              favorited ? "bg-yellow-400 text-black" : "bg-gray-800 text-white"
-            }`}
+            className={`px-4 py-2 rounded ${favorited ? "bg-yellow-400 text-black" : "bg-gray-800 text-white"
+              }`}
           >
             {favorited ? "★ お気に入り済み" : "☆ お気に入り"}
           </button>

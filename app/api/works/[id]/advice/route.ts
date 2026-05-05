@@ -1,8 +1,11 @@
+"use server";
+
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase";
 import OpenAI from "openai";
+import { createApiClient } from "@/lib/supabase-api";
 
 async function generateAdvice(work: any) {
     const client = new OpenAI({
@@ -50,39 +53,61 @@ async function generateAdvice(work: any) {
 }
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-    const supabase = createClient();
+    export async function POST(req, { params }) {
+        const supabase = createApiClient(req);
 
-    const user = await supabase.auth.getUser();
-    if (!user.data.user) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const workId = params.id;
+
+        const { data: work } = await supabase
+            .from("works")
+            .select("*")
+            .eq("id", workId)
+            .single();
+
+        if (!work) {
+            return NextResponse.json({ error: "Not found" }, { status: 404 });
+        }
+
+        if (work.user_id !== user.data.user.id) {
+            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+        }
+
+        if (work.advice) {
+            return NextResponse.json({ advice: work.advice });
+        }
+
+        const advice = await generateAdvice(work);
+
+        await supabase
+            .from("works")
+            .update({ advice })
+            .eq("id", workId);
+
+        return NextResponse.json({ advice });
     }
 
-    const workId = params.id;
+    export async function GET(req: Request, { params }: { params: { id: string } }) {
+        const supabase = createClient();
 
-    const { data: work } = await supabase
-        .from("works")
-        .select("*")
-        .eq("id", workId)
-        .single();
+        const workId = params.id;
 
-    if (!work) {
-        return NextResponse.json({ error: "Not found" }, { status: 404 });
+        const { data: work, error } = await supabase
+            .from("works")
+            .select("advice")
+            .eq("id", workId)
+            .single();
+
+        if (error || !work) {
+            return NextResponse.json({ error: "Not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ advice: work.advice ?? null });
     }
-
-    if (work.user_id !== user.data.user.id) {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
-    if (work.advice) {
-        return NextResponse.json({ advice: work.advice });
-    }
-
-    const advice = await generateAdvice(work);
-
-    await supabase
-        .from("works")
-        .update({ advice })
-        .eq("id", workId);
-
-    return NextResponse.json({ advice });
-}

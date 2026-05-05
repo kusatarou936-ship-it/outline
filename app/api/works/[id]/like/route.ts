@@ -1,11 +1,29 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createClient();
+  // フロントから送られた JWT を取得
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "");
 
-  const user = await supabase.auth.getUser();
-  if (!user.data.user) {
+  // Authorization を含めて Supabase クライアントを作成
+  const supabase = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    }
+  );
+
+  // 認証チェック
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -16,23 +34,17 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     .from("likes")
     .select("*")
     .eq("work_id", workId)
-    .eq("user_id", user.data.user.id)
+    .eq("user_id", user.id)
     .maybeSingle();
 
   if (existing) {
-    // いいね解除
-    await supabase
-      .from("likes")
-      .delete()
-      .eq("id", existing.id);
-
+    await supabase.from("likes").delete().eq("id", existing.id);
     return NextResponse.json({ liked: false });
   }
 
-  // 新規いいね
   await supabase.from("likes").insert({
     work_id: workId,
-    user_id: user.data.user.id,
+    user_id: user.id,
   });
 
   return NextResponse.json({ liked: true });
