@@ -1,35 +1,19 @@
+"use server";
+
 import { NextResponse } from "next/server";
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { createApiClient } from "@/lib/supabase-api";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  // フロントから送られた JWT を取得
-  const token = req.headers.get("Authorization")?.replace("Bearer ", "");
+  const supabase = createApiClient(req);
 
-  // Authorization を含めて Supabase クライアントを作成
-  const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      global: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    }
-  );
-
-  // 認証チェック
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const workId = params.id;
 
-  // すでに押しているか確認
   const { data: existing } = await supabase
     .from("likes")
     .select("*")

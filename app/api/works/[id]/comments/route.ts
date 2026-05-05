@@ -1,64 +1,51 @@
 "use server";
 
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase";
 import { createApiClient } from "@/lib/supabase-api";
 
+// POST: コメント投稿
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-    const body = await req.json();
+  const supabase = createApiClient(req);
+  const body = await req.json();
 
-    export async function POST(req, { params }) {
-        const supabase = createApiClient(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-        if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+  if (!body.content || body.content.trim() === "")
+    return NextResponse.json({ error: "Empty comment" }, { status: 400 });
 
-        await supabase.from("comments").insert({
-            work_id: params.id,
-            user_id: user.data.user.id,
-            content: body.content,
-            reply_to: body.reply_to ?? null,
-        });
+  await supabase.from("comments").insert({
+    work_id: params.id,
+    user_id: user.id,
+    content: body.content,
+    reply_to: body.reply_to ?? null,
+  });
 
+  return NextResponse.json({ success: true });
+}
 
-        return NextResponse.json({ success: true });
-    }
+// GET: コメント取得
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const supabase = createApiClient(req);
 
-    export async function GET(req: Request, { params }: { params: { id: string } }) {
-        export async function POST(req, { params }) {
-            const supabase = createApiClient(req);
+  const { data } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("work_id", params.id)
+    .order("created_at", { ascending: true });
 
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
+  const list = data ?? [];
 
-            if (!user) {
-                return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-            }
+  const parents = list.filter((c) => !c.reply_to);
+  const replies = list.filter((c) => c.reply_to);
 
-            const { data } = await supabase
-                .from("comments")
-                .select("*")
-                .eq("work_id", params.id)
-                .order("created_at", { ascending: true });
+  const tree = parents.map((p) => ({
+    ...p,
+    replies: replies.filter((r) => r.reply_to === p.id),
+  }));
 
-            // 親コメントと返信を分ける
-            const list = data ?? [];
-
-            const parents = list.filter((c) => !c.reply_to);
-            const replies = list.filter((c) => c.reply_to);
-
-            // 親コメントに replies を紐づける
-            const tree = parents.map((p) => ({
-                ...p,
-                replies: replies.filter((r) => r.reply_to === p.id),
-            }));
-
-            return NextResponse.json(tree);
-        }
-
+  return NextResponse.json(tree);
+}

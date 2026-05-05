@@ -3,16 +3,15 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase";
 import OpenAI from "openai";
 import { createApiClient } from "@/lib/supabase-api";
 
 async function generateAdvice(work: any) {
-    const client = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-    });
+  const client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY!,
+  });
 
-    const prompt = `
+  const prompt = `
 あなたは作品レビューではなく、作者のためのアドバイザーです。
 作品を評価したり、順位をつけたりしてはいけません。
 批判ではなく、改善のための建設的な提案だけを行ってください。
@@ -25,15 +24,7 @@ async function generateAdvice(work: any) {
 4. 作品の強みの言語化
 5. 初見ユーザーが迷いそうな点の指摘
 
-出力は必ず次の JSON 形式で返してください：
-
-{
-  "description": "...",
-  "tags": "...",
-  "thumbnail": "...",
-  "strengths": "...",
-  "confusion": "..."
-}
+出力は JSON 形式で返してください。
 
 作品データ：
 タイトル: ${work.title}
@@ -43,71 +34,59 @@ async function generateAdvice(work: any) {
 サムネイル: ${work.thumbnail_url}
 `;
 
-    const response = await client.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" },
-    });
+  const response = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [{ role: "user", content: prompt }],
+    response_format: { type: "json_object" },
+  });
 
-    return JSON.parse(response.choices[0].message.content!);
+  return JSON.parse(response.choices[0].message.content!);
 }
 
+// POST: アドバイス生成（作者のみ）
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-    export async function POST(req, { params }) {
-        const supabase = createApiClient(req);
+  const supabase = createApiClient(req);
 
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-        if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-        const workId = params.id;
+  const workId = params.id;
 
-        const { data: work } = await supabase
-            .from("works")
-            .select("*")
-            .eq("id", workId)
-            .single();
+  const { data: work } = await supabase
+    .from("works")
+    .select("*")
+    .eq("id", workId)
+    .single();
 
-        if (!work) {
-            return NextResponse.json({ error: "Not found" }, { status: 404 });
-        }
+  if (!work) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-        if (work.user_id !== user.data.user.id) {
-            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-        }
+  if (work.user_id !== user.id)
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-        if (work.advice) {
-            return NextResponse.json({ advice: work.advice });
-        }
+  if (work.advice) return NextResponse.json({ advice: work.advice });
 
-        const advice = await generateAdvice(work);
+  const advice = await generateAdvice(work);
 
-        await supabase
-            .from("works")
-            .update({ advice })
-            .eq("id", workId);
+  await supabase.from("works").update({ advice }).eq("id", workId);
 
-        return NextResponse.json({ advice });
-    }
+  return NextResponse.json({ advice });
+}
 
-    export async function GET(req: Request, { params }: { params: { id: string } }) {
-        const supabase = createClient();
+// GET: アドバイス取得（誰でも）
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const supabase = createApiClient(req);
 
-        const workId = params.id;
+  const { data: work, error } = await supabase
+    .from("works")
+    .select("advice")
+    .eq("id", params.id)
+    .single();
 
-        const { data: work, error } = await supabase
-            .from("works")
-            .select("advice")
-            .eq("id", workId)
-            .single();
+  if (error || !work)
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-        if (error || !work) {
-            return NextResponse.json({ error: "Not found" }, { status: 404 });
-        }
-
-        return NextResponse.json({ advice: work.advice ?? null });
-    }
+  return NextResponse.json({ advice: work.advice ?? null });
+}
