@@ -20,3 +20,12 @@ export type Work = {
     confusion: string | null;
   } | null;
 };
+
+export type Comment = {
+  id: string;
+  content: string;
+  created_at: string;
+  user_id: string;
+  reply_to: string | null;
+  replies: Comment[];   // ← これが必要
+};

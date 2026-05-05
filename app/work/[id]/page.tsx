@@ -2,24 +2,61 @@
 
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import type { Work } from "@/app/types";
+import type { Work, Comment } from "@/app/types";
 
 export default function WorkPage({ params }: { params: { id: string } }) {
   const [work, setWork] = useState<Work | null>(null);
   const [advice, setAdvice] = useState<Work["advice"]>(null);
   const [loadingAdvice, setLoadingAdvice] = useState(false);
 
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [comment, setComment] = useState("");
+
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  const [favorited, setFavorited] = useState(false);
+  const [favoriteCount, setFavoriteCount] = useState(0);
+
+  const [replyTarget, setReplyTarget] = useState<string | null>(null);
+  const [reply, setReply] = useState("");
+
   useEffect(() => {
     fetchWork();
     fetchAdvice();
+    loadComments();
+    loadLikes();
+    loadFavorites();
   }, []);
 
-  const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState("");
+  const fetchWork = async () => {
+    const res = await fetch(`/api/works/${params.id}`);
+    const data: Work = await res.json();
+    setWork(data);
+  };
+
+  const fetchAdvice = async () => {
+    const res = await fetch(`/api/works/${params.id}/advice`);
+    const data = await res.json();
+    setAdvice(data.advice ?? null);
+  };
+
+  const handleGenerateAdvice = async () => {
+    setLoadingAdvice(true);
+    await new Promise((r) => setTimeout(r, 2000));
+
+    const res = await fetch(`/api/works/${params.id}/advice`, {
+      method: "POST",
+    });
+
+    const data = await res.json();
+    setAdvice(data.advice);
+    setLoadingAdvice(false);
+  };
 
   const loadComments = async () => {
     const res = await fetch(`/api/works/${params.id}/comments`);
-    const data = await res.json();
+    const data: Comment[] = await res.json();
     setComments(data);
   };
 
@@ -35,68 +72,6 @@ export default function WorkPage({ params }: { params: { id: string } }) {
     setComment("");
     loadComments();
   };
-
-  useEffect(() => {
-    fetchWork();
-    fetchAdvice();
-    loadComments(); // ← コメント読み込み
-  }, []);
-
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-
-  const loadLikes = async () => {
-    const res = await fetch(`/api/works/${params.id}/likes`);
-    const data = await res.json();
-    setLikeCount(data.count);
-  };
-
-  const toggleLike = async () => {
-    const res = await fetch(`/api/works/${params.id}/like`, {
-      method: "POST",
-    });
-    const data = await res.json();
-
-    setLiked(data.liked);
-    loadLikes();
-  };
-
-  useEffect(() => {
-    fetchWork();
-    fetchAdvice();
-    loadComments();
-    loadLikes(); // ← 追加
-  }, []);
-
-  const [favorited, setFavorited] = useState(false);
-  const [favoriteCount, setFavoriteCount] = useState(0);
-
-  const loadFavorites = async () => {
-    const res = await fetch(`/api/works/${params.id}/favorites`);
-    const data = await res.json();
-    setFavoriteCount(data.count);
-  };
-
-  const toggleFavorite = async () => {
-    const res = await fetch(`/api/works/${params.id}/favorite`, {
-      method: "POST",
-    });
-    const data = await res.json();
-
-    setFavorited(data.favorited);
-    loadFavorites();
-  };
-
-  useEffect(() => {
-    fetchWork();
-    fetchAdvice();
-    loadComments();
-    loadLikes();
-    loadFavorites(); // ← 追加
-  }, []);
-
-  const [replyTarget, setReplyTarget] = useState<string | null>(null);
-  const [reply, setReply] = useState("");
 
   const submitReply = async (parentId: string) => {
     if (!reply.trim()) return;
@@ -115,31 +90,36 @@ export default function WorkPage({ params }: { params: { id: string } }) {
     loadComments();
   };
 
-  const fetchWork = async () => {
-    const res = await fetch(`/api/works/${params.id}`);
-    const data: Work = await res.json();
-    setWork(data);
-  };
-
-  const fetchAdvice = async () => {
-    const res = await fetch(`/api/works/${params.id}/advice`);
+  const loadLikes = async () => {
+    const res = await fetch(`/api/works/${params.id}/likes`);
     const data = await res.json();
-    setAdvice(data.advice ?? null);
+    setLikeCount(data.count);
+    setLiked(data.liked);
   };
 
-  const handleGenerateAdvice = async () => {
-    setLoadingAdvice(true);
-
-    // 本来は広告視聴 → 完了後に POST
-    await new Promise((r) => setTimeout(r, 2000));
-
-    const res = await fetch(`/api/works/${params.id}/advice`, {
+  const toggleLike = async () => {
+    const res = await fetch(`/api/works/${params.id}/like`, {
       method: "POST",
     });
-
     const data = await res.json();
-    setAdvice(data.advice);
-    setLoadingAdvice(false);
+    setLiked(data.liked);
+    loadLikes();
+  };
+
+  const loadFavorites = async () => {
+    const res = await fetch(`/api/works/${params.id}/favorites`);
+    const data = await res.json();
+    setFavoriteCount(data.count);
+    setFavorited(data.favorited);
+  };
+
+  const toggleFavorite = async () => {
+    const res = await fetch(`/api/works/${params.id}/favorite`, {
+      method: "POST",
+    });
+    const data = await res.json();
+    setFavorited(data.favorited);
+    loadFavorites();
   };
 
   if (!work) {
@@ -173,27 +153,27 @@ export default function WorkPage({ params }: { params: { id: string } }) {
           </p>
         </header>
 
-        {/* いいねボタン */}
+        {/* いいね・お気に入り */}
         <div className="flex items-center gap-3 mt-4">
           <button
             onClick={toggleLike}
-            className={`px-4 py-2 rounded ${liked ? "bg-white text-black" : "bg-gray-800 text-white"
-              }`}
+            className={`px-4 py-2 rounded ${
+              liked ? "bg-white text-black" : "bg-gray-800 text-white"
+            }`}
           >
             {liked ? "♥ いいね済み" : "♡ いいね"}
           </button>
 
-          {/* お気に入り */}
           <button
             onClick={toggleFavorite}
-            className={`px-4 py-2 rounded ${favorited ? "bg-yellow-400 text-black" : "bg-gray-800 text-white"
-              }`}
+            className={`px-4 py-2 rounded ${
+              favorited ? "bg-yellow-400 text-black" : "bg-gray-800 text-white"
+            }`}
           >
             {favorited ? "★ お気に入り済み" : "☆ お気に入り"}
           </button>
 
           <span className="text-gray-400">{favoriteCount} 件</span>
-
           <span className="text-gray-400">{likeCount} 件</span>
         </div>
 
@@ -295,6 +275,7 @@ export default function WorkPage({ params }: { params: { id: string } }) {
           </section>
         )}
       </div>
+
       {/* コメント欄 */}
       <section className="pt-10 border-t border-gray-800 space-y-6">
         <h2 className="text-xl font-medium">コメント</h2>
@@ -317,68 +298,59 @@ export default function WorkPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* コメント一覧 */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {comments.map((c) => (
             <div key={c.id} className="border border-gray-800 p-4 rounded">
+
+              {/* 親コメント */}
               <p className="text-gray-300 whitespace-pre-wrap">{c.content}</p>
-              <p className="text-gray-500 text-xs mt-2">
+              <p className="text-gray-500 text-xs mt-1">
                 {new Date(c.created_at).toLocaleString("ja-JP")}
               </p>
+
+              {/* 返信ボタン */}
+              <button
+                onClick={() => setReplyTarget(c.id)}
+                className="text-sm text-blue-400 mt-2 hover:underline"
+              >
+                返信する
+              </button>
+
+              {/* 返信フォーム */}
+              {replyTarget === c.id && (
+                <div className="mt-3 space-y-2">
+                  <textarea
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 h-20"
+                    placeholder="返信を書く…"
+                    value={reply}
+                    onChange={(e) => setReply(e.target.value)}
+                  />
+
+                  <button
+                    onClick={() => submitReply(c.id)}
+                    className="bg-white text-black px-3 py-1 rounded hover:opacity-90"
+                  >
+                    返信を投稿
+                  </button>
+                </div>
+              )}
+
+              {/* 返信一覧 */}
+              <div className="mt-4 pl-4 border-l border-gray-800 space-y-4">
+                {c.replies.map((r) => (
+                  <div key={r.id}>
+                    <p className="text-gray-300 whitespace-pre-wrap">{r.content}</p>
+                    <p className="text-gray-500 text-xs mt-1">
+                      {new Date(r.created_at).toLocaleString("ja-JP")}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
             </div>
           ))}
         </div>
       </section>
-      <div className="space-y-6">
-        {comments.map((c) => (
-          <div key={c.id} className="border border-gray-800 p-4 rounded">
-
-            {/* 親コメント */}
-            <p className="text-gray-300 whitespace-pre-wrap">{c.content}</p>
-            <p className="text-gray-500 text-xs mt-1">
-              {new Date(c.created_at).toLocaleString("ja-JP")}
-            </p>
-
-            {/* 返信ボタン */}
-            <button
-              onClick={() => setReplyTarget(c.id)}
-              className="text-sm text-blue-400 mt-2 hover:underline"
-            >
-              返信する
-            </button>
-
-            {/* 返信フォーム（対象のときだけ表示） */}
-            {replyTarget === c.id && (
-              <div className="mt-3 space-y-2">
-                <textarea
-                  className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 h-20"
-                  placeholder="返信を書く…"
-                  value={reply}
-                  onChange={(e) => setReply(e.target.value)}
-                />
-
-                <button
-                  onClick={() => submitReply(c.id)}
-                  className="bg-white text-black px-3 py-1 rounded hover:opacity-90"
-                >
-                  返信を投稿
-                </button>
-              </div>
-            )}
-
-            {/* 返信一覧 */}
-            <div className="mt-4 pl-4 border-l border-gray-800 space-y-4">
-              {c.replies.map((r) => (
-                <div key={r.id}>
-                  <p className="text-gray-300 whitespace-pre-wrap">{r.content}</p>
-                  <p className="text-gray-500 text-xs mt-1">
-                    {new Date(r.created_at).toLocaleString("ja-JP")}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
