@@ -6,7 +6,7 @@ type Work = {
 };
 
 export default async function FeedPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/works`);
+  const res = await fetch("/api/works");
   const works: Work[] = await res.json();
 
   return (
