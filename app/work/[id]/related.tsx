@@ -1,4 +1,5 @@
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase";
+const supabase = createClient();
 
 export default async function Related({ id }: { id: string }) {
   // 現在の作品を取得（目的：purpose / focus / stack を使う）
