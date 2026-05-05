@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
   // サムネイルアップロード
   const thumbnail = formData.get("thumbnail") as File | null;
-  let thumbnail_url = null;
+  let thumbnail_url: string | null = null;
 
   if (thumbnail) {
     const fileName = `${Date.now()}-${thumbnail.name}`;
