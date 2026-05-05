@@ -1,10 +1,8 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase";
 import OpenAI from "openai";
-
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
     const supabase = createClient();
@@ -30,7 +28,11 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // AI に渡すプロンプト
+    // ★★★ ここで初めて OpenAI を初期化（ビルド時に実行されない） ★★★
+    const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+
     const prompt = `
 あなたはサムネイルデザイナーです。
 作品の内容をもとに、視認性が高く、シンプルで美しいサムネイルを生成してください。
@@ -47,14 +49,12 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 - 作品の雰囲気を抽象的に表現
 `;
 
-    // 画像生成
     const image = await client.images.generate({
         model: "gpt-image-1",
         prompt,
         size: "1024x1024",
     });
 
-    // 画像生成レスポンスの安全チェック
     if (!image.data || image.data.length === 0) {
         return NextResponse.json({ error: "No image returned" }, { status: 500 });
     }
@@ -62,8 +62,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     const base64 = image.data[0].b64_json!;
     const buffer = Buffer.from(base64, "base64");
 
-
-    // Supabase Storage に保存
     const filePath = `thumbnails/${workId}-${Date.now()}.png`;
 
     const { data: upload } = await supabase.storage
@@ -80,7 +78,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         .from("thumbnails")
         .getPublicUrl(filePath).data.publicUrl;
 
-    // DB 更新
     await supabase
         .from("works")
         .update({ thumbnail_url: publicUrl })
