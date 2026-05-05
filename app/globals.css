@@ -88,7 +88,7 @@ p {
 }
 
 .prose-invert {
-  @apply text-zinc-300;
+  @apply text-gray-300;
 }
 
 .prose-invert h1,
@@ -111,15 +111,15 @@ p {
 }
 
 .prose-invert blockquote {
-  @apply border-l-4 border-zinc-700 pl-4 italic text-zinc-400 my-6;
+  @apply border-l-4 border-gray-700 pl-4 italic text-gray-400 my-6;
 }
 
 .prose-invert pre {
-  @apply bg-zinc-900 p-4 rounded-lg overflow-x-auto my-6;
+  @apply bg-gray-900 p-4 rounded-lg overflow-x-auto my-6;
 }
 
 .prose-invert code {
-  @apply text-zinc-200;
+  @apply text-gray-200;
 }
 
 .prose-invert img {
