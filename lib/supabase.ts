@@ -7,8 +7,8 @@ export function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       auth: {
-        persistSession: true,
-        autoRefreshToken: true,
+        persistSession: false,   // ← これが絶対必要
+        autoRefreshToken: false, // ← Edge Runtime では無効
       },
     }
   );
