@@ -25,8 +25,6 @@ FILES:
   - C:\Users\user\outline-app\app\api\search\route.ts
   - C:\Users\user\outline-app\app\api\signup\route.ts
   - C:\Users\user\outline-app\app\api\submit\route.ts
-  - C:\Users\user\outline-app\app\api\tag\[name]\route.ts
-  - C:\Users\user\outline-app\app\api\tag\[tag]\page.tsx
   - C:\Users\user\outline-app\app\api\tag\[tag]\route.ts
   - C:\Users\user\outline-app\app\api\upload\route.ts
   - C:\Users\user\outline-app\app\api\user\[id]\route.ts
@@ -109,15 +107,6 @@ FUNCTIONS:
   - getPublicUrl
   - generateShortId
   - update
-  - works
-  - TagPage
-  - load
-  - useState
-  - useEffect
-  - async
-  - setWorks
-  - setLoading
-  - return
   - contains
   - generateAdvice
   - OpenAI
@@ -130,10 +119,15 @@ FUNCTIONS:
   - generate
   - ScrollReset
   - usePathname
+  - useEffect
   - scrollTo
   - DashboardPage
   - fetchUser
+  - useState
   - setUser
+  - setWorks
+  - setLoading
+  - return
   - round
   - forEach
   - entries
@@ -142,15 +136,19 @@ FUNCTIONS:
   - dXt
   - FeedPage
   - rgba
+  - var
   - HomeLayout
   - HomePage
   - handleWatchAd
+  - async
   - setUnlocked
   - InternalWorksPage
+  - load
   - Date
   - toLocaleDateString
+  - OpengraphImage
   - ImageResponse
-  - InternalWorkPage
+  - Page
   - RootLayout
   - LoginPage
   - submit
@@ -166,7 +164,6 @@ FUNCTIONS:
   - ClientNotifications
   - NotificationItem
   - setItems
-  - OGImage
   - getTime
   - toUTCString
   - NextResponse
@@ -187,6 +184,8 @@ FUNCTIONS:
   - handleInternalCreate
   - Promise
   - setTimeout
+  - OGImage
+  - TagPage
   - UserPage
   - DeleteButton
   - del
@@ -197,26 +196,26 @@ FUNCTIONS:
   - toLocaleString
   - Loading
   - WorkPage
+  - fetchWork
+  - fetchAdvice
+  - handleGenerateAdvice
   - loadComments
   - submitComment
+  - submitReply
   - loadLikes
   - toggleLike
   - loadFavorites
   - toggleFavorite
-  - submitReply
-  - fetchWork
-  - fetchAdvice
-  - handleGenerateAdvice
+  - setAdvice
+  - setLoadingAdvice
   - setComments
   - setComment
+  - setReply
+  - setReplyTarget
   - setLikeCount
   - setLiked
   - setFavoriteCount
   - setFavorited
-  - setReply
-  - setReplyTarget
-  - setAdvice
-  - setLoadingAdvice
   - Related
   - neq
 
@@ -249,12 +248,6 @@ IMPORT_MAP:
     - next/server
     - @/lib/supabase
     - @/lib/generateShortId
-  C:\Users\user\outline-app\app\api\tag\[name]\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\tag\[tag]\page.tsx:
-    - react
-    - @/app/types
   C:\Users\user\outline-app\app\api\tag\[tag]\route.ts:
     - next/server
     - @/lib/supabase
@@ -301,8 +294,6 @@ IMPORT_MAP:
     - next/navigation
   C:\Users\user\outline-app\app\dashboard\page.tsx:
     - react
-  C:\Users\user\outline-app\app\feed\page.tsx:
-    - react
   C:\Users\user\outline-app\app\home\page.tsx:
     - react
   C:\Users\user\outline-app\app\i\page.tsx:
@@ -311,9 +302,6 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\i\[shortId]\opengraph-image.tsx:
     - next/og
     - @/lib/supabase
-  C:\Users\user\outline-app\app\i\[shortId]\page.tsx:
-    - @/lib/supabase
-    - @/app/work/[id]/page
   C:\Users\user\outline-app\app\layout.tsx:
     - next
     - @/components/Layout/Header
@@ -329,6 +317,7 @@ IMPORT_MAP:
     - react
   C:\Users\user\outline-app\app\opengraph-image.tsx:
     - next/og
+    - @/lib/supabase
   C:\Users\user\outline-app\app\rss\new.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
