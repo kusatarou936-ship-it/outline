@@ -10,8 +10,8 @@ export type Work = {
   body_markdown: string | null;
   tags: string[] | null;
   is_author: boolean;
-  short_id: string;              // ← 必須（内部生成作品の URL に使う）
-  visibility?: "public" | "private"; // ← 作品ページで使う
+  short_id: string;
+  visibility: "public" | "private" | "unlisted";  // ← これ
   advice?: {
     description: string | null;
     tags: string | null;
