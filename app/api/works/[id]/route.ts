@@ -22,7 +22,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   const formData = await req.formData();
 
   const user = await supabase.auth.getUser();
-  if (!user.data.user) {
+  const currentUser = user.data.user;
+
+  if (!currentUser) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -100,7 +102,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   const supabase = createClient();
 
   const user = await supabase.auth.getUser();
-  if (!user.data.user) {
+  const currentUser = user.data.user;
+
+  if (!currentUser) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -118,11 +122,11 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 
   // 作者チェック
-  if (work.user_id !== user.data.user.id) {
+  if (work.user_id !== currentUser.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  // サムネイルがあれば削除（任意）
+  // サムネイル削除
   if (work.thumbnail_url) {
     const path = work.thumbnail_url.split("/").slice(-1)[0];
     await supabase.storage.from("thumbnails").remove([`thumbnails/${path}`]);
@@ -132,25 +136,4 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   await supabase.from("works").delete().eq("id", workId);
 
   return NextResponse.json({ success: true });
-
-  await supabase
-    .from("works")
-    .update({
-      title: body.title,
-      description: body.description,
-      tags: body.tags,
-      body_markdown: body.body_markdown,
-      visibility: body.visibility,   // ← 追加
-    })
-    .eq("id", workId);
-
-  // 現在の状態を履歴として保存
-  await supabase.from("work_history").insert({
-    work_id: workId,
-    user_id: user.data.user.id,
-    title: work.title,
-    description: work.description,
-    body_markdown: work.body_markdown,
-    tags: work.tags,
-  });
 }
