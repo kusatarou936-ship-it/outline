@@ -6,7 +6,11 @@ type Work = {
 };
 
 export default async function FeedPage() {
-  const res = await fetch("/api/works");
+  const base = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
+  const res = await fetch(`${base}/api/works`, { cache: "no-store" });
   const works: Work[] = await res.json();
 
   return (
