@@ -4,9 +4,7 @@ export const runtime = "nodejs";
 import type { Work } from "@/app/types";
 
 export default async function FeedPage() {
-  const base = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+  const base = process.env.NEXT_PUBLIC_SITE_URL!;
 
   const res = await fetch(`${base}/api/works`, { cache: "no-store" });
   const works: Work[] = await res.json();
