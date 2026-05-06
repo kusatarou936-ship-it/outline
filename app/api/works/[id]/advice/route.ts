@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import { createApiClient } from "@/lib/supabase-api";
+import { createApiClient } from "@/lib/supabase-server";
 
 async function generateAdvice(work: any) {
   const client = new OpenAI({
@@ -41,7 +41,7 @@ async function generateAdvice(work: any) {
 }
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
+  const supabase = createApiClient();
 
   const {
     data: { user },
@@ -72,7 +72,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 }
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
+  const supabase = createApiClient();
 
   const { data: work, error } = await supabase
     .from("works")

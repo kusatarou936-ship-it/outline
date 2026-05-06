@@ -2,10 +2,10 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { createApiClient } from "@/lib/supabase-api";
+import { createApiClient } from "@/lib/supabase-server";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
+  const supabase = createApiClient();
 
   const {
     data: { user },

@@ -1,11 +1,11 @@
 "use server";
 
 import { NextResponse } from "next/server";
-import { createApiClient } from "@/lib/supabase-api";
+import { createApiClient } from "@/lib/supabase-server";
 
 // GET: 作品取得
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
+  const supabase = createApiClient();
 
   const { data, error } = await supabase
     .from("works")
@@ -22,7 +22,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
 // POST: 作品更新
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
+  const supabase = createApiClient();
   const formData = await req.formData();
 
   const {
@@ -95,7 +95,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
 // DELETE: 作品削除
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
+  const supabase = createApiClient();
 
   const {
     data: { user },
