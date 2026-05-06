@@ -10,7 +10,7 @@ export default function LoginPage() {
   const API = process.env.NEXT_PUBLIC_API_BASE;
 
   async function submit() {
-    const res = await fetch(`${API}/api/auth/login`, {
+    const res = await fetch(`/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -20,7 +20,6 @@ export default function LoginPage() {
 
     if (res.ok) {
       document.cookie = `token=${data.token}; path=/; max-age=2592000`;
-      setMsg("Login successful");
       window.location.href = "/";
     } else {
       setMsg("Invalid email or password");
