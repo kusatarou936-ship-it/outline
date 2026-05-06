@@ -1,15 +1,57 @@
-import { createClient } from "@/lib/supabase";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { supabase } from "@/lib/supabase";
+import { useEffect, useState } from "react";
 
-export default async function UserPage({ params }: { params: { id: string } }) {
-  const supabase = createClient();
+export default function UserPage({ params }: { params: { id: string } }) {
+  const [user, setUser] = useState<any>(null);
+  const [works, setWorks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const { data: user } = await supabase
-    .from("users")
-    .select("id, name, bio, links, created_at")
-    .eq("id", params.id)
-    .single();
+  useEffect(() => {
+    async function load() {
+      // ユーザー情報
+      const { data: userData } = await supabase
+        .from("users")
+        .select("id, name, bio, links, created_at")
+        .eq("id", params.id)
+        .single();
+
+      if (!userData) {
+        setLoading(false);
+        return;
+      }
+
+      setUser(userData);
+
+      // 作品一覧
+      const { data: worksData } = await supabase
+        .from("works")
+        .select(`
+          id,
+          title,
+          description,
+          thumbnail_url,
+          created_at,
+          user:users(id, name)
+        `)
+        .eq("user_id", params.id)
+        .order("created_at", { ascending: false });
+
+      setWorks(worksData ?? []);
+      setLoading(false);
+    }
+
+    load();
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center text-white">
+        <p>読み込み中...</p>
+      </main>
+    );
+  }
 
   if (!user) {
     return (
@@ -18,19 +60,6 @@ export default async function UserPage({ params }: { params: { id: string } }) {
       </main>
     );
   }
-
-  const { data: works } = await supabase
-    .from("works")
-    .select(`
-      id,
-      title,
-      description,
-      thumbnail,
-      created_at,
-      user:users(id, name)
-    `)
-    .eq("user_id", params.id)
-    .order("created_at", { ascending: false });
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-16 space-y-12">
@@ -65,12 +94,12 @@ export default async function UserPage({ params }: { params: { id: string } }) {
       <section className="space-y-4">
         <h2 className="text-xl font-medium">作品一覧</h2>
 
-        {(!works || works.length === 0) && (
+        {works.length === 0 && (
           <p className="opacity-60">まだ作品がありません。</p>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {works?.map((w) => (
+          {works.map((w) => (
             <a
               key={w.id}
               href={`/work/${w.id}`}
@@ -79,7 +108,7 @@ export default async function UserPage({ params }: { params: { id: string } }) {
               <div className="aspect-video bg-white/10 overflow-hidden">
                 <img
                   src={
-                    w.thumbnail ??
+                    w.thumbnail_url ??
                     "https://placehold.co/1280x720/000/FFF?text=No+Thumbnail"
                   }
                   alt={w.title}
