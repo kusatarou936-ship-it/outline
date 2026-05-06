@@ -1,10 +1,14 @@
 "use server";
 
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase";
+import { createApiClient } from "@/lib/supabase-api";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+// GET: 作品取得
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createClient();
+  const supabase = createApiClient(req);
 
   const { data, error } = await supabase
     .from("works")
@@ -19,14 +23,16 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   return NextResponse.json(data);
 }
 
+// POST: 作品更新
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createClient();
+  const supabase = createApiClient(req);
   const formData = await req.formData();
 
-  const user = await supabase.auth.getUser();
-  const currentUser = user.data.user;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!currentUser) {
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -44,7 +50,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   }
 
   // 作者チェック
-  if (work.user_id !== user.data.user.id) {
+  if (work.user_id !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -100,13 +106,15 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   return NextResponse.json({ success: true });
 }
 
+// DELETE: 作品削除
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createClient();
+  const supabase = createApiClient(req);
 
-  const user = await supabase.auth.getUser();
-  const currentUser = user.data.user;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!currentUser) {
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -124,14 +132,14 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 
   // 作者チェック
-  if (work.user_id !== currentUser.id) {
+  if (work.user_id !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   // サムネイル削除
   if (work.thumbnail_url) {
     const path = work.thumbnail_url.split("/").slice(-1)[0];
-    await supabase.storage.from("thumbnails").remove([`thumbnails/${path}`]);
+    await supabase.storage.from("thumbnails").remove([path]);
   }
 
   // DB から削除
