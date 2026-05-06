@@ -28,6 +28,7 @@ FILES:
   - C:\Users\user\outline-app\app\api\tag\[tag]\route.ts
   - C:\Users\user\outline-app\app\api\upload\route.ts
   - C:\Users\user\outline-app\app\api\user\[id]\route.ts
+  - C:\Users\user\outline-app\app\api\works\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts
@@ -108,6 +109,8 @@ FUNCTIONS:
   - generateShortId
   - update
   - contains
+  - createApiClient
+  - String
   - generateAdvice
   - OpenAI
   - create
@@ -209,6 +212,7 @@ FUNCTIONS:
   - setAdvice
   - setLoadingAdvice
   - setComments
+  - getSession
   - setComment
   - setReply
   - setReplyTarget
@@ -257,16 +261,19 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\api\user\[id]\route.ts:
     - next/server
     - @/lib/supabase
+  C:\Users\user\outline-app\app\api\works\route.ts:
+    - next/server
+    - @/lib/supabase-api
   C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts:
     - next/server
-    - @/lib/supabase
     - openai
+    - @/lib/supabase-api
   C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts:
     - next/server
-    - @/lib/supabase
+    - @/lib/supabase-api
   C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts:
     - next/server
-    - @/lib/supabase
+    - @/lib/supabase-api
   C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts:
     - next/server
     - @/lib/supabase
@@ -275,7 +282,7 @@ IMPORT_MAP:
     - @/lib/supabase
   C:\Users\user\outline-app\app\api\works\[id]\like\route.ts:
     - next/server
-    - @/lib/supabase
+    - @/lib/supabase-api
   C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts:
     - next/server
     - @/lib/supabase
@@ -294,6 +301,8 @@ IMPORT_MAP:
     - next/navigation
   C:\Users\user\outline-app\app\dashboard\page.tsx:
     - react
+  C:\Users\user\outline-app\app\feed\page.tsx:
+    - @/app/types
   C:\Users\user\outline-app\app\home\page.tsx:
     - react
   C:\Users\user\outline-app\app\i\page.tsx:
@@ -354,6 +363,7 @@ IMPORT_MAP:
     - react
     - react-markdown
     - @/app/types
+    - @supabase/supabase-js
   C:\Users\user\outline-app\app\work\[id]\related.tsx:
     - @/lib/supabase
 

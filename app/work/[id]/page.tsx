@@ -69,15 +69,11 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   const submitComment = async () => {
     if (!comment.trim()) return;
 
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
     await fetch(`/api/works/${params.id}/comments`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.access_token}`,
       },
       body: JSON.stringify({ content: comment }),
     });
@@ -86,19 +82,14 @@ export default function WorkPage({ params }: { params: { id: string } }) {
     loadComments();
   };
 
-
   const submitReply = async (parentId: string) => {
     if (!reply.trim()) return;
 
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
     await fetch(`/api/works/${params.id}/comments`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.access_token}`,
       },
       body: JSON.stringify({
         content: reply,
@@ -111,7 +102,6 @@ export default function WorkPage({ params }: { params: { id: string } }) {
     loadComments();
   };
 
-
   const loadLikes = async () => {
     const res = await fetch(`/api/works/${params.id}/likes`);
     const data = await res.json();
@@ -120,15 +110,9 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   };
 
   const toggleLike = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
     const res = await fetch(`/api/works/${params.id}/like`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${session?.access_token}`,
-      },
+      credentials: "include",
     });
 
     const data = await res.json();
@@ -144,15 +128,9 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   };
 
   const toggleFavorite = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
     const res = await fetch(`/api/works/${params.id}/favorite`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${session?.access_token}`,
-      },
+      credentials: "include",
     });
 
     const data = await res.json();
