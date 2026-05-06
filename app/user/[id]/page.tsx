@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 import { useEffect, useState } from "react";
 
 export default function UserPage({ params }: { params: { id: string } }) {
@@ -11,7 +11,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     async function load() {
       // ユーザー情報
-      const { data: userData } = await supabase
+      const { data: userData } = await supabaseBrowser
         .from("users")
         .select("id, name, bio, links, created_at")
         .eq("id", params.id)
@@ -25,7 +25,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
       setUser(userData);
 
       // 作品一覧
-      const { data: worksData } = await supabase
+      const { data: worksData } = await supabaseBrowser
         .from("works")
         .select(`
           id,

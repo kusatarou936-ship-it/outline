@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 import { useEffect, useState } from "react";
 
 export default function Related({ id }: { id: string }) {
@@ -9,8 +9,7 @@ export default function Related({ id }: { id: string }) {
 
   useEffect(() => {
     async function load() {
-      // 現在の作品の属性を取得
-      const { data: current } = await supabase
+      const { data: current } = await supabaseBrowser
         .from("works")
         .select("purpose, focus, stack")
         .eq("id", id)
@@ -21,8 +20,7 @@ export default function Related({ id }: { id: string }) {
         return;
       }
 
-      // 関連作品を取得
-      const { data: rel } = await supabase
+      const { data: rel } = await supabaseBrowser
         .from("works")
         .select("id, title, thumbnail_url")
         .neq("id", id)
