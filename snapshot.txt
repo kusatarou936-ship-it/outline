@@ -31,14 +31,12 @@ FILES:
   - C:\Users\user\outline-app\app\home\layout.tsx
   - C:\Users\user\outline-app\app\home\page.tsx
   - C:\Users\user\outline-app\app\i\page.tsx
-  - C:\Users\user\outline-app\app\i\[shortId]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\i\[shortId]\page.tsx
   - C:\Users\user\outline-app\app\layout.tsx
   - C:\Users\user\outline-app\app\login\page.tsx
   - C:\Users\user\outline-app\app\me\page.tsx
   - C:\Users\user\outline-app\app\not-found.tsx
   - C:\Users\user\outline-app\app\notifications\page.tsx
-  - C:\Users\user\outline-app\app\opengraph-image.tsx
   - C:\Users\user\outline-app\app\page.tsx
   - C:\Users\user\outline-app\app\rss\new.xml\route.ts
   - C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts
@@ -61,7 +59,6 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\edit\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\error.tsx
   - C:\Users\user\outline-app\app\work\[id]\loading.tsx
-  - C:\Users\user\outline-app\app\work\[id]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\work\[id]\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
 
@@ -86,7 +83,6 @@ FUNCTIONS:
   - maybeSingle
   - delete
   - DELETE
-  - createClient
   - formData
   - get
   - now
@@ -122,8 +118,6 @@ FUNCTIONS:
   - load
   - Date
   - toLocaleDateString
-  - OpengraphImage
-  - ImageResponse
   - Page
   - RootLayout
   - LoginPage
@@ -161,6 +155,7 @@ FUNCTIONS:
   - Promise
   - setTimeout
   - OGImage
+  - ImageResponse
   - TagPage
   - UserPage
   - users
@@ -183,6 +178,7 @@ FUNCTIONS:
   - toggleLike
   - loadFavorites
   - toggleFavorite
+  - createClient
   - setAdvice
   - setLoadingAdvice
   - setComments
@@ -195,6 +191,7 @@ FUNCTIONS:
   - setFavorited
   - Related
   - neq
+  - setRelated
 
 IMPORT_MAP:
   C:\Users\user\outline-app\app\api\works\route.ts:
@@ -215,7 +212,7 @@ IMPORT_MAP:
     - @/lib/supabase-api
   C:\Users\user\outline-app\app\api\works\[id]\route.ts:
     - next/server
-    - @/lib/supabase
+    - @/lib/supabase-api
   C:\Users\user\outline-app\app\components\ScrollReset.tsx:
     - react
     - next/navigation
@@ -228,9 +225,6 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\i\page.tsx:
     - react
     - @/app/types
-  C:\Users\user\outline-app\app\i\[shortId]\opengraph-image.tsx:
-    - next/og
-    - @/lib/supabase
   C:\Users\user\outline-app\app\layout.tsx:
     - next
     - @/components/Layout/Header
@@ -244,9 +238,6 @@ IMPORT_MAP:
     - @/app/types
   C:\Users\user\outline-app\app\notifications\page.tsx:
     - react
-  C:\Users\user\outline-app\app\opengraph-image.tsx:
-    - next/og
-    - @/lib/supabase
   C:\Users\user\outline-app\app\rss\new.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
@@ -273,12 +264,10 @@ IMPORT_MAP:
     - next/og
   C:\Users\user\outline-app\app\user\[id]\page.tsx:
     - @/lib/supabase
+    - react
   C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
     - react
     - @/app/types
-  C:\Users\user\outline-app\app\work\[id]\opengraph-image.tsx:
-    - next/og
-    - @/lib/supabase
   C:\Users\user\outline-app\app\work\[id]\page.tsx:
     - react
     - react-markdown
@@ -286,6 +275,7 @@ IMPORT_MAP:
     - @supabase/supabase-js
   C:\Users\user\outline-app\app\work\[id]\related.tsx:
     - @/lib/supabase
+    - react
 
 INVARIANTS:
   - const は再代入不可
