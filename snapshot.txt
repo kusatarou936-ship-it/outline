@@ -77,7 +77,6 @@ FILES:
   - C:\Users\user\outline-app\app\types.ts
   - C:\Users\user\outline-app\app\user\[id]\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\delete\page.tsx
-  - C:\Users\user\outline-app\app\work\[id]\delete-button.tsx
   - C:\Users\user\outline-app\app\work\[id]\edit\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\error.tsx
   - C:\Users\user\outline-app\app\work\[id]\loading.tsx
@@ -209,8 +208,6 @@ FUNCTIONS:
   - users
   - DeleteWorkPage
   - notFound
-  - DeleteButton
-  - del
   - EditWorkPage
   - Loading
   - Related
