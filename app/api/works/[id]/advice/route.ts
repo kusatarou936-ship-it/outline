@@ -1,8 +1,10 @@
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import { createApiClient } from "@/lib/supabase-server";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 async function generateAdvice(work: any) {
   const client = new OpenAI({
@@ -40,14 +42,29 @@ async function generateAdvice(work: any) {
   return JSON.parse(response.choices[0].message.content!);
 }
 
+// POST: アドバイス生成
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient();
+  const cookieStore = cookies();
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const workId = params.id;
 
@@ -57,12 +74,17 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     .eq("id", workId)
     .single();
 
-  if (!work) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!work) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
 
-  if (work.user_id !== user.id)
+  if (work.user_id !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
-  if (work.advice) return NextResponse.json({ advice: work.advice });
+  if (work.advice) {
+    return NextResponse.json({ advice: work.advice });
+  }
 
   const advice = await generateAdvice(work);
 
@@ -71,8 +93,21 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   return NextResponse.json({ advice });
 }
 
+// GET: アドバイス取得
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient();
+  const cookieStore = cookies();
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
 
   const { data: work, error } = await supabase
     .from("works")
@@ -80,8 +115,9 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     .eq("id", params.id)
     .single();
 
-  if (error || !work)
+  if (error || !work) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
 
   return NextResponse.json({ advice: work.advice ?? null });
 }

@@ -16,7 +16,6 @@ TECH_STACK:
   - CSS
 
 FILES:
-  - C:\Users\user\outline-app\app\api\auth\login\route.ts
   - C:\Users\user\outline-app\app\api\works\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts
@@ -26,6 +25,7 @@ FILES:
   - C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\route.ts
   - C:\Users\user\outline-app\app\components\ScrollReset.tsx
+  - C:\Users\user\outline-app\app\dashboard\DashboardPage.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
   - C:\Users\user\outline-app\app\error.tsx
   - C:\Users\user\outline-app\app\favicon.ico
@@ -37,8 +37,10 @@ FILES:
   - C:\Users\user\outline-app\app\i\[shortId]\page.tsx
   - C:\Users\user\outline-app\app\layout.tsx
   - C:\Users\user\outline-app\app\login\page.tsx
+  - C:\Users\user\outline-app\app\me\MePage.tsx
   - C:\Users\user\outline-app\app\me\page.tsx
   - C:\Users\user\outline-app\app\not-found.tsx
+  - C:\Users\user\outline-app\app\notifications\NotificationsPage.tsx
   - C:\Users\user\outline-app\app\notifications\page.tsx
   - C:\Users\user\outline-app\app\page.tsx
   - C:\Users\user\outline-app\app\rss\new.xml\route.ts
@@ -47,13 +49,17 @@ FILES:
   - C:\Users\user\outline-app\app\rss\new.xml\user\[id].xml\route.ts
   - C:\Users\user\outline-app\app\search\page.tsx
   - C:\Users\user\outline-app\app\settings\page.tsx
+  - C:\Users\user\outline-app\app\settings\SettingsPage.tsx
   - C:\Users\user\outline-app\app\signup\page.tsx
   - C:\Users\user\outline-app\app\sitemap-users.xml\route.ts
   - C:\Users\user\outline-app\app\sitemap-works.xml\route.ts
   - C:\Users\user\outline-app\app\sitemap.xml\route.ts
+  - C:\Users\user\outline-app\app\submit\external\ExternalSubmit.tsx
   - C:\Users\user\outline-app\app\submit\external\page.tsx
+  - C:\Users\user\outline-app\app\submit\internal\InternalSubmit.tsx
   - C:\Users\user\outline-app\app\submit\internal\page.tsx
   - C:\Users\user\outline-app\app\submit\page.tsx
+  - C:\Users\user\outline-app\app\submit\SubmitPage.tsx
   - C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\tag\[name]\page.tsx
   - C:\Users\user\outline-app\app\types.ts
@@ -64,12 +70,11 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\loading.tsx
   - C:\Users\user\outline-app\app\work\[id]\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
+  - C:\Users\user\outline-app\app\work\[id]\WorkPage.tsx
 
 FUNCTIONS:
-  - POST
-  - createApiClient
-  - signInWithPassword
   - GET
+  - createApiClient
   - from
   - select
   - order
@@ -77,18 +82,21 @@ FUNCTIONS:
   - error
   - String
   - generateAdvice
+  - POST
   - OpenAI
   - create
   - parse
   - getUser
   - single
   - update
+  - cookies
+  - createServerClient
+  - get
   - insert
   - maybeSingle
   - delete
   - DELETE
   - formData
-  - get
   - now
   - upload
   - getPublicUrl
@@ -98,16 +106,14 @@ FUNCTIONS:
   - useEffect
   - scrollTo
   - DashboardPage
-  - fetchUser
+  - load
   - useState
-  - setUser
-  - setWorks
+  - async
+  - setStats
   - setLoading
   - return
-  - round
-  - forEach
-  - entries
-  - sort
+  - Page
+  - redirect
   - Error
   - dXt
   - FeedPage
@@ -116,17 +122,16 @@ FUNCTIONS:
   - HomeLayout
   - HomePage
   - handleWatchAd
-  - async
   - setUnlocked
   - InternalWorksPage
-  - load
+  - setWorks
   - Date
   - toLocaleDateString
-  - Page
   - RootLayout
   - LoginPage
   - submit
-  - stringify
+  - createBrowserClient
+  - signInWithPassword
   - setMsg
   - setEmail
   - setPassword
@@ -135,9 +140,9 @@ FUNCTIONS:
   - setExternal
   - NotFound
   - NotificationsPage
-  - ClientNotifications
   - NotificationItem
   - setItems
+  - sort
   - getTime
   - toUTCString
   - NextResponse
@@ -146,23 +151,28 @@ FUNCTIONS:
   - setResults
   - setKeyword
   - SettingsPage
+  - fetchUser
   - save
+  - setUser
   - setName
   - setBio
   - setLinks
+  - stringify
   - Links
   - SignupPage
+  - signUp
   - ExternalSubmit
   - InternalSubmit
-  - SubmitPage
   - handleInternalCreate
   - Promise
   - setTimeout
+  - SubmitPage
   - OGImage
   - ImageResponse
   - TagPage
   - UserPage
   - users
+  - entries
   - DeleteButton
   - del
   - EditWorkPage
@@ -171,6 +181,9 @@ FUNCTIONS:
   - setHistory
   - toLocaleString
   - Loading
+  - Related
+  - neq
+  - setRelated
   - WorkPage
   - fetchWork
   - fetchAdvice
@@ -182,7 +195,6 @@ FUNCTIONS:
   - toggleLike
   - loadFavorites
   - toggleFavorite
-  - createBrowserClient
   - setAdvice
   - setLoadingAdvice
   - setComments
@@ -193,14 +205,8 @@ FUNCTIONS:
   - setLiked
   - setFavoriteCount
   - setFavorited
-  - Related
-  - neq
-  - setRelated
 
 IMPORT_MAP:
-  C:\Users\user\outline-app\app\api\auth\login\route.ts:
-    - next/server
-    - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\route.ts:
     - next/server
     - @/lib/supabase-server
@@ -210,16 +216,19 @@ IMPORT_MAP:
     - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts:
     - next/server
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts:
     - next/server
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts:
     - next/server
     - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\[id]\like\route.ts:
     - next/server
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts:
     - next/server
     - @/lib/supabase-server
@@ -229,8 +238,13 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\components\ScrollReset.tsx:
     - react
     - next/navigation
-  C:\Users\user\outline-app\app\dashboard\page.tsx:
+  C:\Users\user\outline-app\app\dashboard\DashboardPage.tsx:
     - react
+  C:\Users\user\outline-app\app\dashboard\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/dashboard/DashboardPage
   C:\Users\user\outline-app\app\feed\page.tsx:
     - @/app/types
   C:\Users\user\outline-app\app\home\page.tsx:
@@ -246,11 +260,22 @@ IMPORT_MAP:
     - ./components/ScrollReset
   C:\Users\user\outline-app\app\login\page.tsx:
     - react
-  C:\Users\user\outline-app\app\me\page.tsx:
+    - @supabase/ssr
+  C:\Users\user\outline-app\app\me\MePage.tsx:
     - react
     - @/app/types
-  C:\Users\user\outline-app\app\notifications\page.tsx:
+  C:\Users\user\outline-app\app\me\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/me/MePage
+  C:\Users\user\outline-app\app\notifications\NotificationsPage.tsx:
     - react
+  C:\Users\user\outline-app\app\notifications\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/notifications/NotificationsPage
   C:\Users\user\outline-app\app\rss\new.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
@@ -262,16 +287,39 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\search\page.tsx:
     - react
   C:\Users\user\outline-app\app\settings\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/settings/SettingsPage
+  C:\Users\user\outline-app\app\settings\SettingsPage.tsx:
     - react
   C:\Users\user\outline-app\app\signup\page.tsx:
     - react
+    - @supabase/ssr
   C:\Users\user\outline-app\app\sitemap-users.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\sitemap-works.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\sitemap.xml\route.ts:
     - next/server
+  C:\Users\user\outline-app\app\submit\external\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/submit/external/ExternalSubmit
+  C:\Users\user\outline-app\app\submit\internal\InternalSubmit.tsx:
+    - react
+  C:\Users\user\outline-app\app\submit\internal\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/submit/internal/InternalSubmit
   C:\Users\user\outline-app\app\submit\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/submit/SubmitPage
+  C:\Users\user\outline-app\app\submit\SubmitPage.tsx:
     - react
   C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx:
     - next/og
@@ -282,13 +330,18 @@ IMPORT_MAP:
     - react
     - @/app/types
   C:\Users\user\outline-app\app\work\[id]\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - @/app/work/[id]/WorkPage
+  C:\Users\user\outline-app\app\work\[id]\related.tsx:
+    - @/lib/supabase-browser
+    - react
+  C:\Users\user\outline-app\app\work\[id]\WorkPage.tsx:
     - react
     - react-markdown
     - @/app/types
     - @supabase/ssr
-  C:\Users\user\outline-app\app\work\[id]\related.tsx:
-    - @/lib/supabase-browser
-    - react
 
 INVARIANTS:
   - const は再代入不可
