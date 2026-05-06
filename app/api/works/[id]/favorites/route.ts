@@ -1,8 +1,7 @@
-"use server";
-
 import { NextResponse } from "next/server";
 import { createApiClient } from "@/lib/supabase-api";
 
+export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
@@ -14,26 +13,24 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
   const workId = params.id;
 
-  const { count, error: countError } = await supabase
+  const { count, error } = await supabase
     .from("favorites")
     .select("*", { count: "exact", head: true })
     .eq("work_id", workId);
 
-  if (countError) {
-    return NextResponse.json({ error: countError.message }, { status: 500 });
-  }
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   let favorited = false;
 
   if (user) {
-    const { data: myFav } = await supabase
+    const { data: existing } = await supabase
       .from("favorites")
       .select("id")
       .eq("work_id", workId)
       .eq("user_id", user.id)
       .maybeSingle();
 
-    favorited = !!myFav;
+    favorited = !!existing;
   }
 
   return NextResponse.json({ count: count ?? 0, favorited });
