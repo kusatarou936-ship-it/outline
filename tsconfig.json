@@ -28,7 +28,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./*"
+        "./app/*"
       ]
     },
     "ignoreDeprecations": "6.0",

@@ -2,7 +2,7 @@
 import "./globals.css";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
-import { I18nProvider } from "@/lib/i18n";
+import { I18nProvider } from "../lib/i18n";
 import ScrollReset from "./components/ScrollReset";
 
 const siteUrl = process.env.SITE_URL;
