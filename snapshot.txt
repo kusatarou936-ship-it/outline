@@ -16,11 +16,14 @@ TECH_STACK:
   - CSS
 
 FILES:
+  - C:\Users\user\outline-app\app\api\auth\login\route.ts
   - C:\Users\user\outline-app\app\api\works\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\like\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\route.ts
   - C:\Users\user\outline-app\app\components\ScrollReset.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
@@ -63,8 +66,10 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
 
 FUNCTIONS:
-  - GET
+  - POST
   - createApiClient
+  - signInWithPassword
+  - GET
   - from
   - select
   - order
@@ -72,7 +77,6 @@ FUNCTIONS:
   - error
   - String
   - generateAdvice
-  - POST
   - OpenAI
   - create
   - parse
@@ -178,7 +182,7 @@ FUNCTIONS:
   - toggleLike
   - loadFavorites
   - toggleFavorite
-  - createClient
+  - createBrowserClient
   - setAdvice
   - setLoadingAdvice
   - setComments
@@ -194,25 +198,34 @@ FUNCTIONS:
   - setRelated
 
 IMPORT_MAP:
+  C:\Users\user\outline-app\app\api\auth\login\route.ts:
+    - next/server
+    - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\route.ts:
     - next/server
-    - @/lib/supabase-api
+    - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts:
     - next/server
     - openai
-    - @/lib/supabase-api
+    - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts:
     - next/server
-    - @/lib/supabase-api
+    - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts:
     - next/server
-    - @/lib/supabase-api
+    - @/lib/supabase-server
+  C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts:
+    - next/server
+    - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\[id]\like\route.ts:
     - next/server
-    - @/lib/supabase-api
+    - @/lib/supabase-server
+  C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts:
+    - next/server
+    - @/lib/supabase-server
   C:\Users\user\outline-app\app\api\works\[id]\route.ts:
     - next/server
-    - @/lib/supabase-api
+    - @/lib/supabase-server
   C:\Users\user\outline-app\app\components\ScrollReset.tsx:
     - react
     - next/navigation
@@ -263,7 +276,7 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx:
     - next/og
   C:\Users\user\outline-app\app\user\[id]\page.tsx:
-    - @/lib/supabase
+    - @/lib/supabase-browser
     - react
   C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
     - react
@@ -272,9 +285,9 @@ IMPORT_MAP:
     - react
     - react-markdown
     - @/app/types
-    - @supabase/supabase-js
+    - @supabase/ssr
   C:\Users\user\outline-app\app\work\[id]\related.tsx:
-    - @/lib/supabase
+    - @/lib/supabase-browser
     - react
 
 INVARIANTS:

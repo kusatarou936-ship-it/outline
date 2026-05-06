@@ -1,29 +1,31 @@
 "use client";
 
 import { useState } from "react";
+import { createBrowserClient } from "@supabase/ssr";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
 
-  const API = process.env.NEXT_PUBLIC_API_BASE;
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   async function submit() {
-    const res = await fetch(`/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
-    const data = await res.json();
-
-    if (res.ok) {
-      document.cookie = `token=${data.token}; path=/; max-age=2592000`;
-      window.location.href = "/";
-    } else {
+    if (error) {
       setMsg("Invalid email or password");
+      return;
     }
+
+    // Supabase が自動で Cookie を発行する
+    window.location.href = "/";
   }
 
   return (
