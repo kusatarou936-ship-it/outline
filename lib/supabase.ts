@@ -1,15 +1,16 @@
-// lib/supabase.ts
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
-export function createClient() {
-  return createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      auth: {
-        persistSession: false,   // ← これが絶対必要
-        autoRefreshToken: false, // ← Edge Runtime では無効
-      },
-    }
-  );
-}
+export const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  {
+    cookies: {
+      name: "sb",
+      lifetime: 60 * 60 * 24 * 7,
+      domain: process.env.NEXT_PUBLIC_SITE_DOMAIN,
+      path: "/",
+      sameSite: "none",
+      secure: true,
+    },
+  }
+);
