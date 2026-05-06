@@ -30,21 +30,39 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
   const workId = params.id;
 
+  // すでにお気に入り済みか確認
   const { data: existing } = await supabase
     .from("favorites")
-    .select("*")
+    .select("id")
     .eq("work_id", workId)
     .eq("user_id", user.id)
     .maybeSingle();
 
   if (existing) {
-    await supabase.from("favorites").delete().eq("id", existing.id);
+    // お気に入り解除
+    await supabase
+      .from("favorites")
+      .delete()
+      .eq("id", existing.id);
+
     return NextResponse.json({ favorited: false });
   }
 
+  // お気に入り追加
   await supabase.from("favorites").insert({
     work_id: workId,
     user_id: user.id,
+  });
+
+  // 通知作成
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/notifications/create`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "favorite",
+      work_id: workId,
+      from_user_id: user.id,
+    }),
   });
 
   return NextResponse.json({ favorited: true });

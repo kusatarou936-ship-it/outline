@@ -1,29 +1,68 @@
-"use server";
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { createApiClient } from "@/lib/supabase-server";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-// GET: 作品取得
+// GET: 作品取得（公開作品は誰でも見れる）
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient();
+  const cookieStore = cookies();
 
-  const { data, error } = await supabase
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
+
+  const { data: work, error } = await supabase
     .from("works")
     .select("*")
     .eq("id", params.id)
     .single();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error || !work) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  return NextResponse.json(data);
+  // 公開作品なら誰でもOK
+  if (work.visibility === "public") {
+    return NextResponse.json(work);
+  }
+
+  // 非公開作品は本人のみ
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user || user.id !== work.user_id) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  return NextResponse.json(work);
 }
 
-// POST: 作品更新
-export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient();
-  const formData = await req.formData();
+// PUT: 作品編集（本人のみ）
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  const cookieStore = cookies();
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
 
   const {
     data: { user },
@@ -49,53 +88,43 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-
-  let updateData: any = { title, description };
-
-  if (work.type === "internal") {
-    updateData.body_markdown = formData.get("body_markdown") as string;
-  }
-
-  if (work.type === "external") {
-    updateData.url = formData.get("url") as string;
-  }
-
-  const thumbnail = formData.get("thumbnail") as File | null;
-  if (thumbnail) {
-    const fileName = `${Date.now()}-${thumbnail.name}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("thumbnails")
-      .upload(fileName, thumbnail);
-
-    if (uploadError) {
-      return NextResponse.json({ error: uploadError.message }, { status: 500 });
-    }
-
-    const { data: publicUrl } = supabase.storage
-      .from("thumbnails")
-      .getPublicUrl(fileName);
-
-    updateData.thumbnail_url = publicUrl.publicUrl;
-  }
+  const body = await req.json();
 
   const { error: updateError } = await supabase
     .from("works")
-    .update(updateData)
+    .update({
+      title: body.title,
+      description: body.description,
+      body_markdown: body.body_markdown,
+      tags: body.tags,
+      visibility: body.visibility,
+      thumbnail_url: body.thumbnail_url,
+    })
     .eq("id", workId);
 
   if (updateError) {
-    return NextResponse.json({ error: updateError.message }, { status: 500 });
+    console.error(updateError);
+    return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ ok: true });
 }
 
-// DELETE: 作品削除
+// DELETE: 作品削除（本人のみ）
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient();
+  const cookieStore = cookies();
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
 
   const {
     data: { user },
@@ -109,7 +138,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
   const { data: work } = await supabase
     .from("works")
-    .select("*")
+    .select("user_id")
     .eq("id", workId)
     .single();
 
@@ -119,14 +148,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
   if (work.user_id !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
-  if (work.thumbnail_url) {
-    const path = work.thumbnail_url.split("/").slice(-1)[0];
-    await supabase.storage.from("thumbnails").remove([path]);
   }
 
   await supabase.from("works").delete().eq("id", workId);
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ ok: true });
 }

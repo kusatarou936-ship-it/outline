@@ -16,6 +16,15 @@ TECH_STACK:
   - CSS
 
 FILES:
+  - C:\Users\user\outline-app\app\api\home\route.ts
+  - C:\Users\user\outline-app\app\api\me\stats\route.ts
+  - C:\Users\user\outline-app\app\api\me\works\route.ts
+  - C:\Users\user\outline-app\app\api\notifications\create\route.ts
+  - C:\Users\user\outline-app\app\api\notifications\read\route.ts
+  - C:\Users\user\outline-app\app\api\notifications\route.ts
+  - C:\Users\user\outline-app\app\api\search\route.ts
+  - C:\Users\user\outline-app\app\api\user\[id]\route.ts
+  - C:\Users\user\outline-app\app\api\works\create\route.ts
   - C:\Users\user\outline-app\app\api\works\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts
@@ -23,7 +32,10 @@ FILES:
   - C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\like\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts
+  - C:\Users\user\outline-app\app\api\works\[id]\related\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\route.ts
+  - C:\Users\user\outline-app\app\components\DeleteWorkButton.tsx
+  - C:\Users\user\outline-app\app\components\EditWorkForm.tsx
   - C:\Users\user\outline-app\app\components\ScrollReset.tsx
   - C:\Users\user\outline-app\app\dashboard\DashboardPage.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
@@ -64,6 +76,7 @@ FILES:
   - C:\Users\user\outline-app\app\tag\[name]\page.tsx
   - C:\Users\user\outline-app\app\types.ts
   - C:\Users\user\outline-app\app\user\[id]\page.tsx
+  - C:\Users\user\outline-app\app\work\[id]\delete\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\delete-button.tsx
   - C:\Users\user\outline-app\app\work\[id]\edit\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\error.tsx
@@ -74,44 +87,68 @@ FILES:
 
 FUNCTIONS:
   - GET
-  - createApiClient
+  - cookies
+  - createServerClient
+  - get
+  - getUser
   - from
   - select
   - order
   - limit
+  - likes
+  - works
+  - forEach
+  - entries
+  - sort
+  - contains
   - error
+  - internal
+  - external
+  - POST
+  - single
+  - insert
+  - update
+  - work
+  - user
+  - Number
+  - range
+  - isArray
   - String
   - generateAdvice
-  - POST
   - OpenAI
   - create
   - parse
-  - getUser
-  - single
-  - update
-  - cookies
-  - createServerClient
-  - get
-  - insert
   - maybeSingle
   - delete
+  - stringify
+  - neq
+  - ilike
+  - PUT
   - DELETE
-  - formData
-  - now
-  - upload
-  - getPublicUrl
-  - remove
+  - DeleteWorkButton
+  - onDelete
+  - useRouter
+  - refresh
+  - return
+  - EditWorkForm
+  - onSubmit
+  - useState
+  - preventDefault
+  - setTitle
+  - setDescription
+  - setBody
+  - setTags
+  - setVisibility
+  - setThumbnail
   - ScrollReset
   - usePathname
   - useEffect
   - scrollTo
   - DashboardPage
   - load
-  - useState
   - async
   - setStats
   - setLoading
-  - return
   - Page
   - redirect
   - Error
@@ -142,7 +179,6 @@ FUNCTIONS:
   - NotificationsPage
   - NotificationItem
   - setItems
-  - sort
   - getTime
   - toUTCString
   - NextResponse
@@ -157,7 +193,6 @@ FUNCTIONS:
   - setName
   - setBio
   - setLinks
-  - stringify
   - Links
   - SignupPage
   - signUp
@@ -172,17 +207,13 @@ FUNCTIONS:
   - TagPage
   - UserPage
   - users
-  - entries
+  - DeleteWorkPage
+  - notFound
   - DeleteButton
   - del
   - EditWorkPage
-  - setWork
-  - setSaving
-  - setHistory
-  - toLocaleString
   - Loading
   - Related
-  - neq
   - setRelated
   - WorkPage
   - fetchWork
@@ -195,6 +226,7 @@ FUNCTIONS:
   - toggleLike
   - loadFavorites
   - toggleFavorite
+  - setWork
   - setAdvice
   - setLoadingAdvice
   - setComments
@@ -207,13 +239,51 @@ FUNCTIONS:
   - setFavorited
 
 IMPORT_MAP:
+  C:\Users\user\outline-app\app\api\home\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\me\stats\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\me\works\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\notifications\create\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\notifications\read\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\notifications\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\search\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\user\[id]\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\works\create\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\route.ts:
     - next/server
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts:
     - next/server
     - openai
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts:
     - next/server
     - @supabase/ssr
@@ -224,17 +294,29 @@ IMPORT_MAP:
     - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts:
     - next/server
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\like\route.ts:
     - next/server
     - @supabase/ssr
     - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts:
     - next/server
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\api\works\[id]\related\route.ts:
+    - next/server
+    - @supabase/ssr
+    - next/headers
   C:\Users\user\outline-app\app\api\works\[id]\route.ts:
     - next/server
-    - @/lib/supabase-server
+    - @supabase/ssr
+    - next/headers
+  C:\Users\user\outline-app\app\components\DeleteWorkButton.tsx:
+    - next/navigation
+  C:\Users\user\outline-app\app\components\EditWorkForm.tsx:
+    - react
+    - next/navigation
   C:\Users\user\outline-app\app\components\ScrollReset.tsx:
     - react
     - next/navigation
@@ -326,9 +408,11 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\user\[id]\page.tsx:
     - @/lib/supabase-browser
     - react
+  C:\Users\user\outline-app\app\work\[id]\delete\page.tsx:
+    - next/navigation
+    - @/components/DeleteWorkButton
   C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
-    - react
-    - @/app/types
+    - next/navigation
   C:\Users\user\outline-app\app\work\[id]\page.tsx:
     - next/navigation
     - @supabase/ssr
