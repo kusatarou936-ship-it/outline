@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 import type { Work } from "@/app/types";
 
