@@ -16,29 +16,12 @@ TECH_STACK:
   - CSS
 
 FILES:
-  - C:\Users\user\outline-app\app\api\home\route.ts
-  - C:\Users\user\outline-app\app\api\home\works\route.ts
-  - C:\Users\user\outline-app\app\api\internal-works\route.ts
-  - C:\Users\user\outline-app\app\api\login\route.ts
-  - C:\Users\user\outline-app\app\api\me\route.ts
-  - C:\Users\user\outline-app\app\api\me\works\route.ts
-  - C:\Users\user\outline-app\app\api\search\route.ts
-  - C:\Users\user\outline-app\app\api\signup\route.ts
-  - C:\Users\user\outline-app\app\api\submit\route.ts
-  - C:\Users\user\outline-app\app\api\tag\[tag]\route.ts
-  - C:\Users\user\outline-app\app\api\upload\route.ts
-  - C:\Users\user\outline-app\app\api\user\[id]\route.ts
   - C:\Users\user\outline-app\app\api\works\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\comments\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts
-  - C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts
-  - C:\Users\user\outline-app\app\api\works\[id]\history\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\like\route.ts
-  - C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts
-  - C:\Users\user\outline-app\app\api\works\[id]\restore\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\route.ts
-  - C:\Users\user\outline-app\app\api\works\[id]\thumbnail\route.ts
   - C:\Users\user\outline-app\app\components\ScrollReset.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
   - C:\Users\user\outline-app\app\error.tsx
@@ -84,42 +67,32 @@ FILES:
 
 FUNCTIONS:
   - GET
-  - createClient
+  - createApiClient
   - from
   - select
-  - users
-  - work_tags
-  - tags
   - order
   - limit
-  - Number
-  - get
-  - range
   - error
-  - getUser
-  - POST
-  - signInWithPassword
-  - single
-  - signUp
-  - insert
-  - formData
-  - now
-  - upload
-  - getPublicUrl
-  - generateShortId
-  - update
-  - contains
-  - createApiClient
   - String
   - generateAdvice
+  - POST
   - OpenAI
   - create
   - parse
+  - getUser
+  - single
+  - update
+  - insert
   - maybeSingle
   - delete
   - DELETE
+  - createClient
+  - formData
+  - get
+  - now
+  - upload
+  - getPublicUrl
   - remove
-  - generate
   - ScrollReset
   - usePathname
   - useEffect
@@ -190,6 +163,7 @@ FUNCTIONS:
   - OGImage
   - TagPage
   - UserPage
+  - users
   - DeleteButton
   - del
   - EditWorkPage
@@ -212,7 +186,6 @@ FUNCTIONS:
   - setAdvice
   - setLoadingAdvice
   - setComments
-  - getSession
   - setComment
   - setReply
   - setReplyTarget
@@ -224,43 +197,6 @@ FUNCTIONS:
   - neq
 
 IMPORT_MAP:
-  C:\Users\user\outline-app\app\api\home\route.ts:
-    - next/server
-    - @supabase/supabase-js
-  C:\Users\user\outline-app\app\api\home\works\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\internal-works\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\login\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\me\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\me\works\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\search\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\signup\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\submit\route.ts:
-    - next/server
-    - @/lib/supabase
-    - @/lib/generateShortId
-  C:\Users\user\outline-app\app\api\tag\[tag]\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\upload\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\user\[id]\route.ts:
-    - next/server
-    - @/lib/supabase
   C:\Users\user\outline-app\app\api\works\route.ts:
     - next/server
     - @/lib/supabase-api
@@ -274,28 +210,12 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\api\works\[id]\favorite\route.ts:
     - next/server
     - @/lib/supabase-api
-  C:\Users\user\outline-app\app\api\works\[id]\favorites\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\works\[id]\history\route.ts:
-    - next/server
-    - @/lib/supabase
   C:\Users\user\outline-app\app\api\works\[id]\like\route.ts:
     - next/server
     - @/lib/supabase-api
-  C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts:
-    - next/server
-    - @/lib/supabase
-  C:\Users\user\outline-app\app\api\works\[id]\restore\route.ts:
-    - next/server
-    - @/lib/supabase
   C:\Users\user\outline-app\app\api\works\[id]\route.ts:
     - next/server
     - @/lib/supabase
-  C:\Users\user\outline-app\app\api\works\[id]\thumbnail\route.ts:
-    - next/server
-    - @/lib/supabase
-    - openai
   C:\Users\user\outline-app\app\components\ScrollReset.tsx:
     - react
     - next/navigation
