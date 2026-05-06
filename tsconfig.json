@@ -14,12 +14,9 @@
     "jsx": "preserve",
     "incremental": true,
     "types": ["node"],
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
 
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     },
@@ -33,6 +30,7 @@
     "app/**/*",
     "components/**/*",
     "pages/**/*",
+    "lib/**/*",          ← これを追加（最重要）
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

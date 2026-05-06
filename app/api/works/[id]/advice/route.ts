@@ -1,5 +1,3 @@
-"use server";
-
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
@@ -13,8 +11,7 @@ async function generateAdvice(work: any) {
 
   const prompt = `
 あなたは作品レビューではなく、作者のためのアドバイザーです。
-作品を評価したり、順位をつけたりしてはいけません。
-批判ではなく、改善のための建設的な提案だけを行ってください。
+改善のための建設的な提案だけを行ってください。
 
 以下の5つの観点でアドバイスを生成してください：
 
@@ -43,7 +40,6 @@ async function generateAdvice(work: any) {
   return JSON.parse(response.choices[0].message.content!);
 }
 
-// POST: アドバイス生成（作者のみ）
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const supabase = createApiClient(req);
 
@@ -75,7 +71,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   return NextResponse.json({ advice });
 }
 
-// GET: アドバイス取得（誰でも）
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const supabase = createApiClient(req);
 

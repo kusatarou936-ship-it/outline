@@ -1,9 +1,6 @@
-"use server";
-
 import { NextResponse } from "next/server";
 import { createApiClient } from "@/lib/supabase-api";
 
-// POST: コメント投稿
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const supabase = createApiClient(req);
   const body = await req.json();
@@ -27,7 +24,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   return NextResponse.json({ success: true });
 }
 
-// GET: コメント取得
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const supabase = createApiClient(req);
 
