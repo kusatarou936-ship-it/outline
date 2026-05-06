@@ -61,7 +61,9 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   };
 
   const loadComments = async () => {
-    const res = await fetch(`/api/works/${params.id}/comments`);
+    const res = await fetch(`/api/works/${params.id}/comments`, {
+      credentials: "include",
+    });
     const data: Comment[] = await res.json();
     setComments(data);
   };
@@ -103,7 +105,9 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   };
 
   const loadLikes = async () => {
-    const res = await fetch(`/api/works/${params.id}/likes`);
+    const res = await fetch(`/api/works/${params.id}/likes`, {
+      credentials: "include",
+    });
     const data = await res.json();
     setLikeCount(data.count);
     setLiked(data.liked);
@@ -121,7 +125,9 @@ export default function WorkPage({ params }: { params: { id: string } }) {
   };
 
   const loadFavorites = async () => {
-    const res = await fetch(`/api/works/${params.id}/favorites`);
+    const res = await fetch(`/api/works/${params.id}/favorites`, {
+      credentials: "include",
+    });
     const data = await res.json();
     setFavoriteCount(data.count);
     setFavorited(data.favorited);
