@@ -3,9 +3,6 @@
 import { NextResponse } from "next/server";
 import { createApiClient } from "@/lib/supabase-api";
 
-export const dynamic = "force-dynamic";
-export const runtime = "nodejs";
-
 // GET: 作品取得
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const supabase = createApiClient(req);
@@ -38,7 +35,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
   const workId = params.id;
 
-  // 既存データ取得
   const { data: work } = await supabase
     .from("works")
     .select("*")
@@ -49,31 +45,23 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  // 作者チェック
   if (work.user_id !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  // 共通フィールド
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
 
-  let updateData: any = {
-    title,
-    description,
-  };
+  let updateData: any = { title, description };
 
-  // internal → Markdown 更新
   if (work.type === "internal") {
     updateData.body_markdown = formData.get("body_markdown") as string;
   }
 
-  // external → URL 更新
   if (work.type === "external") {
     updateData.url = formData.get("url") as string;
   }
 
-  // サムネイル更新
   const thumbnail = formData.get("thumbnail") as File | null;
   if (thumbnail) {
     const fileName = `${Date.now()}-${thumbnail.name}`;
@@ -93,7 +81,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     updateData.thumbnail_url = publicUrl.publicUrl;
   }
 
-  // 更新
   const { error: updateError } = await supabase
     .from("works")
     .update(updateData)
@@ -120,7 +107,6 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
   const workId = params.id;
 
-  // 作品取得
   const { data: work } = await supabase
     .from("works")
     .select("*")
@@ -131,18 +117,15 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  // 作者チェック
   if (work.user_id !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  // サムネイル削除
   if (work.thumbnail_url) {
     const path = work.thumbnail_url.split("/").slice(-1)[0];
     await supabase.storage.from("thumbnails").remove([path]);
   }
 
-  // DB から削除
   await supabase.from("works").delete().eq("id", workId);
 
   return NextResponse.json({ success: true });
