@@ -2,16 +2,18 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { createApiClient } from "@/lib/supabase-api";
+import { createApiClient } from "@/lib/supabase-server";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
+  const supabase = createApiClient(); // ← req を渡さない
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const workId = params.id;
 

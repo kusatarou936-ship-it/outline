@@ -2,11 +2,10 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { createApiClient } from "@/lib/supabase-api";
+import { createApiClient } from "@/lib/supabase-server";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
-  const body = await req.json();
+  const supabase = createApiClient(); // ← req を渡さない
 
   const {
     data: { user },
@@ -14,37 +13,24 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  if (!body.content || body.content.trim() === "")
-    return NextResponse.json({ error: "Empty comment" }, { status: 400 });
+  const workId = params.id;
 
-  await supabase.from("comments").insert({
-    work_id: params.id,
+  const { data: existing } = await supabase
+    .from("favorites")
+    .select("*")
+    .eq("work_id", workId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (existing) {
+    await supabase.from("favorites").delete().eq("id", existing.id);
+    return NextResponse.json({ favorited: false });
+  }
+
+  await supabase.from("favorites").insert({
+    work_id: workId,
     user_id: user.id,
-    content: body.content,
-    reply_to: body.reply_to ?? null,
   });
 
-  return NextResponse.json({ success: true });
-}
-
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const supabase = createApiClient(req);
-
-  const { data } = await supabase
-    .from("comments")
-    .select("*")
-    .eq("work_id", params.id)
-    .order("created_at", { ascending: true });
-
-  const list = data ?? [];
-
-  const parents = list.filter((c) => !c.reply_to);
-  const replies = list.filter((c) => c.reply_to);
-
-  const tree = parents.map((p) => ({
-    ...p,
-    replies: replies.filter((r) => r.reply_to === p.id),
-  }));
-
-  return NextResponse.json(tree);
+  return NextResponse.json({ favorited: true });
 }
