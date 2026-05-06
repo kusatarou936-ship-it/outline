@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
-import { createApiClient } from "@/lib/supabase-api";
+import { createApiClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const supabase = createApiClient(req);
-  const { email, password } = await req.json();
-
+  const supabase = createApiClient(); const { email, password } = await req.json();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
