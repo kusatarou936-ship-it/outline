@@ -55,7 +55,7 @@ export async function GET(req: Request) {
     const tagCounts: Record<string, number> = {};
 
     likedWorks?.forEach((lw) => {
-      (lw.work?.tags ?? []).forEach((t: string) => {
+      (lw.work?.[0]?.tags ?? []).forEach((t: string) => {
         tagCounts[t] = (tagCounts[t] || 0) + 1;
       });
     });

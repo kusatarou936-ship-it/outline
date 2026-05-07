@@ -34,9 +34,22 @@ FILES:
   - C:\Users\user\outline-app\app\api\works\[id]\likes\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\related\route.ts
   - C:\Users\user\outline-app\app\api\works\[id]\route.ts
+  - C:\Users\user\outline-app\app\components\Card\Card.tsx
+  - C:\Users\user\outline-app\app\components\Card\CardImage.tsx
+  - C:\Users\user\outline-app\app\components\Card\CardMeta.tsx
+  - C:\Users\user\outline-app\app\components\Card\CardSkeleton.tsx
   - C:\Users\user\outline-app\app\components\DeleteWorkButton.tsx
   - C:\Users\user\outline-app\app\components\EditWorkForm.tsx
+  - C:\Users\user\outline-app\app\components\LangSwitcher\LangSwitcher.tsx
+  - C:\Users\user\outline-app\app\components\Layout\Footer.tsx
+  - C:\Users\user\outline-app\app\components\Layout\Header.tsx
+  - C:\Users\user\outline-app\app\components\Reveal.tsx
   - C:\Users\user\outline-app\app\components\ScrollReset.tsx
+  - C:\Users\user\outline-app\app\components\SearchBar.tsx
+  - C:\Users\user\outline-app\app\components\UI\Button.tsx
+  - C:\Users\user\outline-app\app\components\UI\Chip.tsx
+  - C:\Users\user\outline-app\app\components\UI\Input.tsx
+  - C:\Users\user\outline-app\app\components\WorkCard.tsx
   - C:\Users\user\outline-app\app\dashboard\DashboardPage.tsx
   - C:\Users\user\outline-app\app\dashboard\page.tsx
   - C:\Users\user\outline-app\app\error.tsx
@@ -124,11 +137,16 @@ FUNCTIONS:
   - ilike
   - PUT
   - DELETE
+  - Card
+  - return
+  - 0_4px_16px_rgba
+  - CardImage
+  - CardMeta
+  - CardSkeleton
   - DeleteWorkButton
   - onDelete
   - useRouter
   - refresh
-  - return
   - EditWorkForm
   - onSubmit
   - useState
@@ -139,10 +157,26 @@ FUNCTIONS:
   - setTags
   - setVisibility
   - setThumbnail
+  - LangSwitcher
+  - useI18n
+  - setLang
+  - toUpperCase
+  - Footer
+  - Date
+  - getFullYear
+  - Header
+  - Reveal
+  - useEffect
+  - IntersectionObserver
+  - setVisible
+  - unobserve
+  - observe
+  - disconnect
   - ScrollReset
   - usePathname
-  - useEffect
   - scrollTo
+  - SearchBar
+  - WorkCard
   - DashboardPage
   - load
   - async
@@ -161,7 +195,6 @@ FUNCTIONS:
   - setUnlocked
   - InternalWorksPage
   - setWorks
-  - Date
   - toLocaleDateString
   - RootLayout
   - LoginPage
@@ -309,11 +342,22 @@ IMPORT_MAP:
     - next/server
     - @supabase/ssr
     - next/headers
+  C:\Users\user\outline-app\app\components\Card\Card.tsx:
+    - next/link
+    - ./CardImage
+    - ./CardMeta
   C:\Users\user\outline-app\app\components\DeleteWorkButton.tsx:
     - next/navigation
   C:\Users\user\outline-app\app\components\EditWorkForm.tsx:
     - react
     - next/navigation
+  C:\Users\user\outline-app\app\components\LangSwitcher\LangSwitcher.tsx:
+    - ../../../lib/i18n
+  C:\Users\user\outline-app\app\components\Layout\Header.tsx:
+    - next/link
+    - ../LangSwitcher/LangSwitcher
+  C:\Users\user\outline-app\app\components\Reveal.tsx:
+    - react
   C:\Users\user\outline-app\app\components\ScrollReset.tsx:
     - react
     - next/navigation
@@ -335,7 +379,7 @@ IMPORT_MAP:
     - next
     - @/components/Layout/Header
     - @/components/Layout/Footer
-    - @/lib/i18n
+    - ../lib/i18n
     - ./components/ScrollReset
   C:\Users\user\outline-app\app\login\page.tsx:
     - react
