@@ -209,7 +209,6 @@ FUNCTIONS:
   - InternalWorksPage
   - LoginClient
   - submit
-  - createBrowserClient
   - useSearchParams
   - signInWithPassword
   - setMsg
@@ -236,8 +235,10 @@ FUNCTIONS:
   - setLinks
   - Links
   - SignupPage
+  - createBrowserClient
   - signUp
   - ExternalSubmit
+  - next
   - InternalSubmit
   - handleInternalCreate
   - Promise
@@ -417,7 +418,7 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\login\LoginClient.tsx:
     - react
     - next/navigation
-    - @supabase/ssr
+    - @supabase/supabase-js
   C:\Users\user\outline-app\app\login\page.tsx:
     - react
     - ./LoginClient
@@ -456,6 +457,7 @@ IMPORT_MAP:
     - @supabase/ssr
     - next/headers
     - ./ExternalSubmit
+    - next/server
   C:\Users\user\outline-app\app\submit\internal\InternalSubmit.tsx:
     - react
   C:\Users\user\outline-app\app\submit\internal\page.tsx:
