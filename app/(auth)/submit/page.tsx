@@ -1,28 +1,9 @@
-import { redirect } from "next/navigation";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import ExternalSubmit from "./ExternalSubmit";
+// app/submit/page.tsx
+import InternalSubmit from "../../submit/internal/InternalSubmit";
 
-export default async function Page() {
-  const cookieStore = cookies();
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) redirect("/login");
-
-  return <ExternalSubmit />;
+export default function Page() {
+  return <InternalSubmit />;
 }
