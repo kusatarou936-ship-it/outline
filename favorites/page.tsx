@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Work } from "@/app/types";
+import type { Work } from "../app/types";
 
 export default function FavoritesPage() {
   const [works, setWorks] = useState<Work[]>([]);

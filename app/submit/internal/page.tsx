@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import InternalSubmit from "@/app/submit/internal/InternalSubmit";
+import InternalSubmit from "./InternalSubmit";
 
 export default async function Page() {
   const cookieStore = cookies();

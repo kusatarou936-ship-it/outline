@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import MePage from "@/app/me/MePage";
+import MePage from "../me/MePage";
 
 export default async function Page() {
   const cookieStore = cookies();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Work } from "@/app/types";
+import type { Work } from "../types";
 
 export default function MePage() {
   const [internal, setInternal] = useState<Work[]>([]);

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import WorkPage from "@/app/work/[id]/WorkPage";
+import WorkPage from "./WorkPage";
 
 export default async function Page({ params }) {
   const cookieStore = cookies();

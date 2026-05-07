@@ -367,14 +367,14 @@ IMPORT_MAP:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/dashboard/DashboardPage
+    - ./DashboardPage
   C:\Users\user\outline-app\app\feed\page.tsx:
-    - @/app/types
+    - ../types
   C:\Users\user\outline-app\app\home\page.tsx:
     - react
   C:\Users\user\outline-app\app\i\page.tsx:
     - react
-    - @/app/types
+    - ../types
   C:\Users\user\outline-app\app\layout.tsx:
     - next
     - @/components/Layout/Header
@@ -386,19 +386,19 @@ IMPORT_MAP:
     - @supabase/ssr
   C:\Users\user\outline-app\app\me\MePage.tsx:
     - react
-    - @/app/types
+    - ../types
   C:\Users\user\outline-app\app\me\page.tsx:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/me/MePage
+    - ../me/MePage
   C:\Users\user\outline-app\app\notifications\NotificationsPage.tsx:
     - react
   C:\Users\user\outline-app\app\notifications\page.tsx:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/notifications/NotificationsPage
+    - ../notifications/NotificationsPage
   C:\Users\user\outline-app\app\rss\new.xml\route.ts:
     - next/server
   C:\Users\user\outline-app\app\rss\new.xml\tag\[name].xml\route.ts:
@@ -413,7 +413,7 @@ IMPORT_MAP:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/settings/SettingsPage
+    - ../settings/SettingsPage
   C:\Users\user\outline-app\app\settings\SettingsPage.tsx:
     - react
   C:\Users\user\outline-app\app\signup\page.tsx:
@@ -429,19 +429,19 @@ IMPORT_MAP:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/submit/external/ExternalSubmit
+    - ./external/ExternalSubmit
   C:\Users\user\outline-app\app\submit\internal\InternalSubmit.tsx:
     - react
   C:\Users\user\outline-app\app\submit\internal\page.tsx:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/submit/internal/InternalSubmit
+    - ../submit/internal/InternalSubmit
   C:\Users\user\outline-app\app\submit\page.tsx:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/submit/SubmitPage
+    - ../submit/SubmitPage
   C:\Users\user\outline-app\app\submit\SubmitPage.tsx:
     - react
   C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx:
@@ -458,14 +458,14 @@ IMPORT_MAP:
     - next/navigation
     - @supabase/ssr
     - next/headers
-    - @/app/work/[id]/WorkPage
+    - ../work/[id]/WorkPage
   C:\Users\user\outline-app\app\work\[id]\related.tsx:
     - @/lib/supabase-browser
     - react
   C:\Users\user\outline-app\app\work\[id]\WorkPage.tsx:
     - react
     - react-markdown
-    - @/app/types
+    - ../types
     - @supabase/ssr
 
 INVARIANTS:

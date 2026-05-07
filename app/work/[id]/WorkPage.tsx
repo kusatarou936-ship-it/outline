@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import type { Work, Comment } from "@/app/types";
+import type { Work, Comment } from "../../types";
 import { createBrowserClient } from "@supabase/ssr";
 
 const supabase = createBrowserClient(

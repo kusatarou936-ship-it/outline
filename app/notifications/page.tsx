@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import NotificationsPage from "@/app/notifications/NotificationsPage";
+import NotificationsPage from "../notifications/NotificationsPage";
 
 export default async function Page() {
   const cookieStore = cookies();
