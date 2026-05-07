@@ -2,6 +2,13 @@
 
 import { useState, useEffect } from "react";
 
+function getCookie(name: string): string | undefined {
+  return document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.split("=")[1];
+}
+
 export default function SettingsPage() {
   const [user, setUser] = useState<any>(null);
   const [name, setName] = useState("");
@@ -12,61 +19,69 @@ export default function SettingsPage() {
   const API =
     process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8787";
 
-  // -----------------------------
-  // 1. ログイン状態を取得
-  // -----------------------------
   useEffect(() => {
+    let mounted = true;
+
     async function fetchUser() {
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="))
-        ?.split("=")[1];
+      const token = getCookie("token");
 
-      if (!token) {
+      if (!token || token === "undefined") {
         window.location.href = "/login";
         return;
       }
 
-      const res = await fetch(`${API}/api/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      try {
+        const res = await fetch(`${API}/api/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      if (!res.ok) {
+        if (!res.ok) {
+          window.location.href = "/login";
+          return;
+        }
+
+        const data = await res.json();
+        if (!mounted) return;
+        setUser(data);
+        setName(data.name || "");
+        setBio(data.bio || "");
+        setLinks(data.links || "");
+      } catch (e) {
+        console.error("fetchUser error", e);
         window.location.href = "/login";
-        return;
       }
-
-      const data = await res.json();
-      setUser(data);
-      setName(data.name);
-      setBio(data.bio);
-      setLinks(data.links);
     }
 
     fetchUser();
-  }, []);
+    return () => {
+      mounted = false;
+    };
+  }, [API]);
 
-  // -----------------------------
-  // 2. 更新処理
-  // -----------------------------
   async function save() {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
+    const token = getCookie("token");
+    if (!token || token === "undefined") {
+      setMsg("Error");
+      return;
+    }
 
-    const res = await fetch(`${API}/api/user/update`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ name, bio, links }),
-    });
+    try {
+      const res = await fetch(`${API}/api/user/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, bio, links }),
+      });
 
-    if (res.ok) {
-      setMsg("Saved");
-    } else {
+      if (res.ok) {
+        setMsg("Saved");
+      } else {
+        setMsg("Error");
+      }
+    } catch (e) {
+      console.error("save error", e);
       setMsg("Error");
     }
   }

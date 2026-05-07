@@ -2,17 +2,24 @@
 
 import { useEffect, useState } from "react";
 
+function getCookie(name: string): string | undefined {
+  return document.cookie
+    .split("; ")
+    .find((r) => r.startsWith(`${name}=`))
+    ?.split("=")[1];
+}
+
 export default function NotificationsPage() {
   const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
-    async function load() {
-      const token = document.cookie
-        .split("; ")
-        .find((r) => r.startsWith("token="))
-        ?.split("=")[1];
+    let mounted = true;
 
-      if (!token) {
+    async function load() {
+      const token = getCookie("token");
+
+      // treat literal "undefined" as missing
+      if (!token || token === "undefined") {
         window.location.href = "/login";
         return;
       }
@@ -20,16 +27,27 @@ export default function NotificationsPage() {
       const API =
         process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8787";
 
-      const res = await fetch(`${API}/api/notifications`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      try {
+        const res = await fetch(`${API}/api/notifications`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      if (res.ok) {
-        setItems(await res.json());
+        if (res.ok) {
+          const json = await res.json();
+          if (mounted) setItems(json);
+        } else {
+          // unauthorized or other error -> redirect to login
+          if (res.status === 401) window.location.href = "/login";
+        }
+      } catch (e) {
+        console.error("notifications fetch error", e);
       }
     }
 
     load();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
@@ -37,9 +55,7 @@ export default function NotificationsPage() {
       <div className="mx-auto max-w-3xl space-y-8">
         <h1 className="text-3xl font-semibold">Notifications</h1>
 
-        {items.length === 0 && (
-          <p className="opacity-70">No notifications</p>
-        )}
+        {items.length === 0 && <p className="opacity-70">No notifications</p>}
 
         <div className="space-y-4">
           {items.map((n, i) => (
@@ -52,6 +68,8 @@ export default function NotificationsPage() {
 }
 
 function NotificationItem({ n }: any) {
+  if (!n) return null;
+
   if (n.type === "thumbnail") {
     return (
       <div className="p-4 bg-white/5 rounded-xl border border-white/10">
