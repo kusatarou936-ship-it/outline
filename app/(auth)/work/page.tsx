@@ -1,5 +1,5 @@
 // app/work/[id]/page.tsx
-import WorkPage from "./WorkPage";
+import WorkPage from "../../work/[id]/WorkPage";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
