@@ -41,7 +41,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ page, limit, works: works ?? [] });
+    return NextResponse.json(works ?? []);
   } catch (e: any) {
     console.error("API_WORKS_FATAL", e);
     return NextResponse.json({ error: String(e?.message ?? e) }, { status: 500 });
