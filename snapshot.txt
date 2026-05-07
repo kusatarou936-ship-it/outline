@@ -100,10 +100,11 @@ FILES:
   - C:\Users\user\outline-app\app\work\[id]\WorkPage.tsx
 
 FUNCTIONS:
-  - AuthLayout
+  - RootLayout
   - cookies
   - createServerClient
   - get
+  - return
   - getUser
   - redirect
   - Page
@@ -119,7 +120,6 @@ FUNCTIONS:
   - users
   - order
   - setWorks
-  - return
   - Date
   - toLocaleDateString
   - entries
@@ -204,7 +204,6 @@ FUNCTIONS:
   - handleWatchAd
   - setUnlocked
   - InternalWorksPage
-  - RootLayout
   - LoginPage
   - submit
   - createBrowserClient
@@ -291,7 +290,7 @@ IMPORT_MAP:
     - next/navigation
     - ./UserPage
   C:\Users\user\outline-app\app\(auth)\user\[id]\UserPage.tsx:
-    - @/lib/supabase-browser
+    - ../../../../lib/supabase-browser
     - react
   C:\Users\user\outline-app\app\(auth)\work\page.tsx:
     - ../../work/[id]/WorkPage
