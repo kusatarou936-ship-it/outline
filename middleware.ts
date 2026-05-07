@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
     req.cookies.get("sb-access-token")?.value ||
     req.cookies.get("__Host-sb-access-token")?.value;
 
-  if (!accessToken && !req.nextUrl.pathname.startsWith("/login")) {
+  if (!accessToken) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -14,7 +14,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next|favicon.ico|login|signup|public).*)",
-  ],
+  matcher: ["/(auth)/(.*)"],
 };
