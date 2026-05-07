@@ -1,6 +1,6 @@
-export const dynamic = "force-dynamic";  // ← 最上部に置く
-
 "use client";
+
+export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
