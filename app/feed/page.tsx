@@ -7,20 +7,26 @@ export default async function FeedPage() {
   const base = process.env.NEXT_PUBLIC_SITE_URL!;
 
   const res = await fetch(`${base}/api/works`, { cache: "no-store" });
-  const works: Work[] = await res.json();
+  const works = await res.json();
+
+  console.log("FEED_DATA", works);
+
+  // 安全ガード（null や undefined を除去）
+  const safeWorks: Work[] = Array.isArray(works)
+    ? works.filter((w) => w && w.id)
+    : [];
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-16">
       <div className="max-w-5xl mx-auto">
-
         <h1 className="text-2xl font-semibold mb-10">新着の作品</h1>
 
-        {works.length === 0 && (
+        {safeWorks.length === 0 && (
           <p className="text-gray-400">まだ作品がありません。</p>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {works.map((work) => (
+          {safeWorks.map((work) => (
             <a
               key={work.id}
               href={`/work/${work.id}`}
@@ -39,8 +45,10 @@ export default async function FeedPage() {
                 )}
               </div>
 
-              <h2 className="text-lg font-medium truncate">{work.title}</h2>
-              <p className="text-gray-400 text-sm truncate">{work.description}</p>
+              <h2 className="text-lg font-medium truncate">{work.title ?? ""}</h2>
+              <p className="text-gray-400 text-sm truncate">
+                {work.description ?? ""}
+              </p>
             </a>
           ))}
         </div>
