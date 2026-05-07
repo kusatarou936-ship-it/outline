@@ -3,15 +3,16 @@
 import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 
+// ❗ コンポーネントの外で 1 回だけ生成する
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
-
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
   async function submit() {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -24,7 +25,7 @@ export default function LoginPage() {
       return;
     }
 
-    // Supabase が自動で Cookie を発行する
+    // Cookie が正しく保存されるようになる
     window.location.href = "/";
   }
 
