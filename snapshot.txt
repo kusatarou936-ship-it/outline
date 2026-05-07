@@ -125,6 +125,7 @@ FUNCTIONS:
   - Number
   - range
   - isArray
+  - createClient
   - String
   - generateAdvice
   - OpenAI
@@ -187,6 +188,7 @@ FUNCTIONS:
   - Error
   - dXt
   - FeedPage
+  - log
   - rgba
   - var
   - HomeLayout
@@ -307,8 +309,7 @@ IMPORT_MAP:
     - next/headers
   C:\Users\user\outline-app\app\api\works\route.ts:
     - next/server
-    - @supabase/ssr
-    - next/headers
+    - @supabase/supabase-js
   C:\Users\user\outline-app\app\api\works\[id]\advice\route.ts:
     - next/server
     - openai
@@ -447,20 +448,21 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx:
     - next/og
   C:\Users\user\outline-app\app\user\[id]\page.tsx:
-    - @/lib/supabase-browser
+    - ../../../lib/supabase-browser
     - react
   C:\Users\user\outline-app\app\work\[id]\delete\page.tsx:
     - next/navigation
     - @/components/DeleteWorkButton
   C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
     - next/navigation
+    - ../../../components/EditWorkForm
   C:\Users\user\outline-app\app\work\[id]\page.tsx:
     - next/navigation
     - @supabase/ssr
     - next/headers
     - ./WorkPage
   C:\Users\user\outline-app\app\work\[id]\related.tsx:
-    - @/lib/supabase-browser
+    - ../../../lib/supabase-browser
     - react
   C:\Users\user\outline-app\app\work\[id]\WorkPage.tsx:
     - react

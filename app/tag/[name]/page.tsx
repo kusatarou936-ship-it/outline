@@ -43,7 +43,7 @@ export default async function TagPage({
               <div className="aspect-video bg-white/10 overflow-hidden">
                 <img
                   src={
-                    w.thumbnail ??
+                    w.thumbnail_url ??
                     "https://placehold.co/1280x720/000/FFF?text=No+Thumbnail"
                   }
                   alt=""
