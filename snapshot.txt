@@ -22,6 +22,9 @@ FILES:
   - C:\Users\user\outline-app\app\(auth)\user\[id]\page.tsx
   - C:\Users\user\outline-app\app\(auth)\user\[id]\UserPage.tsx
   - C:\Users\user\outline-app\app\(auth)\work\page.tsx
+  - C:\Users\user\outline-app\app\(static)\sitemap-users.xml\route.ts
+  - C:\Users\user\outline-app\app\(static)\sitemap-works.xml\route.ts
+  - C:\Users\user\outline-app\app\(static)\sitemap.xml\route.ts
   - C:\Users\user\outline-app\app\api\home\route.ts
   - C:\Users\user\outline-app\app\api\me\stats\route.ts
   - C:\Users\user\outline-app\app\api\me\works\route.ts
@@ -67,6 +70,7 @@ FILES:
   - C:\Users\user\outline-app\app\i\page.tsx
   - C:\Users\user\outline-app\app\i\[shortId]\page.tsx
   - C:\Users\user\outline-app\app\layout.tsx
+  - C:\Users\user\outline-app\app\login\LoginClient.tsx
   - C:\Users\user\outline-app\app\login\page.tsx
   - C:\Users\user\outline-app\app\me\MePage.tsx
   - C:\Users\user\outline-app\app\not-found.tsx
@@ -81,9 +85,6 @@ FILES:
   - C:\Users\user\outline-app\app\settings\page.tsx
   - C:\Users\user\outline-app\app\settings\SettingsPage.tsx
   - C:\Users\user\outline-app\app\signup\page.tsx
-  - C:\Users\user\outline-app\app\sitemap-users.xml\route.ts
-  - C:\Users\user\outline-app\app\sitemap-works.xml\route.ts
-  - C:\Users\user\outline-app\app\sitemap.xml\route.ts
   - C:\Users\user\outline-app\app\submit\external\ExternalSubmit.tsx
   - C:\Users\user\outline-app\app\submit\external\page.tsx
   - C:\Users\user\outline-app\app\submit\internal\InternalSubmit.tsx
@@ -105,6 +106,7 @@ FUNCTIONS:
   - createServerClient
   - get
   - return
+  - remove
   - getUser
   - redirect
   - Page
@@ -124,6 +126,7 @@ FUNCTIONS:
   - toLocaleDateString
   - entries
   - GET
+  - NextResponse
   - limit
   - likes
   - works
@@ -204,9 +207,10 @@ FUNCTIONS:
   - handleWatchAd
   - setUnlocked
   - InternalWorksPage
-  - LoginPage
+  - LoginClient
   - submit
   - createBrowserClient
+  - useSearchParams
   - signInWithPassword
   - setMsg
   - setEmail
@@ -220,7 +224,6 @@ FUNCTIONS:
   - setItems
   - getTime
   - toUTCString
-  - NextResponse
   - SearchPage
   - search
   - setResults
@@ -294,6 +297,12 @@ IMPORT_MAP:
     - react
   C:\Users\user\outline-app\app\(auth)\work\page.tsx:
     - ../../work/[id]/WorkPage
+  C:\Users\user\outline-app\app\(static)\sitemap-users.xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\(static)\sitemap-works.xml\route.ts:
+    - next/server
+  C:\Users\user\outline-app\app\(static)\sitemap.xml\route.ts:
+    - next/server
   C:\Users\user\outline-app\app\api\home\route.ts:
     - next/server
     - @supabase/ssr
@@ -405,9 +414,13 @@ IMPORT_MAP:
     - @/components/Layout/Footer
     - ../lib/i18n
     - ./components/ScrollReset
+  C:\Users\user\outline-app\app\login\LoginClient.tsx:
+    - react
+    - next/navigation
+    - @supabase/ssr
   C:\Users\user\outline-app\app\login\page.tsx:
     - react
-    - @supabase/ssr
+    - ./LoginClient
   C:\Users\user\outline-app\app\me\MePage.tsx:
     - react
     - ../types
@@ -438,12 +451,6 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\signup\page.tsx:
     - react
     - @supabase/ssr
-  C:\Users\user\outline-app\app\sitemap-users.xml\route.ts:
-    - next/server
-  C:\Users\user\outline-app\app\sitemap-works.xml\route.ts:
-    - next/server
-  C:\Users\user\outline-app\app\sitemap.xml\route.ts:
-    - next/server
   C:\Users\user\outline-app\app\submit\external\page.tsx:
     - next/navigation
     - @supabase/ssr
