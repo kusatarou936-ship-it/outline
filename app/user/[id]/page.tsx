@@ -1,6 +1,6 @@
 "use client";
 
-import { supabaseBrowser } from "@/lib/supabase-browser";
+import { supabaseBrowser } from "../../../lib/supabase-browser";
 import { useEffect, useState } from "react";
 
 export default function UserPage({ params }: { params: { id: string } }) {
