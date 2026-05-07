@@ -4,12 +4,10 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
-  // Vercel が勝手に注入する token=undefined を削除
-  if (req.cookies.get("token")) {
-    res.cookies.set("token", "", {
-      path: "/",
-      maxAge: 0,
-    });
+  // token が文字列 "undefined" のときだけ削除する（誤削除防止）
+  const tokenCookie = req.cookies.get("token")?.value;
+  if (typeof tokenCookie !== "undefined" && tokenCookie === "undefined") {
+    res.cookies.set("token", "", { path: "/", maxAge: 0 });
   }
 
   const access =
@@ -26,9 +24,7 @@ export function middleware(req: NextRequest) {
       : "/";
 
   if (!access && !refresh) {
-    return NextResponse.redirect(
-      new URL(`/login?redirectTo=${redirectTo}`, req.url)
-    );
+    return NextResponse.redirect(new URL(`/login?redirectTo=${redirectTo}`, req.url));
   }
 
   return res;
