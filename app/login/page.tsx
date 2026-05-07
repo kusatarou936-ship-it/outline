@@ -1,5 +1,7 @@
 "use client";
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { createBrowserClient } from "@supabase/ssr";
