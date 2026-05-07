@@ -6,6 +6,7 @@ export function middleware(req: NextRequest) {
     req.cookies.get("sb-access-token")?.value ||
     req.cookies.get("__Host-sb-access-token")?.value;
 
+  // 未ログインなら /login に飛ばす
   if (!accessToken) {
     const redirectTo = req.nextUrl.pathname + req.nextUrl.search;
     return NextResponse.redirect(
