@@ -2,26 +2,15 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { createClient } from "@supabase/supabase-js";
 
 export async function GET(req: Request) {
   try {
-    const cookieStore = cookies();
-
-    const supabase = createServerClient(
+    const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-        },
-      }
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
 
-    // クエリパラメータ
     const { searchParams } = new URL(req.url);
     const limit = Number(searchParams.get("limit") ?? 50);
     const page = Number(searchParams.get("page") ?? 1);
@@ -39,19 +28,11 @@ export async function GET(req: Request) {
       .order("created_at", { ascending: false })
       .range(from, to);
 
-    if (tag) {
-      query = query.contains("tags", [tag]);
-    }
-
-    if (keyword) {
-      query = query.or(
-        `title.ilike.%${keyword}%,description.ilike.%${keyword}%`
-      );
-    }
-
-    if (userId) {
-      query = query.eq("user_id", userId);
-    }
+    if (tag) query = query.contains("tags", [tag]);
+    if (keyword) query = query.or(
+      `title.ilike.%${keyword}%,description.ilike.%${keyword}%`
+    );
+    if (userId) query = query.eq("user_id", userId);
 
     const { data: works, error } = await query;
 
@@ -60,16 +41,9 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({
-      page,
-      limit,
-      works: works ?? [],
-    });
+    return NextResponse.json({ page, limit, works: works ?? [] });
   } catch (e: any) {
     console.error("API_WORKS_FATAL", e);
-    return NextResponse.json(
-      { error: String(e?.message ?? e) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: String(e?.message ?? e) }, { status: 500 });
   }
 }
