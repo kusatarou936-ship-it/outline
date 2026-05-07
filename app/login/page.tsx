@@ -1,6 +1,6 @@
-"use client";
+export const dynamic = "force-dynamic";  // ← 最上部に置く
 
-export const dynamic = "force-dynamic";
+"use client";
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -30,7 +30,6 @@ export default function LoginPage() {
       return;
     }
 
-    // 元のページへ戻す
     window.location.href = redirectTo;
   }
 
