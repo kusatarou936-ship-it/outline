@@ -2,12 +2,16 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const accessToken =
+  const access =
     req.cookies.get("sb-access-token")?.value ||
     req.cookies.get("__Host-sb-access-token")?.value;
 
-  // 未ログインなら /login に飛ばす
-  if (!accessToken) {
+  const refresh =
+    req.cookies.get("sb-refresh-token")?.value ||
+    req.cookies.get("__Host-sb-refresh-token")?.value;
+
+  // どちらも無ければ未ログイン
+  if (!access && !refresh) {
     const redirectTo = req.nextUrl.pathname + req.nextUrl.search;
     return NextResponse.redirect(
       new URL(`/login?redirectTo=${redirectTo}`, req.url)
