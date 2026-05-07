@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { createBrowserClient } from "@supabase/ssr";
 
-// ❗ コンポーネントの外で 1 回だけ生成する
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -13,6 +13,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
 
   async function submit() {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -25,8 +28,8 @@ export default function LoginPage() {
       return;
     }
 
-    // Cookie が正しく保存されるようになる
-    window.location.href = "/";
+    // 元のページへ戻す
+    window.location.href = redirectTo;
   }
 
   return (

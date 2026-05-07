@@ -10,6 +10,13 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
+    if (!accessToken) {
+        const redirectTo = req.nextUrl.pathname + req.nextUrl.search;
+        return NextResponse.redirect(
+            new URL(`/login?redirectTo=${redirectTo}`, req.url)
+        );
+    }
+
     return NextResponse.next();
 }
 
