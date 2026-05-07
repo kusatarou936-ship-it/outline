@@ -16,6 +16,12 @@ TECH_STACK:
   - CSS
 
 FILES:
+  - C:\Users\user\outline-app\app\(auth)\layout.tsx
+  - C:\Users\user\outline-app\app\(auth)\me\page.tsx
+  - C:\Users\user\outline-app\app\(auth)\submit\page.tsx
+  - C:\Users\user\outline-app\app\(auth)\user\[id]\page.tsx
+  - C:\Users\user\outline-app\app\(auth)\user\[id]\UserPage.tsx
+  - C:\Users\user\outline-app\app\(auth)\work\page.tsx
   - C:\Users\user\outline-app\app\api\home\route.ts
   - C:\Users\user\outline-app\app\api\me\stats\route.ts
   - C:\Users\user\outline-app\app\api\me\works\route.ts
@@ -63,7 +69,6 @@ FILES:
   - C:\Users\user\outline-app\app\layout.tsx
   - C:\Users\user\outline-app\app\login\page.tsx
   - C:\Users\user\outline-app\app\me\MePage.tsx
-  - C:\Users\user\outline-app\app\me\page.tsx
   - C:\Users\user\outline-app\app\not-found.tsx
   - C:\Users\user\outline-app\app\notifications\NotificationsPage.tsx
   - C:\Users\user\outline-app\app\notifications\page.tsx
@@ -83,41 +88,52 @@ FILES:
   - C:\Users\user\outline-app\app\submit\external\page.tsx
   - C:\Users\user\outline-app\app\submit\internal\InternalSubmit.tsx
   - C:\Users\user\outline-app\app\submit\internal\page.tsx
-  - C:\Users\user\outline-app\app\submit\page.tsx
   - C:\Users\user\outline-app\app\submit\SubmitPage.tsx
   - C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx
   - C:\Users\user\outline-app\app\tag\[name]\page.tsx
   - C:\Users\user\outline-app\app\types.ts
-  - C:\Users\user\outline-app\app\user\[id]\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\delete\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\edit\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\error.tsx
   - C:\Users\user\outline-app\app\work\[id]\loading.tsx
-  - C:\Users\user\outline-app\app\work\[id]\page.tsx
   - C:\Users\user\outline-app\app\work\[id]\related.tsx
   - C:\Users\user\outline-app\app\work\[id]\WorkPage.tsx
 
 FUNCTIONS:
-  - GET
+  - AuthLayout
   - cookies
   - createServerClient
   - get
   - getUser
+  - redirect
+  - Page
+  - UserPage
+  - load
+  - useState
+  - useEffect
   - from
   - select
+  - single
+  - setLoading
+  - setUser
+  - users
   - order
+  - setWorks
+  - return
+  - Date
+  - toLocaleDateString
+  - entries
+  - GET
   - limit
   - likes
   - works
   - forEach
-  - entries
   - sort
   - contains
   - error
   - internal
   - external
   - POST
-  - single
   - insert
   - update
   - work
@@ -139,7 +155,6 @@ FUNCTIONS:
   - PUT
   - DELETE
   - Card
-  - return
   - 0_4px_16px_rgba
   - CardImage
   - CardMeta
@@ -150,7 +165,6 @@ FUNCTIONS:
   - refresh
   - EditWorkForm
   - onSubmit
-  - useState
   - preventDefault
   - setTitle
   - setDescription
@@ -163,11 +177,9 @@ FUNCTIONS:
   - setLang
   - toUpperCase
   - Footer
-  - Date
   - getFullYear
   - Header
   - Reveal
-  - useEffect
   - IntersectionObserver
   - setVisible
   - unobserve
@@ -179,12 +191,8 @@ FUNCTIONS:
   - SearchBar
   - WorkCard
   - DashboardPage
-  - load
   - async
   - setStats
-  - setLoading
-  - Page
-  - redirect
   - Error
   - dXt
   - FeedPage
@@ -196,8 +204,6 @@ FUNCTIONS:
   - handleWatchAd
   - setUnlocked
   - InternalWorksPage
-  - setWorks
-  - toLocaleDateString
   - RootLayout
   - LoginPage
   - submit
@@ -223,7 +229,6 @@ FUNCTIONS:
   - SettingsPage
   - fetchUser
   - save
-  - setUser
   - setName
   - setBio
   - setLinks
@@ -239,8 +244,6 @@ FUNCTIONS:
   - OGImage
   - ImageResponse
   - TagPage
-  - UserPage
-  - users
   - DeleteWorkPage
   - notFound
   - EditWorkPage
@@ -271,6 +274,27 @@ FUNCTIONS:
   - setFavorited
 
 IMPORT_MAP:
+  C:\Users\user\outline-app\app\(auth)\layout.tsx:
+    - @supabase/ssr
+    - next/headers
+    - next/navigation
+  C:\Users\user\outline-app\app\(auth)\me\page.tsx:
+    - next/navigation
+    - @supabase/ssr
+    - next/headers
+    - ../../me/MePage
+  C:\Users\user\outline-app\app\(auth)\submit\page.tsx:
+    - ../../submit/internal/InternalSubmit
+  C:\Users\user\outline-app\app\(auth)\user\[id]\page.tsx:
+    - @supabase/ssr
+    - next/headers
+    - next/navigation
+    - ./UserPage
+  C:\Users\user\outline-app\app\(auth)\user\[id]\UserPage.tsx:
+    - @/lib/supabase-browser
+    - react
+  C:\Users\user\outline-app\app\(auth)\work\page.tsx:
+    - ../../work/[id]/WorkPage
   C:\Users\user\outline-app\app\api\home\route.ts:
     - next/server
     - @supabase/ssr
@@ -388,11 +412,6 @@ IMPORT_MAP:
   C:\Users\user\outline-app\app\me\MePage.tsx:
     - react
     - ../types
-  C:\Users\user\outline-app\app\me\page.tsx:
-    - next/navigation
-    - @supabase/ssr
-    - next/headers
-    - ../me/MePage
   C:\Users\user\outline-app\app\notifications\NotificationsPage.tsx:
     - react
   C:\Users\user\outline-app\app\notifications\page.tsx:
@@ -438,29 +457,16 @@ IMPORT_MAP:
     - @supabase/ssr
     - next/headers
     - ./InternalSubmit
-  C:\Users\user\outline-app\app\submit\page.tsx:
-    - next/navigation
-    - @supabase/ssr
-    - next/headers
-    - ../submit/SubmitPage
   C:\Users\user\outline-app\app\submit\SubmitPage.tsx:
     - react
   C:\Users\user\outline-app\app\tag\[name]\opengraph-image.tsx:
     - next/og
-  C:\Users\user\outline-app\app\user\[id]\page.tsx:
-    - ../../../lib/supabase-browser
-    - react
   C:\Users\user\outline-app\app\work\[id]\delete\page.tsx:
     - next/navigation
     - @/components/DeleteWorkButton
   C:\Users\user\outline-app\app\work\[id]\edit\page.tsx:
     - next/navigation
     - ../../../components/EditWorkForm
-  C:\Users\user\outline-app\app\work\[id]\page.tsx:
-    - next/navigation
-    - @supabase/ssr
-    - next/headers
-    - ./WorkPage
   C:\Users\user\outline-app\app\work\[id]\related.tsx:
     - ../../../lib/supabase-browser
     - react
