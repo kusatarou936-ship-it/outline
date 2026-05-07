@@ -15,7 +15,9 @@ export default function LoginClient() {
     const [msg, setMsg] = useState("");
 
     const searchParams = useSearchParams();
-    const redirectTo = searchParams.get("redirectTo") || "/";
+    const raw = searchParams.get("redirectTo");
+    const redirectTo =
+        !raw || raw.startsWith("/login") ? "/" : raw;
 
     async function submit() {
         const { error } = await supabase.auth.signInWithPassword({
