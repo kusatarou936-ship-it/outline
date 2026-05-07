@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-import type { Work } from "@/app/types";
+import type { Work } from "../types";
 
 export default async function FeedPage() {
   const base = process.env.NEXT_PUBLIC_SITE_URL!;
