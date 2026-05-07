@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import UserPage from "../[id]/UserPage";
+import UserPage from "./UserPage";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const cookieStore = cookies();
@@ -11,7 +11,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name) {
+        get(name: string) {
           return cookieStore.get(name)?.value;
         },
       },

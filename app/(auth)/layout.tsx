@@ -1,9 +1,8 @@
-// app/(auth)/layout.tsx
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function AuthLayout({ children }) {
+export default async function RootLayout({ children }) {
   const cookieStore = cookies();
 
   const supabase = createServerClient(
@@ -11,7 +10,7 @@ export default async function AuthLayout({ children }) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
+        get(name) {
           return cookieStore.get(name)?.value;
         },
       },
@@ -22,7 +21,14 @@ export default async function AuthLayout({ children }) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  // 未ログインなら /login に飛ばす
+  if (!user) {
+    redirect("/login");
+  }
 
-  return <>{children}</>;
+  return (
+    <html lang="ja">
+      <body>{children}</body>
+    </html>
+  );
 }
