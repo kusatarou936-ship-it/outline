@@ -11,11 +11,24 @@ export default async function RootLayout({ children }) {
         {
             cookies: {
                 get(name) {
-                    // __Host- 付きも読む
                     return (
                         cookieStore.get(name)?.value ||
                         cookieStore.get(`__Host-${name}`)?.value
                     );
+                },
+                set(name, value, options) {
+                    try {
+                        cookieStore.set({ name, value, ...options });
+                    } catch {
+                        // Route handlers では set が使えないので無視
+                    }
+                },
+                remove(name, options) {
+                    try {
+                        cookieStore.set({ name, value: "", ...options });
+                    } catch {
+                        // 同上
+                    }
                 },
             },
         }
