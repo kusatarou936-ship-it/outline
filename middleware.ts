@@ -10,9 +10,13 @@ export function middleware(req: NextRequest) {
     req.cookies.get("sb-refresh-token")?.value ||
     req.cookies.get("__Host-sb-refresh-token")?.value;
 
-  // どちらも無ければ未ログイン
+  // redirectTo を安全に生成
+  const redirectTo =
+    req.nextUrl.pathname && !req.nextUrl.pathname.startsWith("/login")
+      ? req.nextUrl.pathname + req.nextUrl.search
+      : "/";
+
   if (!access && !refresh) {
-    const redirectTo = req.nextUrl.pathname + req.nextUrl.search;
     return NextResponse.redirect(
       new URL(`/login?redirectTo=${redirectTo}`, req.url)
     );
