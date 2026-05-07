@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import { EditWorkForm } from "../../../components/EditWorkForm";
 
 export default async function EditWorkPage({ params }: { params: { id: string } }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/works/${params.id}`, {
