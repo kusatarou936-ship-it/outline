@@ -20,16 +20,17 @@ export default function LoginClient() {
         !raw || raw.startsWith("/login") ? "/" : raw;
 
     async function submit() {
-        const { error } = await supabase.auth.signInWithPassword({
+        const result = await supabase.auth.signInWithPassword({
             email,
             password,
         });
-
-        if (error) {
+        console.log("signInWithPassword result:", result);
+        if (result.error) {
             setMsg("Invalid email or password");
             return;
         }
-
+        const raw = searchParams.get("redirectTo");
+        const redirectTo = !raw || raw.startsWith("/login") ? "/" : raw;
         window.location.href = redirectTo;
     }
 

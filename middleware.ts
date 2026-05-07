@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+
+  // Vercel が勝手に注入する token=undefined を削除
+  if (req.cookies.get("token")) {
+    res.cookies.set("token", "", {
+      path: "/",
+      maxAge: 0,
+    });
+  }
+
   const access =
     req.cookies.get("sb-access-token")?.value ||
     req.cookies.get("__Host-sb-access-token")?.value;
@@ -10,7 +20,6 @@ export function middleware(req: NextRequest) {
     req.cookies.get("sb-refresh-token")?.value ||
     req.cookies.get("__Host-sb-refresh-token")?.value;
 
-  // redirectTo を安全に生成
   const redirectTo =
     req.nextUrl.pathname && !req.nextUrl.pathname.startsWith("/login")
       ? req.nextUrl.pathname + req.nextUrl.search
@@ -22,7 +31,7 @@ export function middleware(req: NextRequest) {
     );
   }
 
-  return NextResponse.next();
+  return res;
 }
 
 export const config = {
